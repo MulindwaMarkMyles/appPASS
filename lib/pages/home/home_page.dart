@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('appPASS'),
-        backgroundColor: Color.fromARGB(255, 191, 51, 9),
+        backgroundColor: Color.fromARGB(255, 248, 175, 153),
       ),
       drawer: Drawer(
         child: ListView(
@@ -27,13 +27,13 @@ class HomePage extends StatelessWidget {
                     'appPASS',
                     style: TextStyle(
                       fontSize: 24,
-                      color: Colors.deepOrange,
+                      color: const Color.fromARGB(255, 204, 151, 135),
                     ),
                   ),
                 ],
               ),
               decoration: BoxDecoration(
-                color: Colors.deepOrange.shade100,
+                color: Color.fromARGB(255, 220, 192, 184),
               ),
             ),
             ListTile(

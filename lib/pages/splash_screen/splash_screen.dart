@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:app_pass/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -13,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => NextScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
     });
   }
 
