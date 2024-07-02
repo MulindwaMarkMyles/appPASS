@@ -14,11 +14,11 @@ class HomePage extends StatelessWidget {
           style: TextStyle(
              fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
             color: Color.fromARGB(255, 243, 134, 84),
-            fontSize: 30,
+            fontSize: 50,
             fontWeight: FontWeight.w500,
           ),),]
         ),
-        backgroundColor: Color.fromRGBO(252, 231, 217, 1),
+        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: Center(
         child: Text('Welcome to appPASS!'),
