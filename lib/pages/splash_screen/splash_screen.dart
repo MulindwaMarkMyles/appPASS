@@ -21,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 245, 183, 145),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -29,15 +30,6 @@ class _SplashScreenState extends State<SplashScreen> {
               'assets/logo.jpeg', // Add your logo asset here
               height: 200,
             ),
-            // SizedBox(height: 20),
-            // Text(
-            //   'One For All',
-            //   style: TextStyle(
-            //     fontSize: 40,
-            //     fontWeight: FontWeight.bold,
-            //     color: Color.fromARGB(255, 173, 54, 17),
-            //   ),
-            // ),
             SizedBox(height: 20),
             Container(
               width: 200, // Set the desired width here

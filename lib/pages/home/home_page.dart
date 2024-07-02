@@ -7,114 +7,141 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('appPASS'),
-        backgroundColor: Color.fromARGB(255, 248, 175, 153),
+        title: Text(
+          'HOME',
+          style: TextStyle(
+             
+            color: Color.fromARGB(255, 209, 82, 23),
+          ),
+        ),
+        backgroundColor: Color.fromARGB(255, 245, 183, 145),
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/logo.png',
-                    height: 80,
+        child: Container(
+          color: Color.fromARGB(255, 243, 220, 205), // Background color for the drawer
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/logo.png'),
+                    fit: BoxFit.cover,
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'appPASS',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: const Color.fromARGB(255, 204, 151, 135),
+                ),
+                child: null,
+              ),
+              ListTile(
+                leading: Icon(Icons.home, color: Color.fromARGB(255, 113, 71, 36)),
+                title: Text(
+                  'Home',
+                  style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.vpn_key, color: Color.fromARGB(255, 113, 71, 36)),
+                title: Text(
+                  'Password Generator',
+                  style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                ),
+                onTap: () {
+                  // Navigate to the Password Generator screen
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.share, color: Color.fromARGB(255, 113, 71, 36)),
+                title: Text(
+                  'Share password',
+                  style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                ),
+                onTap: () {
+                  // Navigate to the Share password screen
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.health_and_safety, color: Color.fromARGB(255, 113, 71, 36)),
+                title: Text(
+                  'Password health',
+                  style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                ),
+                onTap: () {
+                  // Navigate to the Password health screen
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.category, color: Color.fromARGB(255, 113, 71, 36)),
+                title: Text(
+                  'Categories',
+                  style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                ),
+                onTap: () {
+                  // Navigate to the Categories screen
+                },
+              ),
+              ExpansionTile(
+                leading: Icon(Icons.settings, color: Color.fromARGB(255, 113, 71, 36)),
+                title: Text(
+                  'Settings',
+                  style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                ),
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.account_circle, color: Color.fromARGB(255, 113, 71, 36)),
+                    title: Text(
+                      'Account Summary',
+                      style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
                     ),
+                    onTap: () {
+                      // Navigate to the Account Summary screen
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.security, color: Color.fromARGB(255, 113, 71, 36)),
+                    title: Text(
+                      'Account Security',
+                      style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                    ),
+                    onTap: () {
+                      // Navigate to the Account Security screen
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.settings, color: Color.fromARGB(255, 113, 71, 36)),
+                    title: Text(
+                      'General',
+                      style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                    ),
+                    onTap: () {
+                      // Navigate to the General settings screen
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.qr_code, color: Color.fromARGB(255, 113, 71, 36)),
+                    title: Text(
+                      'QRcode',
+                      style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                    ),
+                    onTap: () {
+                      // Navigate to the QRcode screen
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.person, color: Color.fromARGB(255, 113, 71, 36)),
+                    title: Text(
+                      'Profile',
+                      style: TextStyle(color: Color.fromARGB(255, 113, 71, 36)),
+                    ),
+                    onTap: () {
+                      // Navigate to the Profile screen
+                    },
                   ),
                 ],
               ),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 220, 192, 184),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                // Update the state of the app
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.vpn_key),
-              title: Text('Password Generator'),
-              onTap: () {
-                // Navigate to the Password Generator screen
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.share),
-              title: Text('Share password'),
-              onTap: () {
-                // Navigate to the Share password screen
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.health_and_safety),
-              title: Text('Password health'),
-              onTap: () {
-                // Navigate to the Password health screen
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.category),
-              title: Text('Categories'),
-              onTap: () {
-                // Navigate to the Categories screen
-              },
-            ),
-            ExpansionTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.account_circle),
-                  title: Text('Account Summary'),
-                  onTap: () {
-                    // Navigate to the Account Summary screen
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.security),
-                  title: Text('Account Security'),
-                  onTap: () {
-                    // Navigate to the Account Security screen
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.settings),
-                  title: Text('General'),
-                  onTap: () {
-                    // Navigate to the General settings screen
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.qr_code),
-                  title: Text('QRcode'),
-                  onTap: () {
-                    // Navigate to the QRcode screen
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text('Profile'),
-                  onTap: () {
-                    // Navigate to the Profile screen
-                  },
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: Center(
