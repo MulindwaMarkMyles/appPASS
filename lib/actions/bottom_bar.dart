@@ -1,6 +1,12 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:app_pass/pages/home/home_page.dart';
+import 'package:app_pass/pages/password_generator/password_generator.dart';
+import 'package:app_pass/pages/share_password/share_password.dart';
+import 'package:app_pass/pages/password_health/password_health.dart';
+import 'package:app_pass/pages/categories/categories.dart';
+import 'package:app_pass/pages/settings/settings.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override
@@ -8,7 +14,14 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _page = 0;
+  final List<Widget> pages = [
+    HomePage(),
+    PasswordGenerator(),
+    SharePassword(),
+    PasswordHealth(),
+    Categories(),
+    Settings(),
+  ];
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
@@ -32,7 +45,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       animationDuration: Duration(milliseconds: 400),
       onTap: (index) {
         setState(() {
-          _page = index;
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => pages[index]));
         });
       },
       letIndexChange: (index) => true,
