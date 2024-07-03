@@ -14,7 +14,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
     });
   }
 
@@ -27,15 +28,25 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/logo.jpeg', // Add your logo asset here
+              'assets/logo_square.png', // Add your logo asset here
               height: 200,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'appPASS', // Add your app name here
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 163, 44, 7),
+              ),
             ),
             SizedBox(height: 20),
             Container(
               width: 200, // Set the desired width here
               child: LinearProgressIndicator(
                 backgroundColor: Colors.white,
-                valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 163, 44, 7)),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Color.fromARGB(255, 163, 44, 7)),
               ),
             ),
           ],
