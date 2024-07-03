@@ -9,19 +9,6 @@ import '/pages/health/health.dart';
 import '/pages/share/share.dart';
 import '/pages/settings/settings.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BottomNavBar(),
-    );
-  }
-}
-
 class BottomNavBar extends StatefulWidget {
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -42,9 +29,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: _screens[_page].runtimeType.toString()),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -57,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         height: 70.0,
-        index: 0,
+        index: _page,
         items: <Widget>[
           Icon(Ionicons.home_outline, size: 30),
           Icon(Ionicons.build_outline, size: 30),
@@ -74,7 +65,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         onTap: (index) {
           setState(() {
             _page = index;
-            _pageController.animateToPage(index, duration: Duration(milliseconds: 400), curve: Curves.easeInOut);
+            _pageController.animateToPage(index,
+                duration: Duration(milliseconds: 400), curve: Curves.easeInOut);
           });
         },
         letIndexChange: (index) => true,

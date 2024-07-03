@@ -1,8 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:app_pass/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:app_pass/actions/bottom_bar.dart'; // Import BottomNavBar
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,7 +12,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => BottomNavBar())); // Navigate to BottomNavBar
     });
   }
 
@@ -35,7 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 200, // Set the desired width here
               child: LinearProgressIndicator(
                 backgroundColor: Colors.white,
-                valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 163, 44, 7)),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Color.fromARGB(255, 163, 44, 7)),
               ),
             ),
           ],
