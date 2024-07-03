@@ -16,7 +16,7 @@ class _SharePasswordState extends State<SharePassword> {
       body: Center(
         child: Text('Share Password'),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(index: 2),
     );
   }
 }

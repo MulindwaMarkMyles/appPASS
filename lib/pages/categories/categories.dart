@@ -16,7 +16,7 @@ class _CategoriesState extends State<Categories> {
       body: Center(
         child: Text('Categories'),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(index: 4),
     );
   }
 }

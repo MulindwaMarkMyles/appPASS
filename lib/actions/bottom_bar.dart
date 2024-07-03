@@ -9,6 +9,10 @@ import 'package:app_pass/pages/categories/categories.dart';
 import 'package:app_pass/pages/settings/settings.dart';
 
 class BottomNavBar extends StatefulWidget {
+  final int index; 
+
+  BottomNavBar({required this.index});
+  
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
 }
@@ -22,14 +26,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
     Categories(),
     Settings(),
   ];
+  int _currentIndex = 0;
+  
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.index;
+  }
+  
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
       key: _bottomNavigationKey,
+      index: _currentIndex,
       height: 60.0,
-      index: 0,
       items: <Widget>[
         Icon(Ionicons.home_outline, size: 30),
         Icon(Ionicons.build_outline, size: 30),
@@ -45,6 +57,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       animationDuration: Duration(milliseconds: 400),
       onTap: (index) {
         setState(() {
+           _currentIndex = index;
           Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (_) => pages[index]));
         });

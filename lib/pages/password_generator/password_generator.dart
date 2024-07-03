@@ -16,7 +16,7 @@ class _PasswordGeneratorState extends State<PasswordGenerator> {
       body: Center(
         child: Text('Password Generator'),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(index: 1),
     );
   }
 }

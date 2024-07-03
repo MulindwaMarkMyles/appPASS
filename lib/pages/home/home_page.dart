@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: Text('Welcome to appPASS!'),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(index: 0),
     );
   }
 }

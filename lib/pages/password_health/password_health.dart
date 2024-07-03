@@ -16,7 +16,7 @@ class _PasswordHealthState extends State<PasswordHealth> {
       body: Center(
         child: Text('Password Health'),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(index: 3),
     );
   }
 }

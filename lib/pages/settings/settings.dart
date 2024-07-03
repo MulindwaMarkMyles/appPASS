@@ -16,7 +16,7 @@ class _SettingsState extends State<Settings> {
       body: Center(
         child: Text('Settings'),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(index: 5),
     );
   }
 }
