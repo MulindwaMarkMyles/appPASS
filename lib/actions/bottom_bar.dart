@@ -46,12 +46,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
           });
         },
         children: <Widget>[
-          MyHomePage(),      // Replace with your custom home screen
-          MyBuildPage(),     // Replace with your custom build screen
-          MySharePage(),     // Replace with your custom share screen
-          MyHeartPage(),     // Replace with your custom heart screen
-          MyMenuPage(),      // Replace with your custom menu screen
-          MySettingsPage(),  // Replace with your custom settings screen
+          MyHomePage(title: _titles[0]),      // Replace with your custom home screen
+          MyBuildPage(title: _titles[1]),     // Replace with your custom build screen
+          MySharePage(title: _titles[2]),     // Replace with your custom share screen
+          MyHeartPage(title: _titles[3]),     // Replace with your custom heart screen
+          MyMenuPage(title: _titles[4]),      // Replace with your custom menu screen
+          MySettingsPage(title: _titles[5]),  // Replace with your custom settings screen
         ],
       ),
       bottomNavigationBar: CurvedNavigationBar(
@@ -100,7 +100,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             height: 30,
           ),
           SizedBox(width: 10),
-       
+          Text(title),
         ],
       ),
       centerTitle: true,
@@ -114,43 +114,133 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 // Replace these placeholder classes with your actual custom screens
 
 class MyHomePage extends StatelessWidget {
+  final String title;
+
+  MyHomePage({required this.title});
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Home Screen'));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/Image1.png', height: 100),
+        SizedBox(height: 20),
+        Text(
+          title,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        Center(child: Text('Home Screen')),
+      ],
+    );
   }
 }
 
 class MyBuildPage extends StatelessWidget {
+  final String title;
+
+  MyBuildPage({required this.title});
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Build Screen'));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/Image1.png', height: 100),
+        SizedBox(height: 20),
+        Text(
+          title,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        Center(child: Text('Build Screen')),
+      ],
+    );
   }
 }
 
 class MySharePage extends StatelessWidget {
+  final String title;
+
+  MySharePage({required this.title});
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Share Screen'));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/Image1.png', height: 100),
+        SizedBox(height: 20),
+        Text(
+          title,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        Center(child: Text('Share Screen')),
+      ],
+    );
   }
 }
 
 class MyHeartPage extends StatelessWidget {
+  final String title;
+
+  MyHeartPage({required this.title});
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Heart Screen'));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/Image1.png', height: 100),
+        SizedBox(height: 20),
+        Text(
+          title,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        Center(child: Text('Heart Screen')),
+      ],
+    );
   }
 }
 
 class MyMenuPage extends StatelessWidget {
+  final String title;
+
+  MyMenuPage({required this.title});
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Menu Screen'));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/Image1.png', height: 100),
+        SizedBox(height: 20),
+        Text(
+          title,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        Center(child: Text('Menu Screen')),
+      ],
+    );
   }
 }
 
 class MySettingsPage extends StatelessWidget {
+  final String title;
+
+  MySettingsPage({required this.title});
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Settings Screen'));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/Image1.png', height: 100),
+        SizedBox(height: 20),
+        Text(
+          title,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        Center(child: Text('Settings Screen')),
+      ],
+    );
   }
 }
