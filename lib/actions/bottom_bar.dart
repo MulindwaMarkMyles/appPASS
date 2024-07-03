@@ -1,6 +1,13 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ionicons/ionicons.dart';
+
+import '/pages/home/home_page.dart';
+import '/pages/menu/menu.dart';
+import '/pages/build/build.dart';
+import '/pages/health/health.dart';
+import '/pages/share/share.dart';
+import '/pages/settings/settings.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,19 +32,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   PageController _pageController = PageController();
 
-  final List<String> _titles = [
-    'Home',
-    'Build',
-    'Share',
-    'Heart',
-    'Menu',
-    'Settings'
+  final List<Widget> _screens = [
+    HomePage(),
+    BuildPage(),
+    SharePage(),
+    HealthPage(),
+    MenuPage(),
+    SettingsPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: _titles[_page]),
+      appBar: CustomAppBar(title: _screens[_page].runtimeType.toString()),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -45,14 +52,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             _page = index;
           });
         },
-        children: <Widget>[
-          MyHomePage(),      // Replace with your custom home screen
-          MyBuildPage(),     // Replace with your custom build screen
-          MySharePage(),     // Replace with your custom share screen
-          MyHeartPage(),     // Replace with your custom heart screen
-          MyMenuPage(),      // Replace with your custom menu screen
-          MySettingsPage(),  // Replace with your custom settings screen
-        ],
+        children: _screens,
       ),
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
@@ -83,7 +83,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 }
 
-// Custom AppBar widget with a logo
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
@@ -92,65 +91,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/Image1.png', 
-            height: 30,
-          ),
-          SizedBox(width: 10),
-       
-        ],
-      ),
+      title: Text(title),
       centerTitle: true,
     );
   }
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
-}
-
-// Replace these placeholder classes with your actual custom screens
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Home Screen'));
-  }
-}
-
-class MyBuildPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Build Screen'));
-  }
-}
-
-class MySharePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Share Screen'));
-  }
-}
-
-class MyHeartPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Heart Screen'));
-  }
-}
-
-class MyMenuPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Menu Screen'));
-  }
-}
-
-class MySettingsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Settings Screen'));
-  }
 }
