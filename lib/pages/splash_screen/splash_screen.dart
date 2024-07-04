@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:app_pass/actions/bottom_bar.dart'; // Import BottomNavBar
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -30,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 200,
             ),
             SizedBox(height: 20),
-            Container(
+            SizedBox(
               width: 200, // Set the desired width here
               child: LinearProgressIndicator(
                 backgroundColor: Colors.white,
@@ -46,6 +48,8 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 class NextScreen extends StatelessWidget {
+  const NextScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

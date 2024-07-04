@@ -10,14 +10,16 @@ import '/pages/share/share.dart';
 import '/pages/settings/settings.dart';
 
 class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({Key? key}) : super(key: key);
+
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _page = 0;
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  PageController _pageController = PageController();
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  final PageController _pageController = PageController();
 
   final List<Widget> _screens = [
     HomePage(),
@@ -78,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  CustomAppBar({required this.title});
+  const CustomAppBar({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
