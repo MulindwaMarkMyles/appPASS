@@ -10,15 +10,20 @@ class HealthPage extends StatelessWidget {
       children: [
         AppBar(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              Image.asset(
+                'assets/Image1.png',
+                width: 40, // Adjust size as needed
+                height: 40, // Adjust size as needed
+              ),
+              SizedBox(width: 10), // Adjust spacing between logo and title
               Text(
-                'HEALTH',
+                'Password Health',
                 style: TextStyle(
                   fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
                   color: Color.fromARGB(255, 243, 134, 84),
-                  fontSize: 50,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
@@ -27,7 +32,7 @@ class HealthPage extends StatelessWidget {
         ),
         Expanded(
           child: Center(
-            child: Text('Health Screen'),
+            child: Text('health Screen'),
           ),
         ),
       ],
