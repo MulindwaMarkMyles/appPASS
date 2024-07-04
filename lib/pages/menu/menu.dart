@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+<<<<<<< HEAD
 import 'package:ionicons/ionicons.dart';
 
 class MenuPage extends StatelessWidget {
@@ -32,6 +33,10 @@ class MenuPage extends StatelessWidget {
     ),
   ];
 
+=======
+
+class MenuPage extends StatelessWidget {
+>>>>>>> ayman
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,7 +51,11 @@ class MenuPage extends StatelessWidget {
               ),
               SizedBox(width: 10), // Adjust spacing between logo and title
               Text(
+<<<<<<< HEAD
                 'Categories',
+=======
+                'Menu',
+>>>>>>> ayman
                 style: TextStyle(
                   fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
                   color: Color.fromARGB(255, 243, 134, 84),
@@ -116,5 +125,8 @@ class MenuPage extends StatelessWidget {
     );
   }
 }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> ayman
