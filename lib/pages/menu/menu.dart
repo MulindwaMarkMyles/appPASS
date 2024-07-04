@@ -1,8 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ionicons/ionicons.dart';
 
 class MenuPage extends StatelessWidget {
-  const MenuPage({Key? key}) : super(key: key);
+  MenuPage({Key? key}) : super(key: key);
+
+  final List<DropdownMenuEntry> dropdownMenuEntries = [
+    DropdownMenuEntry(
+      label: 'All',
+      value: Icons.all_inclusive,
+    ),
+    DropdownMenuEntry(
+      label: "Social",
+      value: Ionicons.people_outline,
+    ),
+    DropdownMenuEntry(
+      label: "Finance",
+      value: Ionicons.wallet_outline,
+    ),
+    DropdownMenuEntry(
+      label: 'Shopping',
+      value: Ionicons.bag_handle_outline,
+    ),
+    DropdownMenuEntry(
+      label: "Work",
+      value: Ionicons.briefcase_outline,
+    ),
+    DropdownMenuEntry(
+      label: "Health",
+      value: Ionicons.heart_outline,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +46,7 @@ class MenuPage extends StatelessWidget {
               ),
               SizedBox(width: 10), // Adjust spacing between logo and title
               Text(
-                'Menu',
+                'Categories',
                 style: TextStyle(
                   fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
                   color: Color.fromARGB(255, 243, 134, 84),
@@ -31,11 +59,62 @@ class MenuPage extends StatelessWidget {
           backgroundColor: Color.fromRGBO(246, 208, 183, 1),
         ),
         Expanded(
-          child: Center(
-            child: Text('Menu Screen'),
+          child: ListView.builder(
+            itemCount: dropdownMenuEntries.length,
+            itemBuilder: (context, index) {
+              final entry = dropdownMenuEntries[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(color: Color.fromARGB(255, 252, 171, 134)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        dividerColor: Colors.transparent,
+                      ),
+                      child: ExpansionTile(
+                        collapsedIconColor: Color.fromARGB(255, 248, 81, 4),
+                        iconColor: Color.fromARGB(255, 243, 134, 84),
+                        leading: Icon(entry.value),
+                        title: Text(entry.label),
+                        children: <Widget>[
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text('Option 1'),
+                                  onTap: () {
+                                    print('Option 1 of ${entry.label}');
+                                  },
+                                ),
+                                ListTile(
+                                  title: Text('Option 2'),
+                                  onTap: () {
+                                    print('Option 2 of ${entry.label}');
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
     );
   }
 }
+
+
