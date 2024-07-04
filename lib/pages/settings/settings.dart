@@ -97,14 +97,24 @@ class SettingsPage extends StatelessWidget {
     return Column(
       children: [
         AppBar(
-          title: Text(
-            'Settings',
-            style: TextStyle(
-              fontFamily: GoogleFonts.getFont('Poppins').fontFamily ?? '',
-              color: Color.fromARGB(255, 243, 134, 84),
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
+          title: Row(
+            children: [
+              Image.asset(
+                'assets/Image1.png',
+                width: 40, // Adjust size as needed
+                height: 40, // Adjust size as needed
+              ),
+              SizedBox(width: 10), // Adjust spacing between logo and title
+              Text(
+                'Settings',
+                style: TextStyle(
+                  fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
+                  color: Color.fromARGB(255, 243, 134, 84),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
           backgroundColor: Color.fromRGBO(246, 208, 183, 1),
         ),

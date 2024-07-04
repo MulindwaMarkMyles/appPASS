@@ -22,14 +22,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 245, 183, 145),
+      backgroundColor: Color.fromRGBO(250, 185, 145, 1),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/logo.jpeg', // Add your logo asset here
+              'assets/logo_square.png', // Add your logo asset here
               height: 200,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'appPASS',
+              style: TextStyle(
+                fontSize: 40,
+                color: Color.fromRGBO(248, 105, 17, 1),
+              ),
             ),
             SizedBox(height: 20),
             SizedBox(
@@ -37,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: LinearProgressIndicator(
                 backgroundColor: Colors.white,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                    Color.fromARGB(255, 163, 44, 7)),
+                    Color.fromRGBO(247, 105, 17, 1)),
               ),
             ),
           ],
