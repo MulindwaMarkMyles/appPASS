@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:app_pass/actions/bottom_bar.dart'; // Import BottomNavBar
 
 class SplashScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 30), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => BottomNavBar())); // Navigate to BottomNavBar
     });
@@ -36,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
               'appPASS',
               style: TextStyle(
                 fontSize: 40,
+                fontFamily: 'Gammli',
                 color: Color.fromRGBO(248, 105, 17, 1),
               ),
             ),
