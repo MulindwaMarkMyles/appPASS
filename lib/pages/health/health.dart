@@ -16,7 +16,7 @@ class HealthPage extends StatelessWidget {
               ),
               SizedBox(width: 10), // Adjust spacing between logo and title
               Text(
-                'Password Health',
+                'Passcode Health',
                 style: TextStyle(
                   fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
                   color: Color.fromARGB(255, 243, 134, 84),
