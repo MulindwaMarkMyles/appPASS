@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:app_pass/actions/bottom_bar.dart'; // Import BottomNavBar
+import 'package:app_pass/authentication/login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,9 +14,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 30), () {
+    Timer(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => BottomNavBar())); // Navigate to BottomNavBar
+          builder: (_) => Login())); // Navigate to BottomNavBar
     });
   }
 

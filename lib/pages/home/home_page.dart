@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ionicons/ionicons.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -7,6 +9,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         AppBar(
           title: Row(
@@ -30,11 +34,54 @@ class HomePage extends StatelessWidget {
           ),
           backgroundColor: Color.fromRGBO(246, 208, 183, 1),
         ),
-        Expanded(
-          child: Center(
-            child: Text('home screen'),
-          ),
+        SizedBox(height: 20),
+        SizedBox(
+          width:350,
+          child: ElevatedButton.icon(
+            onPressed: (){}, 
+            icon: Icon(Ionicons.cloud_upload_outline, color: Color.fromRGBO(248, 105, 17, 1)),
+            style: ElevatedButton.styleFrom(
+            
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side:BorderSide(color: Color.fromRGBO(248, 105, 17, 1), width: 1),
+              ),
+              backgroundColor: Colors.white,
+            ),
+            label: Text(
+              "Import",
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
+                fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(248, 105, 17, 1),
+              ),
+            ),),
         ),
+        SizedBox(
+          width: 350,
+          child: ElevatedButton.icon(
+            onPressed: (){}, 
+            icon: Icon(Ionicons.add_outline, color: Color.fromRGBO(248, 105, 17, 1)),
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side:BorderSide(color: Color.fromRGBO(248, 105, 17, 1), width: 1),
+              ),
+              backgroundColor: Colors.white,
+            ),
+            label: Text(
+              "Add",
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
+                fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(248, 105, 17, 1),
+              ),
+            ),),
+        )
       ],
     );
   }
