@@ -1,3 +1,4 @@
+import 'package:app_pass/authentication/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
@@ -60,7 +61,7 @@ class _LoginState extends State<LoginAndSignup> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (_) => BottomNavBar()));
+                    builder: (_) => SignUpPage()));
               }, 
               child: Text(
                 "SIGN UP",
