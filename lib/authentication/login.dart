@@ -1,5 +1,5 @@
-import 'package:app_pass/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:app_pass/actions/bottom_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -64,7 +64,7 @@ class Login extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => HomePage()));
+                    MaterialPageRoute(builder: (_) => BottomNavBar()));
               },
               child: Text(
                 'Login',
