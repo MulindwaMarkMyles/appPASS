@@ -41,7 +41,6 @@ class HomePage extends StatelessWidget {
             onPressed: (){}, 
             icon: Icon(Ionicons.cloud_upload_outline, color: Color.fromRGBO(248, 105, 17, 1)),
             style: ElevatedButton.styleFrom(
-            
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),

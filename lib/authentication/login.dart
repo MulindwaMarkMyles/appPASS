@@ -1,108 +1,102 @@
+import 'package:app_pass/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:app_pass/actions/bottom_bar.dart';
-
-class Login extends StatefulWidget {
+class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
-  _LoginState createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(250, 185, 145, 1),
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              Ionicons.lock_closed_outline,
-              size: 100,
-              color: Colors.black,
+            Image.asset('assets/Image1.png'),
+            SizedBox(
+              height: 20,
             ),
-            SizedBox(height: 20),
             Text(
-              'Welcome to appPASS',
+              'Sign In',
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 35,
                 fontFamily: 'Gammli',
                 color: Color.fromRGBO(248, 105, 17, 1),
               ),
             ),
-            SizedBox(height: 100),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (_) => BottomNavBar()));
-              }, 
-              child: Text(
-                "LOGIN",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+            SizedBox(
+              height: 40,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Username or Email',
+                labelStyle: TextStyle(color: Colors.black),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
                 ),
               ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Password',
+                labelStyle: TextStyle(color: Colors.black),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
                 ),
-                backgroundColor: Color.fromRGBO(248, 105, 17, 1),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => HomePage()));
+              },
+              child: Text(
+                'Login',
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: GoogleFonts.poppins().fontFamily,
+                color: Colors.white,
               ),),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (_) => BottomNavBar()));
-              }, 
-              child: Text(
-                "SIGN UP",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(248, 105, 17, 1),
-                ),
-              ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 44, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(
-                    color: Color.fromRGBO(248, 105, 17, 1),
-                    width: 2,
-                  ),
                 ),
-                backgroundColor: Color.fromRGBO(250, 249, 248, 1),
-                
-              ),),
-            SizedBox(height: 200),
+                backgroundColor: Color.fromRGBO(248, 140, 73, 1),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
             Text(
-              'Get to know us!',
+              'Forgot Password?',
               style: TextStyle(
-                fontSize: 20,
-                fontFamily: GoogleFonts.poppins().fontFamily,
+                fontSize: 15,
                 color: Color.fromRGBO(248, 105, 17, 1),
               ),
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Ionicons.logo_facebook, size: 30, color: Color.fromRGBO(248, 105, 17, 1)),
-                SizedBox(width: 20),
-                Icon(Ionicons.logo_instagram, size: 30, color: Color.fromRGBO(248, 105, 17, 1)),
-                SizedBox(width: 20),
-                Icon(Ionicons.logo_twitter, size: 30, color: Color.fromRGBO(248, 105, 17, 1)),
-                SizedBox(width: 20),
-                Icon(Ionicons.logo_linkedin, size: 30, color: Color.fromRGBO(248, 105, 17, 1)),
-              ],
+            Text(
+              'Create an account',
+              style: TextStyle(
+                fontSize: 15,
+                color: Color.fromRGBO(248, 105, 17, 1),
+              ),
             )
           ],
         ),
@@ -110,4 +104,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-
