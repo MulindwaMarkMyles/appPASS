@@ -54,22 +54,14 @@ class _BuildPageState extends State<BuildPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'PASSWORD GENERATOR',
-              style: TextStyle(
-                fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
-                color: Color.fromARGB(255, 243, 134, 84),
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
+           
+            SizedBox(height: 20),
             Text(
               'Generate strong secure passwords to keep your account safe online',
               style: TextStyle(
                 fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
                 color: Colors.black,
-                fontSize: 12,
+                fontSize: 15,
               ),
               textAlign: TextAlign.center,
             ),
@@ -103,6 +95,8 @@ class _BuildPageState extends State<BuildPage> {
                 Text('Password length:'),
                 Expanded(
                   child: Slider(
+                    thumbColor: Color.fromARGB(255, 243, 134, 84),
+                    activeColor: Color.fromARGB(255, 243, 134, 84),
                     value: passwordLength,
                     min: 4,
                     max: 20,
@@ -173,7 +167,7 @@ class _BuildPageState extends State<BuildPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 160),
             Center(
               child: ElevatedButton(
                 onPressed: generatePassword,
