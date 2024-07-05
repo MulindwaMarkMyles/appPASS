@@ -58,6 +58,7 @@ class HomePage extends StatelessWidget {
               ),
             ),),
         ),
+        SizedBox(height: 15),
         SizedBox(
           width: 350,
           child: ElevatedButton.icon(
