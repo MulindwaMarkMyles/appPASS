@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "473653681576",
+    "project_id": "apppass-f5ed1",
+    "storage_bucket": "apppass-f5ed1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473653681576:android:d856b83cb9c9612a43919d",
+        "android_client_info": {
+          "package_name": "com.appPASS.app_pass"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqCr5k8qEH9LJlpgCnA8SXL4R2PlcsJOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

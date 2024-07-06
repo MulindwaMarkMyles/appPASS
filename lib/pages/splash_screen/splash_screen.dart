@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:app_pass/actions/bottom_bar.dart'; // Import BottomNavBar
+// Import BottomNavBar
 import 'package:app_pass/authentication/login.dart';
 
 class SplashScreen extends StatefulWidget {

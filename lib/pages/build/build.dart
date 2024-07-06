@@ -2,14 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 class BuildPage extends StatefulWidget {
+  const BuildPage({Key? key}) : super(key: key);
+
   @override
-  _BuildPageState createState() => _BuildPageState();
+  BuildPageState createState() => BuildPageState();
 }
 
-class _BuildPageState extends State<BuildPage> {
-  String generatedPassword = 'n*83@4jkL';
+class BuildPageState extends State<BuildPage> {
+  String generatedPassword = '';
   double passwordLength = 8.0;
   bool includeUppercase = false;
   bool includeLowercase = false;
@@ -18,9 +23,42 @@ class _BuildPageState extends State<BuildPage> {
 
   void generatePassword() {
     // Logic to generate the password based on the selected options
-    // This is just a placeholder for the actual password generation logic
+    const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const numbers = "0123456789";
+    const specialChars = '!@#\$%^&*(),.?":{}|<>';
+
+    String chars = '';
+
+    if (includeUppercase) chars += uppercaseLetters;
+    if (includeLowercase) chars += lowercaseLetters;
+    if (includeNumbers) chars += numbers;
+    if (includeSpecialChars) chars += specialChars;
+
+    if (chars.isEmpty) {
+      setState(() {
+        generatedPassword = 'Select options!';
+      });
+      return;
+    }
+
+    final rand = Random();
+    final password = List.generate(passwordLength.toInt(),
+        (index) => chars[rand.nextInt(chars.length)]).join();
+
     setState(() {
-      generatedPassword = 'NewPass@123';
+      generatedPassword = password;
+    });
+
+    // Save the generated password to Firestore
+    _savePasswordToFirestore(password);
+  }
+
+  void _savePasswordToFirestore(String password) {
+    final firestore = FirebaseFirestore.instance;
+    firestore.collection('passwords').add({
+      'password': password,
+      'created_at': Timestamp.now(),
     });
   }
 
@@ -93,6 +131,10 @@ class _BuildPageState extends State<BuildPage> {
                   icon: Icon(Icons.copy),
                   onPressed: () {
                     // Logic to copy the password to clipboard
+                    Clipboard.setData(ClipboardData(text: generatedPassword));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Password copied to clipboard')),
+                    );
                   },
                 ),
               ],
@@ -177,10 +219,9 @@ class _BuildPageState extends State<BuildPage> {
             Center(
               child: ElevatedButton(
                 onPressed: generatePassword,
-                child: Text('Generate',
-                style: TextStyle(
-                  color: Colors.white
-                ),
+                child: Text(
+                  'Generate',
+                  style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 243, 134, 84),

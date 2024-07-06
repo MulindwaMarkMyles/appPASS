@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'pages/splash_screen/splash_screen.dart';
 
-void main() {
+main() {
   runApp(MyApp());
 }
 

@@ -38,7 +38,14 @@ class _LoginState extends State<Login> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (_) => BottomNavBar()));
-              }, 
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: Color.fromRGBO(248, 105, 17, 1),
+              ), 
               child: Text(
                 "LOGIN",
                 style: TextStyle(
@@ -47,29 +54,13 @@ class _LoginState extends State<Login> {
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                backgroundColor: Color.fromRGBO(248, 105, 17, 1),
               ),),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (_) => BottomNavBar()));
-              }, 
-              child: Text(
-                "SIGN UP",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(248, 105, 17, 1),
-                ),
-              ),
+              },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 44, vertical: 10),
                 shape: RoundedRectangleBorder(
@@ -81,6 +72,15 @@ class _LoginState extends State<Login> {
                 ),
                 backgroundColor: Color.fromRGBO(250, 249, 248, 1),
                 
+              ), 
+              child: Text(
+                "SIGN UP",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(248, 105, 17, 1),
+                ),
               ),),
             SizedBox(height: 200),
             Text(

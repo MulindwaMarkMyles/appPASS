@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SharePage extends StatefulWidget {
+  const SharePage({Key? key}) : super(key: key);
+
   @override
   _SharePageState createState() => _SharePageState();
 }
@@ -127,13 +129,13 @@ class _SharePageState extends State<SharePage> {
                 onPressed: () {
                   // Logic to share the password
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 243, 134, 84),
+                ),
                 child: Text('Share',
                 style: TextStyle(
                   color: Colors.white
                 ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 243, 134, 84),
                 ),
               ),
             ),
