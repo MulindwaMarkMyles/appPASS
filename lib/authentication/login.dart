@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_pass/actions/bottom_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -68,11 +69,12 @@ class Login extends StatelessWidget {
               },
               child: Text(
                 'Login',
-              style: TextStyle(
-                fontSize: 20,
-                fontFamily: GoogleFonts.poppins().fontFamily,
-                color: Colors.white,
-              ),),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                  color: Colors.white,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 44, vertical: 10),
                 shape: RoundedRectangleBorder(
