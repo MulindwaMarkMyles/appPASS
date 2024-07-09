@@ -26,66 +26,52 @@ class Login extends StatelessWidget {
                 color: Color.fromRGBO(248, 105, 17, 1),
               ),
             ),
-            SizedBox(
-              height: 40,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Username or Email',
-                labelStyle: TextStyle(color: Colors.black),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-              ),
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(color: Colors.black),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-              ),
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
+            SizedBox(height: 100),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => BottomNavBar()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (_) => BottomNavBar()));
               },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: Color.fromRGBO(248, 105, 17, 1),
+              ), 
               child: Text(
-                'Login',
+                "LOGIN",
                 style: TextStyle(
                   fontSize: 20,
                   fontFamily: GoogleFonts.poppins().fontFamily,
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
-              ),
+              ),),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (_) => BottomNavBar()));
+              },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 44, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                backgroundColor: Color.fromRGBO(248, 140, 73, 1),
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
+                backgroundColor: Color.fromRGBO(250, 249, 248, 1),
+                
+              ), 
+              child: Text(
+                "SIGN UP",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(248, 105, 17, 1),
+                ),
+              ),),
+            SizedBox(height: 200),
             Text(
               'Forgot Password?',
               style: TextStyle(

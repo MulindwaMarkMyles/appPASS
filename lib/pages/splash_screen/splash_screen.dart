@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:app_pass/authentication/login_and_signup.dart';
+// Import BottomNavBar
+import 'package:app_pass/authentication/login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => LoginAndSignup())); // Navigate to BottomNavBar
+          builder: (_) => Login())); // Navigate to BottomNavBar
     });
   }
 
