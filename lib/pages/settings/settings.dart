@@ -1,6 +1,8 @@
+import 'package:app_pass/authentication/login_or_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:app_pass/services/auth.dart';
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
@@ -94,6 +96,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
     return Column(
       children: [
         AppBar(
@@ -174,6 +177,16 @@ class SettingsPage extends StatelessWidget {
                   print('Instagram');
                 },
               ),
+              IconButton(
+                icon: Icon(Ionicons.log_out_outline,
+                    color: Color.fromARGB(255, 243, 134, 84)),
+                onPressed: () {
+                  print('Logout');
+                  _auth.signout();
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => LoginOrSignup()));
+                },
+              )
             ],
           ),
         ),

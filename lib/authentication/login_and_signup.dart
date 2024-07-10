@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/actions/bottom_bar.dart';
-import 'package:app_pass/authentication/login.dart';
+import 'package:app_pass/authentication/signup.dart';
 
 class LoginAndSignup extends StatefulWidget {
   const LoginAndSignup({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class _LoginState extends State<LoginAndSignup> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (_) => Login()));
+                    builder: (_) => BottomNavBar()));
               }, 
               child: Text(
                 "LOGIN",

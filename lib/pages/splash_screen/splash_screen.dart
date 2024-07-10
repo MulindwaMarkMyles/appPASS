@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-// Import BottomNavBar
-import 'package:app_pass/authentication/login.dart';
+import 'package:app_pass/authentication/login_or_signup.dart';
+import 'package:app_pass/actions/bottom_bar.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
+  final String page;
+  SplashScreen({required this.page});
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -15,8 +15,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => Login())); // Navigate to BottomNavBar
+      if (widget.page == 'login'){
+         Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => LoginOrSignup()));
+      } else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => BottomNavBar()));
+      }
     });
   }
 
@@ -52,22 +57,6 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class NextScreen extends StatelessWidget {
-  const NextScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Next Screen'),
-      ),
-      body: Center(
-        child: Text('Welcome to the Next Screen!'),
       ),
     );
   }
