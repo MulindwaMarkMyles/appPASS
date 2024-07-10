@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -54,7 +56,7 @@ class SharePageState extends State<SharePage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Text(
               'Permissions',
               style: TextStyle(
@@ -124,7 +126,7 @@ class SharePageState extends State<SharePage> {
                 fontSize: 12,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Center(
               child: ElevatedButton(
                 onPressed: () {
