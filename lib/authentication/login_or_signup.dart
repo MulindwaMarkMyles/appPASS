@@ -11,83 +11,79 @@ class LoginOrSignup extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset('assets/Image1.png'),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Sign In',
-              style: TextStyle(
-                fontSize: 35,
-                fontFamily: 'Gammli',
-                color: Color.fromRGBO(248, 105, 17, 1),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset('assets/Image1.png'),
+              SizedBox(
+                height: 20,
               ),
-            ),
-            SizedBox(height: 100),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => Login()));
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                backgroundColor: Color.fromRGBO(248, 105, 17, 1),
-              ), 
-              child: Text(
-                "LOGIN",
+              Text(
+                'Sign In',
                 style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (_) => SignUpPage()));
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 44, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                backgroundColor: Color.fromRGBO(250, 249, 248, 1),
-                
-              ), 
-              child: Text(
-                "SIGN UP",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 35,
+                  fontFamily: 'Gammli',
                   color: Color.fromRGBO(248, 105, 17, 1),
                 ),
-              ),),
-            SizedBox(height: 200),
-            Text(
-              'Forgot Password?',
-              style: TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(248, 105, 17, 1),
               ),
-            ),
-            Text(
-              'Create an account',
-              style: TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(248, 105, 17, 1),
+              SizedBox(height: 100),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => Login()));
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 130, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  backgroundColor: Color.fromRGBO(248, 105, 17, 1),
+                ),
+                child: Text(
+                  "LOGIN",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            )
-          ],
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => SignUpPage()));
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 124, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  backgroundColor: Color.fromRGBO(250, 249, 248, 1),
+                ),
+                child: Text(
+                  "SIGN UP",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(248, 105, 17, 1),
+                  ),
+                ),
+              ),
+              SizedBox(height: 200),
+              Text(
+                'Forgot Password?',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Color.fromRGBO(248, 105, 17, 1),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app_pass/authentication/login.dart';
 import 'package:app_pass/services/auth.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:auth_button_kit/auth_button_kit.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -20,15 +22,39 @@ class _SignUpPageState extends State<SignUpPage> {
   final AuthService _auth = AuthService();
   String email = "";
   String password = "";
+  Method? brandSelected;
 
+  void toogle(Method brand) async {
+    setState(() => brandSelected = Method.custom);
+    if (_formKey.currentState!.validate()) {
+      dynamic result =
+          await _auth.registerwithemailandpassword(email, password);
+      if (result != null) {
+        setState(() {
+          brandSelected = null;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Account created successfully')));
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => Login()));
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error creating account')));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Account'),
-        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
-      ),
+          backgroundColor: Color.fromARGB(255, 243, 220, 205),
+          leading: IconButton(
+            icon: Icon(Ionicons.arrow_back_circle),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -46,64 +72,70 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Create your account!',
-                    style: GoogleFonts.poppins(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 243, 134, 84),
+                    'Sign Up',
+                    style: TextStyle(
+                      fontSize: 35,
+                      fontFamily: 'Gammli',
+                      color: Color.fromRGBO(248, 105, 17, 1),
                     ),
                   ),
                   SizedBox(height: 16),
-                  _buildTextField(_nameController, 'Name'),
-                  SizedBox(height: 8),
-                  _buildTextField(_usernameController, 'Username'),
-                  SizedBox(height: 8),
-                  _buildTextField(
-                      _emailController, 'Email', TextInputType.emailAddress),
-                  SizedBox(height: 8),
-                  _buildTextField(_passwordController, 'Password',
-                      TextInputType.visiblePassword),
-                  SizedBox(height: 8),
-                  _buildTextField(
-                    _confirmPasswordController,
-                    'Confirm Password',
-                    TextInputType.visiblePassword,
+                  _buildTextField(_nameController, 'Name',
+                    Icon(Ionicons.person_outline,
+                        color: Color.fromRGBO(248, 105, 17, 1)),
                   ),
                   SizedBox(height: 8),
+                  _buildTextField(_usernameController, 'Username',
+                    Icon(Ionicons.person_circle_outline,
+                        color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                  SizedBox(height: 8),
+                  _buildTextField(
+                      _emailController, 'Email',  Icon(Ionicons.mail_outline,
+                          color: Color.fromRGBO(248, 105, 17, 1)), TextInputType.emailAddress),
+                  SizedBox(height: 8),
+                  _buildTextField(_passwordController, 'Password', Icon(Ionicons.lock_closed_outline,
+                          color: Color.fromRGBO(248, 105, 17, 1)),
+                      TextInputType.visiblePassword, true),
+                  SizedBox(height: 8),
+                  _buildTextField(_confirmPasswordController,
+                      'Confirm Password', Icon(Ionicons.lock_closed_outline,
+                          color: Color.fromRGBO(248, 105, 17, 1)),
+                      TextInputType.visiblePassword, true),
+                  SizedBox(height: 8),
                   _buildTextField(_recoveryEmailController, 'Recovery Email',
+                      Icon(Ionicons.mail_open_outline,
+                          color: Color.fromRGBO(248, 105, 17, 1)),
                       TextInputType.emailAddress),
                   SizedBox(height: 8),
                   _buildTextField(
-                      _phoneController, 'Phone Number', TextInputType.phone),
+                      _phoneController, 'Phone Number', Icon(Ionicons.call_outline,
+                          color: Color.fromRGBO(248, 105, 17, 1)),
+                      TextInputType.phone),
                   SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        // Sign up logic here
-                        dynamic result = await _auth
-                            .registerwithemailandpassword(email, password);
-                        if (result != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Account created successfully')));
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (_) => Login()));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Error creating account')));
-                        }
-                      }
-                    },
-                    child: Text('Create Account'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromRGBO(246, 208, 183, 1),
-                      side:
-                          BorderSide(color: Color.fromARGB(255, 243, 134, 84)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                  AuthButton(
+                    onPressed: (b) => toogle(b),
+                    brand: Method.custom,
+                    text: 'SIGN UP',
+                    textCentering: Centering.independent,
+                    textColor: Colors.white,
+                    backgroundColor: Color.fromRGBO(248, 105, 17, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.transparent
+                            : Color.fromRGBO(248, 105, 17, 1),
+                        width: 1.5,
                       ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 16.0),
                     ),
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    showLoader: Method.custom == brandSelected,
+                    loaderColor: Colors.white,
+                    splashEffect: true,
+                    customImage: Image.asset('assets/Image1.png'),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 12),
                   ),
                 ],
               ),
@@ -114,7 +146,8 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String labelText,
+  Widget _buildTextField(
+      TextEditingController controller, String labelText, Icon prefixIcon,
       [TextInputType keyboardType = TextInputType.text,
       bool isPassword = false]) {
     return TextFormField(
@@ -129,8 +162,18 @@ class _SignUpPageState extends State<SignUpPage> {
         }
       },
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
         labelText: labelText,
+        prefixIcon: prefixIcon,
+        labelStyle: TextStyle(
+          color: Colors.black,
+          fontFamily: GoogleFonts.poppins().fontFamily,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
