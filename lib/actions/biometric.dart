@@ -48,7 +48,7 @@ Future<bool> authenticate() async {
   bool authenticated = false;
   try {
     authenticated = await auth.authenticate(
-      localizedReason: '',
+      localizedReason: 'Please Authenticate to continue.',
       options: const AuthenticationOptions(
         stickyAuth: true,
       ),

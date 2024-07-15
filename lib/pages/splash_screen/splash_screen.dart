@@ -24,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     bool authenticated = false;
     if (isSupported) {
       authenticated = await authenticate();
+      print("supported");
     }
 
     if (authenticated) {
