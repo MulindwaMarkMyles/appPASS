@@ -7,6 +7,13 @@ class CustomUser {
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print('Error sending password reset email: $e');
+      // Handle error here, e.g., show error message to user
+    }}
 
   CustomUser? _userFromFirebaseUser(User? user) {
     if (user == null) return null;
@@ -61,4 +68,5 @@ class AuthService {
       return null;
     }
   }
+
 }
