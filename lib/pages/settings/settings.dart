@@ -4,6 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/authentication/login_or_signup.dart';
 import 'package:app_pass/services/auth.dart';
 import 'package:app_pass/authentication/password_reset_screen.dart'; // Import the password reset screen
+import 'package:app_pass/authentication/profile.dart'; // Import the profile screen
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
@@ -164,6 +165,12 @@ class SettingsPage extends StatelessWidget {
                               builder: (_) => PasswordResetScreen(),
                             ),
                           );
+                        } else if (option.key == 'profile') {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ProfileScreen(),
+                            ),
+                          );
                         } else {
                           // Handle other options if needed
                         }
@@ -214,7 +221,7 @@ class SettingsPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   print('Logout');
-                  _auth.signout();
+                  _auth.signOut();
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => LoginOrSignup()),
                   );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_pass/services/auth.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:app_pass/authentication/profile.dart'; // Import the profile screen
 
 class PasswordResetScreen extends StatefulWidget {
   @override
@@ -7,25 +9,29 @@ class PasswordResetScreen extends StatefulWidget {
 }
 
 class _PasswordResetScreenState extends State<PasswordResetScreen> {
-  final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Reset Password'),
+        backgroundColor: Color.fromARGB(255, 243, 220, 205),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: Icon(Ionicons.mail_outline),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
@@ -33,14 +39,14 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    AuthService().resetPassword(_emailController.text.trim());
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Password reset email sent.'),
+                    await _auth.resetPassword(_emailController.text);
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(),
                       ),
                     );
                   }
