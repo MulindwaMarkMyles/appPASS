@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:app_pass/authentication/login_or_signup.dart';
 import 'package:app_pass/actions/bottom_bar.dart';
+import 'package:app_pass/actions/biometric.dart';
+import 'package:flutter/services.dart';
 
 class SplashScreen extends StatefulWidget {
   final String page;
@@ -14,15 +16,29 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      if (widget.page == 'login'){
-         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => LoginOrSignup()));
-      } else {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => BottomNavBar()));
-      }
-    });
+    _checkBiometricSupport();
+  }
+
+  Future<void> _checkBiometricSupport() async {
+    bool isSupported = await supportsBiometric();
+    bool authenticated = false;
+    if (isSupported) {
+      authenticated = await authenticate();
+    }
+
+    if (authenticated) {
+      Timer(Duration(seconds: 3), () {
+        if (widget.page == 'login') {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => LoginOrSignup()));
+        } else {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => BottomNavBar()));
+        }
+      });
+    } else {
+      SystemNavigator.pop();
+    }
   }
 
   @override

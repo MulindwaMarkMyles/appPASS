@@ -41,6 +41,10 @@ class _SignUpPageState extends State<SignUpPage> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Error creating account')));
       }
+    } else {
+      setState(() {
+        brandSelected = null;
+      });
     }
   }
 
