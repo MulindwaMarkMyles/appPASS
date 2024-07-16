@@ -28,7 +28,7 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() => brandSelected = Method.custom);
     if (_formKey.currentState!.validate()) {
       dynamic result =
-          await _auth.registerwithemailandpassword(email, password);
+          await _auth.registerWithEmailAndPassword(email, password);
       if (result != null) {
         setState(() {
           brandSelected = null;
