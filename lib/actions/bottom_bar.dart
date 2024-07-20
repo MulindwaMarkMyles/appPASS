@@ -51,12 +51,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
         height: 70.0,
         index: _page,
         items: <Widget>[
+          Opacity(
+            opacity: 0.0,
+            child: Icon(Icons.home, size: 30),
+          ),
           Icon(Ionicons.home_outline, size: 30),
           Icon(Ionicons.build_outline, size: 30),
-          Icon(Ionicons.share_social_outline, size: 30),
-          Icon(Ionicons.heart_half_outline, size: 30),
-          Icon(Ionicons.menu_outline, size: 30),
           Icon(Ionicons.settings_outline, size: 30),
+          Opacity(
+            opacity: 0.0,
+            child: Icon(Icons.home, size: 30),
+          ),
         ],
         color: Color.fromRGBO(252, 231, 217, 1),
         buttonBackgroundColor: Colors.deepOrange[200],
