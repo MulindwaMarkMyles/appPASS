@@ -24,12 +24,6 @@ class HomePageState extends State<HomePage> {
     if (result != null && result.files.isNotEmpty) {
       PlatformFile file = result.files.first;
 
-      // Print file details for debugging
-      print("File name: ${file.name}");
-      print("File size: ${file.size}");
-      print("File path: ${file.path}");
-      print("File bytes: ${file.bytes}");
-
       if (file.path != null) {
         File csvFile = File(file.path!);
         String fileContent = await csvFile.readAsString();
@@ -59,6 +53,8 @@ class HomePageState extends State<HomePage> {
     if (isSupported) {
       authenticated = await authenticate();
     }
+
+    if (!mounted) return;
   
   if (authenticated) {
     Navigator.push(

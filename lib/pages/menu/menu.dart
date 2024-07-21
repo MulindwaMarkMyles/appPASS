@@ -91,13 +91,11 @@ class MenuPage extends StatelessWidget {
                                 ListTile(
                                   title: Text('Option 1'),
                                   onTap: () {
-                                    print('Option 1 of ${entry.label}');
                                   },
                                 ),
                                 ListTile(
                                   title: Text('Option 2'),
                                   onTap: () {
-                                    print('Option 2 of ${entry.label}');
                                   },
                                 ),
                               ],
