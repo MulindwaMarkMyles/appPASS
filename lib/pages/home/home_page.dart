@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'dart:io';
 import 'package:app_pass/actions/biometric.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -59,16 +60,16 @@ class HomePageState extends State<HomePage> {
     if (isSupported) {
       authenticated = await authenticate();
     }
-  
-  if (authenticated) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => PasswordsPage(passwords: _passwords)),
-    );
+
+    if (authenticated) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PasswordsPage(passwords: _passwords)),
+      );
     } else {
-       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Authentication Failed.')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Authentication Failed.')));
     }
   }
 
@@ -76,6 +77,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Image.asset(
@@ -129,6 +131,7 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            SizedBox(height: 5.0),
             SizedBox(
               width: 350,
               child: ElevatedButton.icon(
@@ -155,6 +158,7 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            SizedBox(height: 5.0),
             SizedBox(
               width: 350,
               child: ElevatedButton.icon(
