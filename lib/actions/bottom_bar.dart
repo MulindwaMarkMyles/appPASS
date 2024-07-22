@@ -23,7 +23,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _screens = [
     HomePage(),
     BuildPage(),
-    SharePage(),
+    SharePage(password: '',),
     HealthPage(),
     MenuPage(),
     SettingsPage(),
