@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/authentication/login_or_signup.dart';
 import 'package:app_pass/services/auth.dart';
-import 'package:app_pass/authentication/password_reset_screen.dart'; // Import the password reset screen
-import 'package:app_pass/authentication/profile.dart'; // Import the profile screen
+import 'package:app_pass/authentication/password_reset_screen.dart';
+import 'package:app_pass/authentication/profile.dart';
+import 'package:app_pass/pages/settings/email.dart'; // Import the email input screen
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
@@ -31,6 +32,12 @@ class SettingsPage extends StatelessWidget {
           label: 'Language',
           helpText: 'Set your preferred language',
           icon: Ionicons.language_outline,
+        ),
+        SettingsOption(
+          key: 'sharePassword',
+          label: 'Share Password',
+          helpText: 'Share your password via email',
+          icon: Ionicons.share_social_outline,
         ),
       ],
     ),
@@ -111,126 +118,134 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
-    return Column(
-      children: [
-        AppBar(
-          title: Row(
-            children: [
-              Image.asset(
-                'assets/Image1.png',
-                width: 40, // Adjust size as needed
-                height: 40, // Adjust size as needed
-              ),
-              SizedBox(width: 10), // Adjust spacing between logo and title
-              Text(
-                'Settings',
-                style: TextStyle(
-                  fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/Image1.png',
+              width: 40,
+              height: 40,
+            ),
+            SizedBox(width: 10),
+            Text(
+              'Settings',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
                   color: Color.fromARGB(255, 243, 134, 84),
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-            ],
-          ),
-          backgroundColor: Color.fromRGBO(246, 208, 183, 1),
+            ),
+          ],
         ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: settingsSections.length,
-            itemBuilder: (context, index) {
-              final section = settingsSections[index];
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color.fromARGB(255, 252, 171, 134),
-                    ),
-                  ),
+        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
+      ),
+      body: ListView.builder(
+        itemCount: settingsSections.length,
+        itemBuilder: (context, index) {
+          final section = settingsSections[index];
+          return Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color.fromARGB(255, 252, 171, 134),
                 ),
-                child: ExpansionTile(
-                  collapsedIconColor: Color.fromARGB(255, 248, 81, 4),
-                  iconColor: Color.fromARGB(255, 243, 134, 84),
-                  leading: Icon(section.icon),
-                  title: Text(section.title),
-                  children: section.settingsOptions.map((option) {
-                    return ListTile(
-                      leading: Icon(option.icon),
-                      title: Text(option.label),
-                      subtitle: Text(option.helpText),
-                      onTap: () {
-                        if (option.key == 'changePassword') {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => PasswordResetScreen(),
-                            ),
-                          );
-                        } else if (option.key == 'profile') {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => ProfileScreen(),
-                            ),
-                          );
-                        } else {
-                          // Handle other options if needed
-                        }
-                      },
-                    );
-                  }).toList(),
-                ),
-              );
-            },
-          ),
+              ),
+            ),
+            child: ExpansionTile(
+              collapsedIconColor: Color.fromARGB(255, 248, 81, 4),
+              iconColor: Color.fromARGB(255, 243, 134, 84),
+              leading: Icon(section.icon),
+              title: Text(section.title),
+              children: section.settingsOptions.map((option) {
+                return ListTile(
+                  leading: Icon(option.icon),
+                  title: Text(option.label),
+                  subtitle: Text(option.helpText),
+                  onTap: () {
+                    switch (option.key) {
+                      case 'changePassword':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => PasswordResetScreen(),
+                          ),
+                        );
+                        break;
+                      case 'profile':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => ProfileScreen(),
+                          ),
+                        );
+                        break;
+                      case 'sharePassword':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => EmailInputScreen(),
+                          ),
+                        );
+                        break;
+                      // Add cases for other options if needed
+                      default:
+                        // Handle other options if needed
+                        break;
+                    }
+                  },
+                );
+              }).toList(),
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: Icon(
+                Ionicons.logo_facebook,
+                color: Color.fromARGB(255, 243, 134, 84),
+              ),
+              onPressed: () {
+                print('Facebook');
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Ionicons.logo_twitter,
+                color: Color.fromARGB(255, 243, 134, 84),
+              ),
+              onPressed: () {
+                print('Twitter');
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Ionicons.logo_instagram,
+                color: Color.fromARGB(255, 243, 134, 84),
+              ),
+              onPressed: () {
+                print('Instagram');
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Ionicons.log_out_outline,
+                color: Color.fromARGB(255, 243, 134, 84),
+              ),
+              onPressed: () {
+                print('Logout');
+                _auth.signOut();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => LoginOrSignup()),
+                );
+              },
+            ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: Icon(
-                  Ionicons.logo_facebook,
-                  color: Color.fromARGB(255, 243, 134, 84),
-                ),
-                onPressed: () {
-                  print('Facebook');
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                  Ionicons.logo_twitter,
-                  color: Color.fromARGB(255, 243, 134, 84),
-                ),
-                onPressed: () {
-                  print('Twitter');
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                  Ionicons.logo_instagram,
-                  color: Color.fromARGB(255, 243, 134, 84),
-                ),
-                onPressed: () {
-                  print('Instagram');
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                  Ionicons.log_out_outline,
-                  color: Color.fromARGB(255, 243, 134, 84),
-                ),
-                onPressed: () {
-                  print('Logout');
-                  _auth.signOut();
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => LoginOrSignup()),
-                  );
-                },
-              )
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -248,7 +263,7 @@ class SettingsSection {
 }
 
 class SettingsOption {
-  final String key; // Unique key for each option
+  final String key;
   final String label;
   final String helpText;
   final IconData icon;
