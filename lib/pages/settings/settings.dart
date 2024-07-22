@@ -134,6 +134,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ],
         ),
+      
         backgroundColor: Color.fromRGBO(244, 203, 176, 1),
       ),
       body: ListView.builder(
