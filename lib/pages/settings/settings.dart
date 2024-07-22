@@ -5,7 +5,7 @@ import 'package:app_pass/authentication/login_or_signup.dart';
 import 'package:app_pass/services/auth.dart';
 import 'package:app_pass/authentication/password_reset_screen.dart';
 import 'package:app_pass/authentication/profile.dart';
-import 'package:app_pass/pages/settings/email.dart'; // Import the email input screen
+import 'package:app_pass/pages/share/share.dart'; // Import the share password screen
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
@@ -36,7 +36,7 @@ class SettingsPage extends StatelessWidget {
         SettingsOption(
           key: 'sharePassword',
           label: 'Share Password',
-          helpText: 'Share your password via email',
+          helpText: 'Share your password via email or QR code',
           icon: Ionicons.share_social_outline,
         ),
       ],
@@ -183,11 +183,10 @@ class SettingsPage extends StatelessWidget {
                       case 'sharePassword':
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => EmailInputScreen(),
+                            builder: (_) => SharePage(password: 'YourPasswordHere'), // Replace with actual password
                           ),
                         );
                         break;
-                      // Add cases for other options if needed
                       default:
                         // Handle other options if needed
                         break;
