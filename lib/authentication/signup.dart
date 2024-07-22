@@ -6,6 +6,8 @@ import 'package:ionicons/ionicons.dart';
 import 'package:auth_button_kit/auth_button_kit.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }

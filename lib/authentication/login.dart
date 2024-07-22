@@ -6,6 +6,8 @@ import 'package:app_pass/actions/bottom_bar.dart';
 import 'package:ionicons/ionicons.dart';
 
 class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
+
   @override
   State<Login> createState() => _LoginState();
 }

@@ -47,6 +47,7 @@ dependencies:
   auth_button_kit: ^1.1.6
   local_auth: ^2.2.0
   
+  firebase_core: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

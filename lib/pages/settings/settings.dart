@@ -110,7 +110,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService _auth = AuthService();
+    final AuthService auth = AuthService();
     return Column(
       children: [
         AppBar(
@@ -222,7 +222,7 @@ class SettingsPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   print('Logout');
-                  _auth.signOut();
+                  auth.signOut();
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => LoginOrSignup()),
                   );
