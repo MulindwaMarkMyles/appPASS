@@ -8,6 +8,8 @@ class ProfileScreen extends StatelessWidget {
   final AuthService _auth = AuthService();
   final User? user = FirebaseAuth.instance.currentUser;
 
+  ProfileScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

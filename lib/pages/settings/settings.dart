@@ -70,12 +70,6 @@ class SettingsPage extends StatelessWidget {
       icon: Ionicons.lock_closed_outline,
       settingsOptions: [
         SettingsOption(
-          key: 'blockedAccounts',
-          label: 'Blocked Accounts',
-          helpText: 'Manage blocked accounts',
-          icon: Ionicons.person_remove_outline,
-        ),
-        SettingsOption(
           key: 'privacyPolicy',
           label: 'Privacy Policy',
           helpText: 'View our privacy policy',
@@ -140,7 +134,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
+        backgroundColor: Color.fromRGBO(244, 203, 176, 1),
       ),
       body: ListView.builder(
         itemCount: settingsSections.length,
