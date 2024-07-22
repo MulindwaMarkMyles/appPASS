@@ -28,12 +28,6 @@ class SettingsPage extends StatelessWidget {
           icon: Ionicons.lock_closed_outline,
         ),
         SettingsOption(
-          key: 'language',
-          label: 'Language',
-          helpText: 'Set your preferred language',
-          icon: Ionicons.language_outline,
-        ),
-        SettingsOption(
           key: 'sharePassword',
           label: 'Share Password',
           helpText: 'Share your password via email or QR code',
@@ -112,7 +106,11 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
+    final Color scaffoldBackgroundColor = Color.fromARGB(255, 243, 220, 205);
+    final Color iconColor = Color.fromARGB(255, 243, 134, 84);
+
     return Scaffold(
+      backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         title: Row(
           children: [
@@ -126,7 +124,7 @@ class SettingsPage extends StatelessWidget {
               'Settings',
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
-                  color: Color.fromARGB(255, 243, 134, 84),
+                  color: iconColor,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
@@ -134,7 +132,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ],
         ),
-       backgroundColor: Color.fromRGBO(244, 203, 176, 1),
+        backgroundColor: Color.fromRGBO(244, 203, 176, 1),
       ),
       body: ListView.builder(
         itemCount: settingsSections.length,
@@ -144,18 +142,18 @@ class SettingsPage extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color.fromARGB(255, 252, 171, 134),
+                  color: Color.fromRGBO(244, 203, 176, 1),
                 ),
               ),
             ),
             child: ExpansionTile(
-              collapsedIconColor: Color.fromARGB(255, 248, 81, 4),
-              iconColor: Color.fromARGB(255, 243, 134, 84),
-              leading: Icon(section.icon),
+              collapsedIconColor: iconColor,
+              iconColor: iconColor,
+              leading: Icon(section.icon, color: iconColor),
               title: Text(section.title),
               children: section.settingsOptions.map((option) {
                 return ListTile(
-                  leading: Icon(option.icon),
+                  leading: Icon(option.icon, color: iconColor),
                   title: Text(option.label),
                   subtitle: Text(option.helpText),
                   onTap: () {
@@ -193,13 +191,14 @@ class SettingsPage extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomAppBar(
+        color: scaffoldBackgroundColor, // Set the color here
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
               icon: Icon(
                 Ionicons.logo_facebook,
-                color: Color.fromARGB(255, 243, 134, 84),
+                color: iconColor,
               ),
               onPressed: () {
                 print('Facebook');
@@ -208,7 +207,7 @@ class SettingsPage extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Ionicons.logo_twitter,
-                color: Color.fromARGB(255, 243, 134, 84),
+                color: iconColor,
               ),
               onPressed: () {
                 print('Twitter');
@@ -217,7 +216,7 @@ class SettingsPage extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Ionicons.logo_instagram,
-                color: Color.fromARGB(255, 243, 134, 84),
+                color: iconColor,
               ),
               onPressed: () {
                 print('Instagram');
@@ -226,7 +225,7 @@ class SettingsPage extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Ionicons.log_out_outline,
-                color: Color.fromARGB(255, 243, 134, 84),
+                color: iconColor,
               ),
               onPressed: () {
                 print('Logout');
