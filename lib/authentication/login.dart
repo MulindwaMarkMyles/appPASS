@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app_pass/services/auth.dart';
@@ -102,6 +103,14 @@ class _LoginState extends State<Login> {
                 style: TextStyle(color: Colors.red, fontSize: 14),
               ),
               SizedBox(height: 14),
+              IconButton(onPressed: () async {
+                  UserCredential? the_user =  await _auth.signInWithGoogle();
+                  if (the_user != null) {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => BottomNavBar()));}
+                  },
+                icon: Icon(Ionicons.logo_google,
+                          color: Color.fromRGBO(248, 105, 17, 1)),),
               AuthButton(
                 onPressed: (b) => toggle(b),
                 brand: Method.custom,

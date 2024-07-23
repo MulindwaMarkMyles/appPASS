@@ -112,6 +112,7 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Image.asset(
