@@ -23,9 +23,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _screens = [
     HomePage(),
     BuildPage(),
-    SharePage(),
-    HealthPage(),
-    MenuPage(),
+    // SharePage(password: '',),
+    // HealthPage(),
+    // MenuPage(),
     SettingsPage(),
   ];
 
@@ -53,9 +53,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         items: <Widget>[
           Icon(Ionicons.home_outline, size: 30),
           Icon(Ionicons.build_outline, size: 30),
-          Icon(Ionicons.share_social_outline, size: 30),
-          Icon(Ionicons.heart_half_outline, size: 30),
-          Icon(Ionicons.menu_outline, size: 30),
+          // Icon(Ionicons.share_social_outline, size: 30),
+          // Icon(Ionicons.heart_half_outline, size: 30),
+          // Icon(Ionicons.menu_outline, size: 30),
           Icon(Ionicons.settings_outline, size: 30),
         ],
         color: Color.fromRGBO(252, 231, 217, 1),

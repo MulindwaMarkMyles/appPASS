@@ -47,6 +47,7 @@ class HealthPage extends StatelessWidget {
     return Column(
       children: [
         AppBar(
+          automaticallyImplyLeading: false,
           title: Row(
             children: [
               Image.asset(

@@ -66,6 +66,7 @@ class BuildPageState extends State<BuildPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Image.asset(
