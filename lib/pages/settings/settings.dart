@@ -179,6 +179,36 @@ class SettingsPage extends StatelessWidget {
                           ),
                         );
                         break;
+                      case 'aboutUs':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => AboutDetailScreen(
+                              title: 'About Us',
+                              content: 'G-09 is a Company of software developers base at on of the 9 hill of the Greater Kampala i.e Makerere. ',
+                            ),
+                          ),
+                        );
+                        break;
+                      case 'appVersion':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => AboutDetailScreen(
+                              title: 'App Version',
+                              content: 'Version :1.0.1',
+                            ),
+                          ),
+                        );
+                        break;
+                      case 'contactUs':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => AboutDetailScreen(
+                              title: 'Contact Us',
+                              content: 'Contact G-09 Developer through mail:g09@mac.ac.ug as well as all media platforms at G-09',
+                            ),
+                          ),
+                        );
+                        break;
                       default:
                         // Handle other options if needed
                         break;
@@ -206,7 +236,7 @@ class SettingsPage extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(
-                Ionicons.logo_twitter,
+                Ionicons.logo_xing,
                 color: iconColor,
               ),
               onPressed: () {
@@ -266,4 +296,24 @@ class SettingsOption {
     required this.helpText,
     required this.icon,
   });
+}
+
+class AboutDetailScreen extends StatelessWidget {
+  final String title;
+  final String content;
+
+  AboutDetailScreen({required this.title, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(content),
+      ),
+    );
+  }
 }

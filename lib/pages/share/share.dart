@@ -4,7 +4,9 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SharePage extends StatelessWidget {
-  const SharePage({Key? key, required String password}) : super(key: key);
+  const SharePage({Key? key, required this.password}) : super(key: key);
+
+  final String password;
 
   @override
   Widget build(BuildContext context) {
@@ -79,20 +81,27 @@ class SharePage extends StatelessWidget {
         return AlertDialog(
           content: SizedBox(
             width: 250,
-            height: 250,
+            height: 300, // Adjust height to fit all elements comfortably
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 QrImageView(
                   data: password,
                   version: QrVersions.auto,
-                  size: 200,
+                  size: 180, // QR code size
                 ),
-                SizedBox(height: 20),
+                 SizedBox(height: 10), // Space between logo and text
                 Text(
                   'Scan this QR code to get the password',
                   textAlign: TextAlign.center,
                 ),
+                SizedBox(height: 10), // Add space between QR code and logo/text
+                Image.asset(
+                  'assets/Image1.png', // Replace with your logo file path
+                  width: 55, // Logo size
+                  height: 55, // Logo size
+                ),
+               
               ],
             ),
           ),
