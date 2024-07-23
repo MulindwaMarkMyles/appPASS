@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ionicons/ionicons.dart';
 import '/pages/home/home_page.dart';
-import '/pages/menu/menu.dart';
+// import '/pages/menu/menu.dart';
 import '/pages/build/build.dart';
-import '/pages/health/health.dart';
-import '/pages/share/share.dart';
+// import '/pages/health/health.dart';
+// import '/pages/share/share.dart';
 import '/pages/settings/settings.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -23,7 +23,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _screens = [
     HomePage(),
     BuildPage(),
-    // SharePage(password: '',),
+    // SharePage(),
     // HealthPage(),
     // MenuPage(),
     SettingsPage(),
@@ -53,9 +53,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         items: <Widget>[
           Icon(Ionicons.home_outline, size: 30),
           Icon(Ionicons.build_outline, size: 30),
-          // Icon(Ionicons.share_social_outline, size: 30),
-          // Icon(Ionicons.heart_half_outline, size: 30),
-          // Icon(Ionicons.menu_outline, size: 30),
           Icon(Ionicons.settings_outline, size: 30),
         ],
         color: Color.fromRGBO(252, 231, 217, 1),
