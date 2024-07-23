@@ -1,3 +1,4 @@
+import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomUser {
@@ -37,11 +38,19 @@ class AuthService {
     return _userFromFirebaseUser(user);
   }
 
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String email,
+      String password,
+      String name,
+      String username,
+      int phoneNumber,
+      String recoveryEmail) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
+      await DatabaseService(uid: user!.uid)
+          .updateUserData(username, name, phoneNumber, recoveryEmail);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print("Failed to sign in");

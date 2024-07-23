@@ -24,13 +24,18 @@ class _SignUpPageState extends State<SignUpPage> {
   final AuthService _auth = AuthService();
   String email = "";
   String password = "";
+  String name = "";
+  String username = "";
+  String recoveryEmail = "";
+  int phoneNumber = 0;
+
   Method? brandSelected;
 
   void toogle(Method brand) async {
     setState(() => brandSelected = Method.custom);
     if (_formKey.currentState!.validate()) {
-      dynamic result =
-          await _auth.registerWithEmailAndPassword(email, password);
+      dynamic result = await _auth.registerWithEmailAndPassword(
+          email, password, name, username, phoneNumber, recoveryEmail);
       if (result != null) {
         setState(() {
           brandSelected = null;
@@ -86,36 +91,54 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  _buildTextField(_nameController, 'Name',
+                  _buildTextField(
+                    _nameController,
+                    'Name',
                     Icon(Ionicons.person_outline,
                         color: Color.fromRGBO(248, 105, 17, 1)),
                   ),
                   SizedBox(height: 8),
-                  _buildTextField(_usernameController, 'Username',
+                  _buildTextField(
+                    _usernameController,
+                    'Username',
                     Icon(Ionicons.person_circle_outline,
                         color: Color.fromRGBO(248, 105, 17, 1)),
                   ),
                   SizedBox(height: 8),
                   _buildTextField(
-                      _emailController, 'Email',  Icon(Ionicons.mail_outline,
-                          color: Color.fromRGBO(248, 105, 17, 1)), TextInputType.emailAddress),
-                  SizedBox(height: 8),
-                  _buildTextField(_passwordController, 'Password', Icon(Ionicons.lock_closed_outline,
+                      _emailController,
+                      'Email',
+                      Icon(Ionicons.mail_outline,
                           color: Color.fromRGBO(248, 105, 17, 1)),
-                      TextInputType.visiblePassword, true),
+                      TextInputType.emailAddress),
                   SizedBox(height: 8),
-                  _buildTextField(_confirmPasswordController,
-                      'Confirm Password', Icon(Ionicons.lock_closed_outline,
+                  _buildTextField(
+                      _passwordController,
+                      'Password',
+                      Icon(Ionicons.lock_closed_outline,
                           color: Color.fromRGBO(248, 105, 17, 1)),
-                      TextInputType.visiblePassword, true),
+                      TextInputType.visiblePassword,
+                      true),
                   SizedBox(height: 8),
-                  _buildTextField(_recoveryEmailController, 'Recovery Email',
+                  _buildTextField(
+                      _confirmPasswordController,
+                      'Confirm Password',
+                      Icon(Ionicons.lock_closed_outline,
+                          color: Color.fromRGBO(248, 105, 17, 1)),
+                      TextInputType.visiblePassword,
+                      true),
+                  SizedBox(height: 8),
+                  _buildTextField(
+                      _recoveryEmailController,
+                      'Recovery Email',
                       Icon(Ionicons.mail_open_outline,
                           color: Color.fromRGBO(248, 105, 17, 1)),
                       TextInputType.emailAddress),
                   SizedBox(height: 8),
                   _buildTextField(
-                      _phoneController, 'Phone Number', Icon(Ionicons.call_outline,
+                      _phoneController,
+                      'Phone Number',
+                      Icon(Ionicons.call_outline,
                           color: Color.fromRGBO(248, 105, 17, 1)),
                       TextInputType.phone),
                   SizedBox(height: 16),
@@ -165,6 +188,14 @@ class _SignUpPageState extends State<SignUpPage> {
           email = value;
         } else if (labelText == 'Password') {
           password = value;
+        } else if (labelText == 'Phone Number')
+          phoneNumber = int.parse(value);
+        else if (labelText == 'Name') {
+          name = value;
+        } else if (labelText == 'Recovery Email') {
+          recoveryEmail = value;
+        } else if (labelText == 'Username') {
+          username = value;
         }
       },
       decoration: InputDecoration(

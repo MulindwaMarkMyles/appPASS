@@ -2,13 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:app_pass/services/auth.dart';
+import 'package:app_pass/services/database.dart';
 
-class ProfileScreen extends StatelessWidget {
-  final AuthService _auth = AuthService();
-  final User? user = FirebaseAuth.instance.currentUser;
-
+class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final User? user = FirebaseAuth.instance.currentUser;
+  late DatabaseService _db;
+  DatabaseUser? dbUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
+    _setUser();
+  }
+
+  Future<void> _setUser() async {
+    DatabaseUser? fetchedUser = await _db.userFromUid();
+    setState(() {
+      dbUser = fetchedUser;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +65,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16),
-                _buildProfileInfo('Name', user?.displayName ?? 'N/A'),
+                _buildProfileInfo('Name', dbUser?.name ?? 'N/A'),
                 SizedBox(height: 8),
                 _buildProfileInfo('Email', user?.email ?? 'N/A'),
                 SizedBox(height: 8),
-                _buildProfileInfo('Username', user?.email?.split('@')[0] ?? 'N/A'), // Assuming username is part of email
+                _buildProfileInfo(
+                    'Username',
+                    user?.email?.split('@')[0] ??
+                        'N/A'), // Assuming username is part of email
               ],
             ),
           ],
@@ -60,7 +83,8 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildProfileInfo(String label, String value) {
     return ListTile(
-      leading: Icon(Ionicons.person_outline, color: Color.fromRGBO(248, 105, 17, 1)),
+      leading:
+          Icon(Ionicons.person_outline, color: Color.fromRGBO(248, 105, 17, 1)),
       title: Text(
         label,
         style: TextStyle(
