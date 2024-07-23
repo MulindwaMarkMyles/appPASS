@@ -24,25 +24,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkBiometricSupport() async {
-    // bool isSupported = await supportsBiometric();
-    // bool authenticated = false;
-    // if (isSupported) {
-    //   authenticated = await authenticate();
-    // }
+    bool authenticated = await isAuthenticated();
 
-    // if (authenticated) {
-      Timer(Duration(seconds: 3), () {
-        if (widget.page == 'login') {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => LoginOrSignup()));
-        } else {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => BottomNavBar()));
-        }
-      });
-    // } else {
-      SystemNavigator.pop();
-    // }
+    if (authenticated) {
+      _navigateToNextScreen();
+    } else {
+      _exitApp();
+    }
   }
 
   void _navigateToNextScreen() {
