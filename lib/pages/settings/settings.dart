@@ -176,7 +176,9 @@ class SettingsPage extends StatelessWidget {
                       case 'sharePassword':
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => SharePage(password: 'YourPasswordHere'), // Replace with actual password
+                            builder: (_) => SharePage(
+                                password:
+                                    'YourPasswordHere'), // Replace with actual password
                           ),
                         );
                         break;
@@ -185,7 +187,8 @@ class SettingsPage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => AboutDetailScreen(
                               title: 'About Us',
-                              content: 'G-09 is a Company of software developers base at on of the 9 hill of the Greater Kampala i.e Makerere. ',
+                              content:
+                                  'G-09 is a Company of software developers base at on of the 9 hill of the Greater Kampala i.e Makerere. ',
                             ),
                           ),
                         );
@@ -205,7 +208,8 @@ class SettingsPage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => AboutDetailScreen(
                               title: 'Contact Us',
-                              content: 'Contact G-09 Developer through mail:g09@mac.ac.ug as well as all media platforms at G-09',
+                              content:
+                                  'Contact G-09 Developer through mail:g09@mac.ac.ug as well as all media platforms at G-09',
                             ),
                           ),
                         );
@@ -260,7 +264,7 @@ class SettingsPage extends StatelessWidget {
               ),
               onPressed: () {
                 print('Logout');
-                auth.signOut();
+                _auth.signOut();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (_) => LoginOrSignup()),
                 );
