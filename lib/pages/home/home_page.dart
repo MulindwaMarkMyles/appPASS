@@ -4,7 +4,9 @@ import 'package:ionicons/ionicons.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'dart:io';
-import 'package:app_pass/actions/biometric.dart';
+import 'package:app_pass/actions/biometric_stub.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -27,20 +29,29 @@ class HomePageState extends State<HomePage> {
       // Print file details for debugging
       print("File name: ${file.name}");
       print("File size: ${file.size}");
-      print("File path: ${file.path}");
-      print("File bytes: ${file.bytes}");
 
-      if (file.path != null) {
-        File csvFile = File(file.path!);
-        String fileContent = await csvFile.readAsString();
-        List<List<dynamic>> csvTable =
-            const CsvToListConverter().convert(fileContent);
-        setState(() {
-          _passwords = csvTable;
-        });
+      if (kIsWeb) {
+        if (file.bytes != null) {
+          String fileContent = String.fromCharCodes(file.bytes!);
+          List<List<dynamic>> csvTable =
+              const CsvToListConverter().convert(fileContent);
+          setState(() {
+            _passwords = csvTable;
+          });
+        }
       } else {
-        // Handle null path case
-        _showError("Selected file is empty or couldn't be read.");
+        if (file.path != null) {
+          File csvFile = File(file.path!);
+          String fileContent = await csvFile.readAsString();
+          List<List<dynamic>> csvTable =
+              const CsvToListConverter().convert(fileContent);
+          setState(() {
+            _passwords = csvTable;
+          });
+        } else {
+          // Handle null path case
+          _showError("Selected file is empty or couldn't be read.");
+        }
       }
     } else {
       // Handle null result case
@@ -54,21 +65,22 @@ class HomePageState extends State<HomePage> {
   }
 
   void _viewPasswords() async {
-    bool isSupported = await supportsBiometric();
     bool authenticated = false;
-    if (isSupported) {
-      authenticated = await authenticate();
-    }
-  
-  if (authenticated) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => PasswordsPage(passwords: _passwords)),
-    );
+    if (kIsWeb) {
+      authenticated = true;
     } else {
-       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Authentication Failed.')));
+      authenticated = await isAuthenticated();
+    }
+
+    if (authenticated) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PasswordsPage(passwords: _passwords)),
+      );
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Authentication Failed.')));
     }
   }
 
@@ -76,6 +88,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Image.asset(
@@ -129,6 +142,7 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            SizedBox(height: 5.0),
             SizedBox(
               width: 350,
               child: ElevatedButton.icon(
@@ -155,6 +169,7 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            SizedBox(height: 5.0),
             SizedBox(
               width: 350,
               child: ElevatedButton.icon(

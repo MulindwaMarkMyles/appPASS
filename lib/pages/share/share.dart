@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SharePage extends StatelessWidget {
   const SharePage({Key? key, required this.password}) : super(key: key);
@@ -12,7 +13,27 @@ class SharePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Share Password'),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/Image1.png',
+              width: 40,
+              height: 40,
+            ),
+            SizedBox(width: 10),
+            Text(
+              'Share Password',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  color: Color.fromARGB(255, 243, 134, 84),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('passwords').snapshots(),
@@ -25,7 +46,10 @@ class SharePage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
-          final passwords = snapshot.data?.docs.map((doc) => doc['password'] as String).toList() ?? [];
+          final passwords = snapshot.data?.docs
+                  .map((doc) => doc['password'] as String)
+                  .toList() ??
+              [];
 
           return ListView.builder(
             itemCount: passwords.length,

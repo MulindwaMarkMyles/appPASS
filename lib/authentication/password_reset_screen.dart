@@ -4,6 +4,8 @@ import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/authentication/profile.dart'; // Import the profile screen
 
 class PasswordResetScreen extends StatefulWidget {
+  const PasswordResetScreen({Key? key}) : super(key: key);
+
   @override
   _PasswordResetScreenState createState() => _PasswordResetScreenState();
 }
