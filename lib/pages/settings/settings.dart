@@ -184,7 +184,7 @@ class SettingsPage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => AboutDetailScreen(
                               title: 'About Us',
-                              content: 'G-09 is a Company of software developers base at on of the 9 hill of the Greater Kampala i.e Makerere. ',
+                              content: 'Welcome to our app We are G-09, a dedicated group of Computer Science students from Makerere University. Our team is passionate about leveraging technology to create innovative solutions.As part of our journey, we have developed several impactful projects, including Shoppie, a cutting-edge e-commerce platform designed to enhance your shopping experience. Our goal is to bring you technology that simplifies and enriches your life Thank you for choosing our app. We hope you enjoy using it as much as we enjoyed creating it! ',
                             ),
                           ),
                         );
