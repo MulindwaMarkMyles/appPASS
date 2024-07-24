@@ -33,17 +33,20 @@ class HomePageState extends State<HomePage> {
         setState(() {
           _passwords = csvTable;
         });
+        // Display success message
+        _showMessage("File imported successfully.");
       } else {
         // Handle null path case
-        _showError("Selected file is empty or couldn't be read.");
+        _showMessage("Selected file is empty or couldn't be read.");
       }
     } else {
       // Handle null result case
-      _showError("No file selected.");
+      _showMessage("No file selected.");
     }
   }
 
-  void _showError(String message) {
+  void _showMessage(String message) {
+    if (!mounted) return; // Ensure the widget is still mounted
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
   }
@@ -55,7 +58,7 @@ class HomePageState extends State<HomePage> {
       authenticated = await authenticate();
     }
 
-    if (!mounted) return;
+    if (!mounted) return; // Ensure the widget is still mounted
 
     if (authenticated) {
       Navigator.push(
@@ -64,8 +67,9 @@ class HomePageState extends State<HomePage> {
             builder: (context) => PasswordsPage(passwords: _passwords)),
       );
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Authentication Failed.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Authentication Failed.')),
+      );
     }
   }
 
@@ -73,7 +77,6 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Image.asset(
@@ -127,7 +130,6 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SizedBox(height: 5.0),
             SizedBox(
               width: 350,
               child: ElevatedButton.icon(
@@ -154,7 +156,6 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SizedBox(height: 5.0),
             SizedBox(
               width: 350,
               child: ElevatedButton.icon(
@@ -213,7 +214,7 @@ class PasswordsPage extends StatelessWidget {
         itemBuilder: (context, index) {
           List<dynamic> passwordDetails = passwords[index];
           return ListTile(
-            title: Text(passwordDetails[0].toString()),
+            title: Text(passwordDetails[0]),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: passwordDetails.skip(1).map((detail) {

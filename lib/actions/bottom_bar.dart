@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ionicons/ionicons.dart';
 import '/pages/home/home_page.dart';
-import '/pages/menu/menu.dart';
 import '/pages/build/build.dart';
-import '/pages/health/health.dart';
-import '/pages/share/share.dart';
 import '/pages/settings/settings.dart';
 
 class BottomNavBar extends StatefulWidget {

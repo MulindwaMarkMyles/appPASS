@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:app_pass/pages/settings/passwords.dart'; // Import the password selection screen
 
 class EmailInputScreen extends StatefulWidget {
+  const EmailInputScreen({Key? key}) : super(key: key);
+
   @override
   _EmailInputScreenState createState() => _EmailInputScreenState();
 }

@@ -30,11 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-<<<<<<< HEAD
-  provider: ^6.1.2
-=======
->>>>>>> 8a07bf88599571f93c28bf1c0363d6212d6ee9aa
-
   provider: ^6.1.2
   qr_flutter: ^4.0.0
   cupertino_icons: ^1.0.2

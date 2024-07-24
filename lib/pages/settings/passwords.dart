@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PasswordSelectionScreen extends StatefulWidget {
   final String email;
 
-  PasswordSelectionScreen({required this.email, Key? key}) : super(key: key);
+  const PasswordSelectionScreen({required this.email, Key? key}) : super(key: key);
 
   @override
   _PasswordSelectionScreenState createState() => _PasswordSelectionScreenState();

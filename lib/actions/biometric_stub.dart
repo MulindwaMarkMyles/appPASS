@@ -1,5 +1,4 @@
 import 'package:app_pass/actions/biometric_mobile.dart';
-import 'dart:io' as io;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<bool> isAuthenticated() async {
