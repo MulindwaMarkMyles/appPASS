@@ -1,88 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:csv/csv.dart';
-import 'dart:io';
-import 'package:app_pass/actions/biometric_stub.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  HomePageState createState() => HomePageState();
-}
-
-class HomePageState extends State<HomePage> {
-  List<List<dynamic>> _passwords = [];
-
-  void _importCsv() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['csv'],
-    );
-
-    if (result != null && result.files.isNotEmpty) {
-      PlatformFile file = result.files.first;
-
-      // Print file details for debugging
-      print("File name: ${file.name}");
-      print("File size: ${file.size}");
-
-      if (kIsWeb) {
-        if (file.bytes != null) {
-          String fileContent = String.fromCharCodes(file.bytes!);
-          List<List<dynamic>> csvTable =
-              const CsvToListConverter().convert(fileContent);
-          setState(() {
-            _passwords = csvTable;
-          });
-        }
-      } else {
-        if (file.path != null) {
-          File csvFile = File(file.path!);
-          String fileContent = await csvFile.readAsString();
-          List<List<dynamic>> csvTable =
-              const CsvToListConverter().convert(fileContent);
-          setState(() {
-            _passwords = csvTable;
-          });
-        } else {
-          // Handle null path case
-          _showError("Selected file is empty or couldn't be read.");
-        }
-      }
-    } else {
-      // Handle null result case
-      _showError("No file selected.");
-    }
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  void _viewPasswords() async {
-    bool authenticated = false;
-    if (kIsWeb) {
-      authenticated = true;
-    } else {
-      authenticated = await isAuthenticated();
-    }
-
-    if (authenticated) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => PasswordsPage(passwords: _passwords)),
-      );
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Authentication Failed.')));
-    }
-  }
+// ignore: use_key_in_widget_constructors
+class HomePage extends StatelessWidget {
+  final List<Category> categories = [
+    Category('All', 100, Ionicons.key_outline),
+    Category('Passkeys', 20, Ionicons.person_outline),
+    Category('Codes', 15, Ionicons.lock_closed_outline),
+    Category('Wi-Fi', 25, Ionicons.wifi_outline),
+    Category('Security', 10, Ionicons.alert_circle_outline),
+    Category('Deleted', 5, Ionicons.trash_bin_outline),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -110,133 +39,117 @@ class HomePageState extends State<HomePage> {
         ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 20),
-            SizedBox(
-              width: 350,
-              child: ElevatedButton.icon(
-                onPressed: _importCsv,
-                icon: Icon(Ionicons.cloud_upload_outline,
-                    color: Color.fromRGBO(248, 105, 17, 1)),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(
-                        color: Color.fromRGBO(248, 105, 17, 1), width: 1),
-                  ),
-                  backgroundColor: Colors.white,
-                ),
-                label: Text(
-                  "Import",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(248, 105, 17, 1),
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (query) {
+                // Handle search logic if needed
+              },
+              decoration: InputDecoration(
+                prefixIcon: Icon(Ionicons.search_outline, color: Colors.white),
+                hintText: 'Search',
+                hintStyle: TextStyle(color: Colors.white),
+                filled: true,
+                fillColor: Colors.black54,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
                 ),
               ),
+              style: TextStyle(color: Colors.white),
             ),
-            SizedBox(height: 5.0),
-            SizedBox(
-              width: 350,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(Ionicons.add_outline,
-                    color: Color.fromRGBO(248, 105, 17, 1)),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(
-                        color: Color.fromRGBO(248, 105, 17, 1), width: 1),
-                  ),
-                  backgroundColor: Colors.white,
-                ),
-                label: Text(
-                  "Add",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(248, 105, 17, 1),
-                  ),
-                ),
+          ),
+          Expanded(
+            child: GridView.builder(
+              padding: EdgeInsets.all(8.0),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 1, // Adjust aspect ratio to fit better
               ),
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return CategoryCard(
+                  title: category.title,
+                  count: category.count,
+                  icon: category.icon,
+                );
+              },
             ),
-            SizedBox(height: 5.0),
-            SizedBox(
-              width: 350,
-              child: ElevatedButton.icon(
-                onPressed: _viewPasswords,
-                icon: Icon(Ionicons.eye_outline,
-                    color: Color.fromRGBO(248, 105, 17, 1)),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(
-                        color: Color.fromRGBO(248, 105, 17, 1), width: 1),
-                  ),
-                  backgroundColor: Colors.white,
-                ),
-                label: Text(
-                  "View Password",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(248, 105, 17, 1),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: Icon(
+              Ionicons.add_circle_outline,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+        ),
+        color: Color.fromARGB(255, 243, 220, 205),
+      ),
+      backgroundColor: Color.fromARGB(255, 243, 220, 205),
     );
   }
 }
 
-class PasswordsPage extends StatelessWidget {
-  final List<List<dynamic>> passwords;
+class Category {
+  final String title;
+  final int count;
+  final IconData icon;
 
-  const PasswordsPage({Key? key, required this.passwords}) : super(key: key);
+  Category(this.title, this.count, this.icon);
+}
+
+class CategoryCard extends StatelessWidget {
+  final String title;
+  final int count;
+  final IconData icon;
+
+  const CategoryCard({
+    Key? key,
+    required this.title,
+    required this.count,
+    required this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Passwords',
-          style: TextStyle(
-            fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
-            color: Color.fromARGB(255, 243, 134, 84),
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
+    return Card(
+      color: Color.fromARGB(255, 243, 220, 205), // Match the Scaffold background color
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Color.fromARGB(255, 252, 171, 134), width: 2),
+        borderRadius: BorderRadius.circular(10),
       ),
-      body: ListView.builder(
-        itemCount: passwords.length,
-        itemBuilder: (context, index) {
-          List<dynamic> passwordDetails = passwords[index];
-          return ListTile(
-            title: Text(passwordDetails[0]),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: passwordDetails.skip(1).map((detail) {
-                return Text(detail.toString());
-              }).toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Avoid overflow
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 30, color: Colors.orange), // Adjust icon size
+            SizedBox(height: 10),
+            Text(
+              title,
+              style: TextStyle(fontSize: 16, color: Colors.orange), // Adjust text size
+              textAlign: TextAlign.center, // Center align text
             ),
-          );
-        },
+            SizedBox(height: 5),
+            Text(
+              count.toString(),
+              style: TextStyle(fontSize: 16, color: Colors.orange), // Adjust text size
+            ),
+          ],
+        ),
       ),
     );
   }
