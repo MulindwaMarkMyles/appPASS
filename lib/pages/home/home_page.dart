@@ -4,7 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'dart:io';
-import 'package:app_pass/actions/biometric.dart';
+import 'package:app_pass/actions/biometric_stub.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -52,11 +52,7 @@ class HomePageState extends State<HomePage> {
   }
 
   void _viewPasswords() async {
-    bool isSupported = await supportsBiometric();
-    bool authenticated = false;
-    if (isSupported) {
-      authenticated = await authenticate();
-    }
+    bool authenticated = await isAuthenticated();
 
     if (!mounted) return; // Ensure the widget is still mounted
 

@@ -28,12 +28,6 @@ class SettingsPage extends StatelessWidget {
           icon: Ionicons.lock_closed_outline,
         ),
         SettingsOption(
-          key: 'language',
-          label: 'Language',
-          helpText: 'Set your preferred language',
-          icon: Ionicons.language_outline,
-        ),
-        SettingsOption(
           key: 'sharePassword',
           label: 'Share Password',
           helpText: 'Share your password via email or QR code',
@@ -69,12 +63,6 @@ class SettingsPage extends StatelessWidget {
       title: 'Privacy',
       icon: Ionicons.lock_closed_outline,
       settingsOptions: [
-        SettingsOption(
-          key: 'blockedAccounts',
-          label: 'Blocked Accounts',
-          helpText: 'Manage blocked accounts',
-          icon: Ionicons.person_remove_outline,
-        ),
         SettingsOption(
           key: 'privacyPolicy',
           label: 'Privacy Policy',
@@ -117,9 +105,14 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService auth = AuthService();
+    final AuthService _auth = AuthService();
+    final Color scaffoldBackgroundColor = Color.fromARGB(255, 243, 220, 205);
+    final Color iconColor = Color.fromARGB(255, 243, 134, 84);
+
     return Scaffold(
+      backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Image.asset(
@@ -132,7 +125,7 @@ class SettingsPage extends StatelessWidget {
               'Settings',
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
-                  color: Color.fromARGB(255, 243, 134, 84),
+                  color: iconColor,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
@@ -140,7 +133,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
+        backgroundColor: Color.fromRGBO(244, 203, 176, 1),
       ),
       body: ListView.builder(
         itemCount: settingsSections.length,
@@ -150,18 +143,18 @@ class SettingsPage extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color.fromARGB(255, 252, 171, 134),
+                  color: Color.fromRGBO(244, 203, 176, 1),
                 ),
               ),
             ),
             child: ExpansionTile(
-              collapsedIconColor: Color.fromARGB(255, 248, 81, 4),
-              iconColor: Color.fromARGB(255, 243, 134, 84),
-              leading: Icon(section.icon),
+              collapsedIconColor: iconColor,
+              iconColor: iconColor,
+              leading: Icon(section.icon, color: iconColor),
               title: Text(section.title),
               children: section.settingsOptions.map((option) {
                 return ListTile(
-                  leading: Icon(option.icon),
+                  leading: Icon(option.icon, color: iconColor),
                   title: Text(option.label),
                   subtitle: Text(option.helpText),
                   onTap: () {
@@ -187,6 +180,36 @@ class SettingsPage extends StatelessWidget {
                           ),
                         );
                         break;
+                      case 'aboutUs':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => AboutDetailScreen(
+                              title: 'About Us',
+                              content: 'G-09 is a Company of software developers base at on of the 9 hill of the Greater Kampala i.e Makerere. ',
+                            ),
+                          ),
+                        );
+                        break;
+                      case 'appVersion':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => AboutDetailScreen(
+                              title: 'App Version',
+                              content: 'Version :1.0.1',
+                            ),
+                          ),
+                        );
+                        break;
+                      case 'contactUs':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => AboutDetailScreen(
+                              title: 'Contact Us',
+                              content: 'Contact G-09 Developer through mail:g09@mac.ac.ug as well as all media platforms at G-09',
+                            ),
+                          ),
+                        );
+                        break;
                       default:
                         // Handle other options if needed
                         break;
@@ -199,13 +222,14 @@ class SettingsPage extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomAppBar(
+        color: scaffoldBackgroundColor, // Set the color here
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
               icon: Icon(
                 Ionicons.logo_facebook,
-                color: Color.fromARGB(255, 243, 134, 84),
+                color: iconColor,
               ),
               onPressed: () {
                 print('Facebook');
@@ -213,8 +237,8 @@ class SettingsPage extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(
-                Ionicons.logo_twitter,
-                color: Color.fromARGB(255, 243, 134, 84),
+                Ionicons.logo_xing,
+                color: iconColor,
               ),
               onPressed: () {
                 print('Twitter');
@@ -223,7 +247,7 @@ class SettingsPage extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Ionicons.logo_instagram,
-                color: Color.fromARGB(255, 243, 134, 84),
+                color: iconColor,
               ),
               onPressed: () {
                 print('Instagram');
@@ -232,7 +256,7 @@ class SettingsPage extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Ionicons.log_out_outline,
-                color: Color.fromARGB(255, 243, 134, 84),
+                color: iconColor,
               ),
               onPressed: () {
                 print('Logout');
@@ -273,4 +297,24 @@ class SettingsOption {
     required this.helpText,
     required this.icon,
   });
+}
+
+class AboutDetailScreen extends StatelessWidget {
+  final String title;
+  final String content;
+
+  AboutDetailScreen({required this.title, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(content),
+      ),
+    );
+  }
 }
