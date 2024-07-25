@@ -6,6 +6,8 @@ import 'package:csv/csv.dart';
 import 'dart:io';
 import 'package:app_pass/actions/biometric_stub.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:app_pass/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,6 +18,10 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   List<List<dynamic>> _passwords = [];
+  final User? user = FirebaseAuth.instance.currentUser;
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
+  bool uploaded = false;
 
   void _importCsv() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -30,11 +36,12 @@ class HomePageState extends State<HomePage> {
       print("File name: ${file.name}");
       print("File size: ${file.size}");
 
+      List<List<dynamic>> csvTable = [];
+
       if (kIsWeb) {
         if (file.bytes != null) {
           String fileContent = String.fromCharCodes(file.bytes!);
-          List<List<dynamic>> csvTable =
-              const CsvToListConverter().convert(fileContent);
+          csvTable = const CsvToListConverter().convert(fileContent);
           setState(() {
             _passwords = csvTable;
           });
@@ -43,8 +50,7 @@ class HomePageState extends State<HomePage> {
         if (file.path != null) {
           File csvFile = File(file.path!);
           String fileContent = await csvFile.readAsString();
-          List<List<dynamic>> csvTable =
-              const CsvToListConverter().convert(fileContent);
+          csvTable = const CsvToListConverter().convert(fileContent);
           setState(() {
             _passwords = csvTable;
           });
@@ -52,6 +58,16 @@ class HomePageState extends State<HomePage> {
           // Handle null path case
           _showError("Selected file is empty or couldn't be read.");
         }
+      }
+
+      uploaded = await _db.uploadToFirebase(csvTable);
+      _showError("Uploading passwords, please wait...");
+
+      if (uploaded) {
+        _showError("Passwords uploaded successfully.");
+        print("done uploading");
+      } else {
+        _showError("Failed to upload passwords.");
       }
     } else {
       // Handle null result case

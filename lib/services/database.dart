@@ -54,4 +54,28 @@ class DatabaseService {
       return null; // Or return a default user object
     }
   }
+
+  Future<bool> uploadToFirebase(List<List<dynamic>> csvTable) async {
+    if (uid != null) {
+      CollectionReference userPasswordsCollection = FirebaseFirestore.instance
+          .collection(uid);
+
+      for (List<dynamic> row in csvTable) {
+        if (row.length >= 4) {
+          // Ensure the row has at least 4 columns
+          Map<String, dynamic> data = {
+            'name': row[0],
+            'url': row[1],
+            'username': row[2],
+            'password': row[3]
+          };
+          await userPasswordsCollection.add(data);
+        }
+      }
+      return true;
+    } else {
+      print("No user is signed in.");
+      return false;
+    }
+  }
 }

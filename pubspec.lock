@@ -281,10 +281,10 @@ packages:
     dependency: transitive
     description:
       name: google_identity_services_web
-      sha256: "9482364c9f8b7bd36902572ebc3a7c2b5c8ee57a9c93e6eb5099c1a9ec5265d8"
+      sha256: e883b73ae2856ab72ef547c8b9844f174b59e449f1c05c568b54fc82df402c28
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.1+1"
+    version: "0.3.1+2"
   google_sign_in:
     dependency: "direct main"
     description:
