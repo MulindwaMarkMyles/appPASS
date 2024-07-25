@@ -48,11 +48,11 @@ class HomePage extends StatelessWidget {
                 // Handle search logic if needed
               },
               decoration: InputDecoration(
-                prefixIcon: Icon(Ionicons.search_outline, color: Colors.white),
+                prefixIcon: Icon(Ionicons.search_outline, color: Color.fromARGB(255, 243, 134, 84)),
                 hintText: 'Search',
-                hintStyle: TextStyle(color: Colors.white),
+                hintStyle: TextStyle(color: const Color.fromARGB(255, 9, 3, 3)),
                 filled: true,
-                fillColor: Colors.black54,
+                fillColor: Color.fromRGBO(246, 208, 183, 1),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
@@ -84,13 +84,14 @@ class HomePage extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
+        // ignore: sort_child_properties_last
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Align(
             alignment: Alignment.bottomRight,
             child: Icon(
               Ionicons.add_circle_outline,
-              color: Colors.white,
+              color:  Color.fromARGB(255, 243, 117, 59),
               size: 30,
             ),
           ),
@@ -127,7 +128,7 @@ class CategoryCard extends StatelessWidget {
     return Card(
       color: Color.fromARGB(255, 243, 220, 205), // Match the Scaffold background color
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Color.fromARGB(255, 252, 171, 134), width: 2),
+        side: BorderSide(color: Color.fromARGB(255, 243, 117, 59), width: 2),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -136,17 +137,17 @@ class CategoryCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min, // Avoid overflow
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 30, color: Colors.orange), // Adjust icon size
+            Icon(icon, size: 30, color: const Color.fromARGB(255, 21, 16, 8)), // Adjust icon size
             SizedBox(height: 10),
             Text(
               title,
-              style: TextStyle(fontSize: 16, color: Colors.orange), // Adjust text size
+              style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 243, 117, 59)), // Adjust text size
               textAlign: TextAlign.center, // Center align text
             ),
             SizedBox(height: 5),
             Text(
               count.toString(),
-              style: TextStyle(fontSize: 16, color: Colors.orange), // Adjust text size
+              style: TextStyle(fontSize: 16, color: const Color.fromARGB(255, 16, 13, 9)), // Adjust text size
             ),
           ],
         ),

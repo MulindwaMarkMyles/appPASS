@@ -2,157 +2,120 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 
-// ignore: use_key_in_widget_constructors
-class HomePage extends StatelessWidget {
-  final List<Category> categories = [
-    Category('All', 100, Ionicons.key_outline),
-    Category('Passkeys', 20, Ionicons.person_outline),
-    Category('Codes', 15, Ionicons.lock_closed_outline),
-    Category('Wi-Fi', 25, Ionicons.wifi_outline),
-    Category('Security', 10, Ionicons.alert_circle_outline),
-    Category('Deleted', 5, Ionicons.trash_bin_outline),
+class MenuPage extends StatelessWidget {
+  MenuPage({Key? key}) : super(key: key);
+
+  final List<DropdownMenuEntry> dropdownMenuEntries = [
+    DropdownMenuEntry(
+      label: 'All',
+      value: Icons.all_inclusive,
+    ),
+    DropdownMenuEntry(
+      label: "Social",
+      value: Ionicons.people_outline,
+    ),
+    DropdownMenuEntry(
+      label: "Finance",
+      value: Ionicons.wallet_outline,
+    ),
+    DropdownMenuEntry(
+      label: 'Shopping',
+      value: Ionicons.bag_handle_outline,
+    ),
+    DropdownMenuEntry(
+      label: "Work",
+      value: Ionicons.briefcase_outline,
+    ),
+    DropdownMenuEntry(
+      label: "Health",
+      value: Ionicons.heart_outline,
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/Image1.png',
-              width: 40,
-              height: 40,
-            ),
-            SizedBox(width: 10),
-            Text(
-              'Home',
-              style: TextStyle(
-                fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
-                color: Color.fromARGB(255, 243, 134, 84),
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: (query) {
-                // Handle search logic if needed
-              },
-              decoration: InputDecoration(
-                prefixIcon: Icon(Ionicons.search_outline, color: Colors.white),
-                hintText: 'Search',
-                hintStyle: TextStyle(color: Colors.white),
-                filled: true,
-                fillColor: Colors.black54,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(8.0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 1.5,
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                return CategoryCard(
-                  title: category.title,
-                  count: category.count,
-                  icon: category.icon,
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: Icon(
-              Ionicons.add_circle_outline,
-              color: Colors.white,
-              size: 30,
-            ),
-          ),
-        ),
-        color: Color.fromARGB(255, 243, 220, 205),
-      ),
-      backgroundColor: Color.fromARGB(255, 243, 220, 205),
-    );
-  }
-}
-
-class Category {
-  final String title;
-  final int count;
-  final IconData icon;
-
-  Category(this.title, this.count, this.icon);
-}
-
-class CategoryCard extends StatelessWidget {
-  final String title;
-  final int count;
-  final IconData icon;
-
-  const CategoryCard({
-    Key? key,
-    required this.title,
-    required this.count,
-    required this.icon,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Color.fromARGB(255, 243, 220, 205), // Match the Scaffold background color
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: Color.fromARGB(255, 252, 171, 134), width: 2),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: InkWell(
-        onTap: () {
-          // Handle category tap
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      children: [
+        AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
             children: [
-              Icon(icon, size: 40, color: Colors.white),
-              SizedBox(height: 10),
-              Text(
-                title,
-                style: TextStyle(fontSize: 20, color: Colors.white),
+              Image.asset(
+                'assets/Image1.png',
+                width: 40, // Adjust size as needed
+                height: 40, // Adjust size as needed
               ),
+              SizedBox(width: 10), // Adjust spacing between logo and title
               Text(
-                count.toString(),
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                'Categories',
+                style: TextStyle(
+                  fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
+                  color: Color.fromARGB(255, 243, 134, 84),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
+          backgroundColor: Color.fromRGBO(246, 208, 183, 1),
         ),
-      ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: dropdownMenuEntries.length,
+            itemBuilder: (context, index) {
+              final entry = dropdownMenuEntries[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(color: Color.fromARGB(255, 252, 171, 134)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        dividerColor: Colors.transparent,
+                      ),
+                      child: ExpansionTile(
+                        collapsedIconColor: Color.fromARGB(255, 248, 81, 4),
+                        iconColor: Color.fromARGB(255, 243, 134, 84),
+                        leading: Icon(entry.value),
+                        title: Text(entry.label),
+                        children: <Widget>[
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text('Option 1'),
+                                  onTap: () {
+                                    print('Option 1 of ${entry.label}');
+                                  },
+                                ),
+                                ListTile(
+                                  title: Text('Option 2'),
+                                  onTap: () {
+                                    print('Option 2 of ${entry.label}');
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
+
+
