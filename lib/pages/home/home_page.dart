@@ -18,18 +18,65 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   List<List<dynamic>> _passwords = [];
+  List<Map<dynamic, dynamic>> _Dpasswords = [];
   final User? user = FirebaseAuth.instance.currentUser;
   final DatabaseService _db =
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   bool uploaded = false;
   final List<Category> categories = [
-    Category('All', 100, Ionicons.key_outline),
-    Category('Passkeys', 20, Ionicons.person_outline),
-    Category('Codes', 15, Ionicons.lock_closed_outline),
-    Category('Wi-Fi', 25, Ionicons.wifi_outline),
-    Category('Security', 10, Ionicons.alert_circle_outline),
-    Category('Deleted', 5, Ionicons.trash_bin_outline),
+    Category('All', 0, Ionicons.key_outline),
+    Category('Passkeys', 0, Ionicons.person_outline),
+    Category('Codes', 0, Ionicons.lock_closed_outline),
+    Category('Wi-Fi', 0, Ionicons.wifi_outline),
+    Category('Security', 0, Ionicons.alert_circle_outline),
+    Category('Deleted', 0, Ionicons.trash_bin_outline),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPasswords();
+  }
+
+  Future<void> _fetchPasswords() async {
+    try {
+      print("myles mark");
+      final data = await _db.getPasswords();
+      print(data);
+      final decryptedPasswords = await _db.decryptPasswords(data);
+
+      setState(() {
+        _Dpasswords = decryptedPasswords;
+        // _updateCategoryCounts();
+      });
+    } catch (e) {
+      _showError("Failed to fetch passwords: $e");
+      print(e);
+    }
+  }
+
+  // void _updateCategoryCounts() {
+  //   final counts = <String, int>{};
+  //   for (var category in categories) {
+  //     counts[category.title] = 0;
+  //   }
+
+  //   for (var password in _passwords) {
+  //     // Assuming each password has a 'category' field
+  //     final categoryTitle = password['category'] ?? 'All';
+  //     if (counts.containsKey(categoryTitle)) {
+  //       counts[categoryTitle] = (counts[categoryTitle] ?? 0) + 1;
+  //     } else {
+  //       counts['All'] = (counts['All'] ?? 0) + 1;
+  //     }
+  //   }
+
+  //   setState(() {
+  //     for (var category in categories) {
+  //       category.count = counts[category.title] ?? 0;
+  //     }
+  //   });
+  // }
 
   void _importCsv() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -88,7 +135,7 @@ class HomePageState extends State<HomePage> {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _viewPasswords() async {
+  void _viewPasswords(Widget PasswordsPage) async {
     bool authenticated = false;
     if (kIsWeb) {
       authenticated = true;
@@ -97,11 +144,10 @@ class HomePageState extends State<HomePage> {
     }
 
     if (authenticated) {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //       builder: (context) => PasswordsPage(passwords: _passwords)),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PasswordsPage),
+      );
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Authentication Failed.')));
@@ -143,7 +189,8 @@ class HomePageState extends State<HomePage> {
                 // Handle search logic if needed
               },
               decoration: InputDecoration(
-                prefixIcon: Icon(Ionicons.search_outline, color: Color.fromARGB(255, 243, 134, 84)),
+                prefixIcon: Icon(Ionicons.search_outline,
+                    color: Color.fromARGB(255, 243, 134, 84)),
                 hintText: 'Search',
                 hintStyle: TextStyle(color: const Color.fromARGB(255, 9, 3, 3)),
                 filled: true,
@@ -178,22 +225,11 @@ class HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        // ignore: sort_child_properties_last
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: Icon(
-              Ionicons.add_circle_outline,
-              color:  Color.fromARGB(255, 243, 117, 59),
-              size: 30,
-            ),
-          ),
-        ),
-        color: Color.fromARGB(255, 243, 220, 205),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _importCsv,
+        child: Icon(Ionicons.add_circle_outline, color: Colors.white),
+        backgroundColor: Color.fromARGB(255, 243, 117, 59),
       ),
-      backgroundColor: Color.fromARGB(255, 243, 220, 205),
     );
   }
 }
@@ -221,7 +257,8 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color.fromARGB(255, 243, 220, 205), // Match the Scaffold background color
+      color: Color.fromARGB(
+          255, 243, 220, 205), // Match the Scaffold background color
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Color.fromARGB(255, 243, 117, 59), width: 2),
         borderRadius: BorderRadius.circular(10),
@@ -232,17 +269,25 @@ class CategoryCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min, // Avoid overflow
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 30, color: const Color.fromARGB(255, 21, 16, 8)), // Adjust icon size
+            Icon(icon,
+                size: 30,
+                color:
+                    const Color.fromARGB(255, 21, 16, 8)), // Adjust icon size
             SizedBox(height: 10),
             Text(
               title,
-              style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 243, 117, 59)), // Adjust text size
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 243, 117, 59)), // Adjust text size
               textAlign: TextAlign.center, // Center align text
             ),
             SizedBox(height: 5),
             Text(
               count.toString(),
-              style: TextStyle(fontSize: 16, color: const Color.fromARGB(255, 16, 13, 9)), // Adjust text size
+              style: TextStyle(
+                  fontSize: 16,
+                  color:
+                      const Color.fromARGB(255, 16, 13, 9)), // Adjust text size
             ),
           ],
         ),
