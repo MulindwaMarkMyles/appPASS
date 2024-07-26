@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-// import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:app_pass/actions/biometric_stub.dart';
 
@@ -24,7 +24,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkBiometricSupport() async {
-    bool authenticated = await isAuthenticated();
+    bool authenticated = false;
+    if (kIsWeb) {
+      authenticated = true;
+    } else {
+      authenticated = await isAuthenticated();
+    }
 
     if (authenticated) {
       _navigateToNextScreen();

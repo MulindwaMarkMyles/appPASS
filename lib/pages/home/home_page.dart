@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'dart:io';
 import 'package:app_pass/actions/biometric_stub.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,19 +26,32 @@ class HomePageState extends State<HomePage> {
     if (result != null && result.files.isNotEmpty) {
       PlatformFile file = result.files.first;
 
-      if (file.path != null) {
-        File csvFile = File(file.path!);
-        String fileContent = await csvFile.readAsString();
-        List<List<dynamic>> csvTable =
-            const CsvToListConverter().convert(fileContent);
-        setState(() {
-          _passwords = csvTable;
-        });
-        // Display success message
-        _showMessage("File imported successfully.");
+      // Print file details for debugging
+      print("File name: ${file.name}");
+      print("File size: ${file.size}");
+
+      if (kIsWeb) {
+        if (file.bytes != null) {
+          String fileContent = String.fromCharCodes(file.bytes!);
+          List<List<dynamic>> csvTable =
+              const CsvToListConverter().convert(fileContent);
+          setState(() {
+            _passwords = csvTable;
+          });
+        }
       } else {
-        // Handle null path case
-        _showMessage("Selected file is empty or couldn't be read.");
+        if (file.path != null) {
+          File csvFile = File(file.path!);
+          String fileContent = await csvFile.readAsString();
+          List<List<dynamic>> csvTable =
+              const CsvToListConverter().convert(fileContent);
+          setState(() {
+            _passwords = csvTable;
+          });
+        } else {
+          // Handle null path case
+          _showError("Selected file is empty or couldn't be read.");
+        }
       }
     } else {
       // Handle null result case
@@ -52,7 +66,12 @@ class HomePageState extends State<HomePage> {
   }
 
   void _viewPasswords() async {
-    bool authenticated = await isAuthenticated();
+    bool authenticated = false;
+    if (kIsWeb) {
+      authenticated = true;
+    } else {
+      authenticated = await isAuthenticated();
+    }
 
     if (!mounted) return; // Ensure the widget is still mounted
 
