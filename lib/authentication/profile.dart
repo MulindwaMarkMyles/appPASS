@@ -66,14 +66,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                _buildProfileInfo('Name', dbUser?.name ?? 'N/A'),
+                _buildProfileInfo('Name', dbUser?.name ?? 'N/A', Ionicons.person_circle_outline),
                 SizedBox(height: 8),
-                _buildProfileInfo('Email', user?.email ?? 'N/A'),
+                _buildProfileInfo('Username', dbUser?.username ?? 'N/A', Ionicons.person_outline), 
                 SizedBox(height: 8),
-                _buildProfileInfo(
-                    'Username',
-                    user?.email?.split('@')[0] ??
-                        'N/A'), // Assuming username is part of email
+                _buildProfileInfo('Email', user?.email ?? 'N/A', Ionicons.mail_open_outline),
+                SizedBox(height: 8),
+                _buildProfileInfo('Phone Number', dbUser?.phoneNumber.toString() ?? 'N/A', Ionicons.call_outline),
+                SizedBox(height: 8),
+                _buildProfileInfo('Recovery Email', dbUser?.recoveryEmail ?? 'N/A', Ionicons.mail_open_outline),
+                SizedBox(height: 8),
               ],
             ),
           ],
@@ -82,10 +84,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileInfo(String label, String value) {
+  Widget _buildProfileInfo(String label, String value, IconData icon) {
     return ListTile(
       leading:
-          Icon(Ionicons.person_outline, color: Color.fromRGBO(248, 105, 17, 1)),
+          Icon(icon, color: Color.fromRGBO(248, 105, 17, 1)),
       title: Text(
         label,
         style: TextStyle(
