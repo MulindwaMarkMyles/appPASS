@@ -40,14 +40,13 @@ class HomePageState extends State<HomePage> {
 
   Future<void> _fetchPasswords() async {
     try {
-      print("myles mark");
+      print("Fetching passwords...");
       final data = await _db.getPasswords();
-      print(data);
       final decryptedPasswords = await _db.decryptPasswords(data);
 
       setState(() {
         _Dpasswords = decryptedPasswords;
-        // _updateCategoryCounts();
+        _updateCategoryCounts();
       });
     } catch (e) {
       _showError("Failed to fetch passwords: $e");
@@ -55,28 +54,27 @@ class HomePageState extends State<HomePage> {
     }
   }
 
-  // void _updateCategoryCounts() {
-  //   final counts = <String, int>{};
-  //   for (var category in categories) {
-  //     counts[category.title] = 0;
-  //   }
+  void _updateCategoryCounts() {
+    final counts = <String, int>{};
+    for (var category in categories) {
+      counts[category.title] = 0;
+    }
 
-  //   for (var password in _passwords) {
-  //     // Assuming each password has a 'category' field
-  //     final categoryTitle = password['category'] ?? 'All';
-  //     if (counts.containsKey(categoryTitle)) {
-  //       counts[categoryTitle] = (counts[categoryTitle] ?? 0) + 1;
-  //     } else {
-  //       counts['All'] = (counts['All'] ?? 0) + 1;
-  //     }
-  //   }
+    for (var password in _Dpasswords) {
+      final categoryTitle = password['category'] ?? 'All';
+      if (counts.containsKey(categoryTitle)) {
+        counts[categoryTitle] = (counts[categoryTitle] ?? 0) + 1;
+      } else {
+        counts['All'] = (counts['All'] ?? 0) + 1;
+      }
+    }
 
-  //   setState(() {
-  //     for (var category in categories) {
-  //       category.count = counts[category.title] ?? 0;
-  //     }
-  //   });
-  // }
+    setState(() {
+      for (var category in categories) {
+        category.count = counts[category.title] ?? 0;
+      }
+    });
+  }
 
   void _importCsv() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -110,7 +108,6 @@ class HomePageState extends State<HomePage> {
             _passwords = csvTable;
           });
         } else {
-          // Handle null path case
           _showError("Selected file is empty or couldn't be read.");
         }
       }
@@ -120,12 +117,12 @@ class HomePageState extends State<HomePage> {
 
       if (uploaded) {
         _showError("Passwords uploaded successfully.");
+        await _fetchPasswords();
         print("done uploading");
       } else {
         _showError("Failed to upload passwords.");
       }
     } else {
-      // Handle null result case
       _showError("No file selected.");
     }
   }
@@ -236,7 +233,7 @@ class HomePageState extends State<HomePage> {
 
 class Category {
   final String title;
-  final int count;
+  int count;
   final IconData icon;
 
   Category(this.title, this.count, this.icon);

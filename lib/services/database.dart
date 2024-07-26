@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encrypt/encrypt.dart';
-import 'package:pointycastle/asymmetric/api.dart';
-import 'package:pointycastle/pointycastle.dart';
-import 'dart:io';
+import 'package:encryptor/encryptor.dart';
+import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
 
 class DatabaseUser {
   final String name;
@@ -63,13 +63,7 @@ class DatabaseService {
 
   Future<bool> uploadToFirebase(List<List<dynamic>> csvTable) async {
     try {
-      // Load RSA keys
-      final publicKey =
-          await _parsePublicKeyFromPemFile('assets/RSAKEYS/public_key.pem');
-      final privateKey =
-          await _parsePrivateKeyFromPemFile('assets/RSAKEYS/private_key.pem');
-      final encrypter =
-          Encrypter(RSA(publicKey: publicKey, privateKey: privateKey));
+      var key = 'OWfrRaS5OfRU1a0TqpVc0aL1_4gbaOSjfODJ15cGmRA=';
 
       CollectionReference userPasswordsCollection =
           users.doc(uid).collection('passwords');
@@ -77,13 +71,13 @@ class DatabaseService {
       for (List<dynamic> row in csvTable) {
         if (row.length >= 4) {
           // Encrypt the password field using RSA
-          final encryptedPassword = encrypter.encrypt(row[3].toString());
+          final encryptedPassword = Encryptor.encrypt(key, row[3].toString());
 
           Map<String, dynamic> data = {
             'name': row[0].toString(),
             'url': row[1].toString(),
             'username': row[2].toString(),
-            'password': encryptedPassword.base64,
+            'password': encryptedPassword,
           };
           await userPasswordsCollection.add(data);
         }
@@ -95,19 +89,14 @@ class DatabaseService {
     }
   }
 
-  Future<RSAPublicKey> _parsePublicKeyFromPemFile(String path) async {
-    final pemString = await File(path).readAsString();
-    return RSAKeyParser().parse(pemString) as RSAPublicKey;
-  }
-
-  Future<RSAPrivateKey> _parsePrivateKeyFromPemFile(String path) async {
-    final pemString = await File(path).readAsString();
-    return RSAKeyParser().parse(pemString) as RSAPrivateKey;
-  }
-  
   Future<List<Map<String, dynamic>>> getPasswords() async {
     try {
       final snapshot = await users.doc(uid).collection('passwords').get();
+
+      if (snapshot.docs.isEmpty) {
+        return [];
+      }
+
       return snapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
@@ -118,16 +107,11 @@ class DatabaseService {
 
   Future<List<Map<String, dynamic>>> decryptPasswords(
       List<Map<String, dynamic>> encryptedPasswords) async {
-        final publicKey =
-        await _parsePublicKeyFromPemFile('assets/RSAKEYS/public_key.pem');
-    final privateKey =
-        await _parsePrivateKeyFromPemFile('assets/RSAKEYS/private_key.pem');
-    final encrypter =
-        Encrypter(RSA(publicKey: publicKey, privateKey: privateKey));
-        
+    var key = 'OWfrRaS5OfRU1a0TqpVc0aL1_4gbaOSjfODJ15cGmRA=';
+
     return Future.wait(encryptedPasswords.map((password) async {
       final decryptedPassword =
-          encrypter.decrypt64(password['password'] as String);
+          Encryptor.decrypt(key, password['password'].toString());
       return {
         'name': password['name'],
         'url': password['url'],
