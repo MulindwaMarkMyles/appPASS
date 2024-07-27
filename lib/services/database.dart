@@ -100,6 +100,35 @@ class DatabaseService {
       return false;
     }
   }
+  Future<bool> uploadToFirebaseSingle(String username, String password, String email, String notes, String? category) async {
+    try {
+      final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
+      final b64key = Key.fromBase64(base64Encode(key.bytes));
+      final fernet = Fernet(b64key);
+      final encrypter = Encrypter(fernet);
+
+      CollectionReference userPasswordsCollection =
+          users.doc(uid).collection('passwords');
+
+
+          final encryptedPassword = encrypter.encrypt(password);
+
+          Map<String, dynamic> data = {
+            'name': username,
+            'url': "",
+            'username': username,
+            'email': email,
+            'notes': notes,
+            'category': category,
+            'password': encryptedPassword.base64,
+          };
+          await userPasswordsCollection.add(data);
+        return true;
+    } catch (e) {
+      print("Error uploading to Firebase: $e");
+      return false;
+    }
+  }
 
   Future<List<Map<String, dynamic>>> getPasswords() async {
     try {
@@ -137,5 +166,51 @@ class DatabaseService {
             'All', // Assuming each password has a category field
       };
     }));
+  }
+  
+  Future<Map<String, int>> getCategoryCounts() async {
+    try {
+      final snapshot = await users.doc(uid).collection('passwords').get();
+      final counts = <String, int>{};
+
+      for (var doc in snapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        final category = data['category'] ?? 'All';
+        if (counts.containsKey(category)) {
+          counts[category] = counts[category]! + 1;
+        } else {
+          counts[category] = 1;
+        }
+      }
+
+      // Ensure all expected categories are present with at least a count of 0
+      const categories = [
+        'All',
+        'Passkeys',
+        'Codes',
+        'Wi-Fi',
+        'Security',
+        'deleted'
+      ];
+      for (var category in categories) {
+        if (!counts.containsKey(category)) {
+          counts[category] = 0;
+        }
+      }
+
+      return counts;
+    } catch (e) {
+      print("Error fetching category counts: $e");
+      return {};
+    }
+  }
+  Future<void> movePasswordToDeleted(String passwordId) async {
+    try {
+      await users.doc(uid).collection('passwords')
+          .doc(passwordId)
+          .update({'category': 'deleted'});
+    } catch (e) {
+      print('Error moving password to deleted: $e');
+    }
   }
 }

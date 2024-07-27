@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'PasswordDetailsPage.dart';
+import 'package:app_pass/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<List<Map<String, dynamic>>> _fetchPasswords(String category) async {
   try {
@@ -22,17 +24,6 @@ Future<List<Map<String, dynamic>>> _fetchPasswords(String category) async {
   }
 }
 
-Future<void> _movePasswordToDeleted(String passwordId) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection('passwords')
-        .doc(passwordId)
-        .update({'category': 'deleted'});
-  } catch (e) {
-    print('Error moving password to deleted: $e');
-  }
-}
-
 
 class Codes extends StatefulWidget {
   @override
@@ -41,6 +32,8 @@ class Codes extends StatefulWidget {
 
 class CodesState extends State<Codes> {
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
 
   @override
   void initState() {
@@ -129,7 +122,7 @@ class CodesState extends State<Codes> {
                         );
                         if (shouldDelete ?? false) {
                           // Move the password to the deleted category
-                          await _movePasswordToDeleted(passwordId);
+                          await _db.movePasswordToDeleted(passwordId);
                           // Refresh the list
                           _refreshPasswords();
                         }

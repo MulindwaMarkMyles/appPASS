@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'PasswordDetailsPage.dart';
+import 'package:app_pass/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<List<Map<String, dynamic>>> _fetchPasswords(String category) async {
   try {
@@ -22,17 +24,6 @@ Future<List<Map<String, dynamic>>> _fetchPasswords(String category) async {
   }
 }
 
-Future<void> _movePasswordToDeleted(String passwordId) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection('passwords')
-        .doc(passwordId)
-        .update({'category': 'deleted'});
-  } catch (e) {
-    print('Error moving password to deleted: $e');
-  }
-}
-
 class All extends StatefulWidget {
   @override
   _AllState createState() => _AllState();
@@ -40,6 +31,9 @@ class All extends StatefulWidget {
 
 class _AllState extends State<All> {
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
+  bool uploaded = false;
 
   @override
   void initState() {
@@ -98,8 +92,10 @@ class _AllState extends State<All> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => PasswordDetailsPage(
-                              passwordData: password, // This should be a map containing the password details
-                              passwordId: passwordId, // This should be the document ID of the password
+                              passwordData:
+                                  password, // This should be a map containing the password details
+                              passwordId:
+                                  passwordId, // This should be the document ID of the password
                             ),
                           ),
                         );
@@ -114,14 +110,17 @@ class _AllState extends State<All> {
                           builder: (context) {
                             return AlertDialog(
                               title: Text('Delete Password'),
-                              content: Text('Are you sure you want to delete this password?'),
+                              content: Text(
+                                  'Are you sure you want to delete this password?'),
                               actions: [
                                 TextButton(
-                                  onPressed: () => Navigator.of(context).pop(false),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false),
                                   child: Text('Cancel'),
                                 ),
                                 TextButton(
-                                  onPressed: () => Navigator.of(context).pop(true),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
                                   child: Text('Delete'),
                                 ),
                               ],
@@ -130,7 +129,7 @@ class _AllState extends State<All> {
                         );
                         if (shouldDelete ?? false) {
                           // Move the password to the deleted category
-                          await _movePasswordToDeleted(passwordId);
+                          await _db.movePasswordToDeleted(passwordId);
                           // Refresh the list
                           _refreshPasswords();
                         }

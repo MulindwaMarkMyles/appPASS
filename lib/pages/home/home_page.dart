@@ -8,14 +8,11 @@ import 'codes.dart';
 import 'Wifi.dart';
 import 'security.dart';
 import 'deleted.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -28,6 +25,12 @@ class _HomePageState extends State<HomePage> {
   final DatabaseService _db =
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   bool uploaded = false;
+  int _allCount = 0;
+  int _passKeyCount = 0;
+  int _codesCount = 0;
+  int _wifiCount = 0;
+  int _securityCount = 0;
+  int _deletedCount = 0;
   final List<Category> categories = [
     Category('All', 0, Ionicons.key_outline, All()),
     Category('Passkeys', 0, Ionicons.person_outline, PasskeysPage()),
@@ -37,6 +40,37 @@ class _HomePageState extends State<HomePage> {
     Category('Deleted', 0, Ionicons.trash_bin_outline, Deleted()),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _initializeCategoryCounts();
+  }
+
+  Future<void> _initializeCategoryCounts() async {
+    // Fetch category counts from Firestore and update the state
+    try {
+      // Assuming you have a function in DatabaseService to get counts
+      Map<String, int> counts = await _db.getCategoryCounts();
+      setState(() {
+        _allCount = counts['All'] ?? 0;
+        _passKeyCount = counts['Passkeys'] ?? 0;
+        _codesCount = counts['Codes'] ?? 0;
+        _wifiCount = counts['Wi-Fi'] ?? 0;
+        _securityCount = counts['Security'] ?? 0;
+        _deletedCount = counts['deleted'] ?? 0;
+
+        categories[0].count = _allCount;
+        categories[1].count = _passKeyCount;
+        categories[2].count = _codesCount;
+        categories[3].count = _wifiCount;
+        categories[4].count = _securityCount;
+        categories[5].count = _deletedCount;
+      });
+    } catch (e) {
+      _showMessage("Failed to load category counts: $e");
+    }
+  }
+
   Future<void> _importPasswords(BuildContext context) async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -45,9 +79,6 @@ class _HomePageState extends State<HomePage> {
 
     if (result != null && result.files.isNotEmpty) {
       PlatformFile file = result.files.first;
-      print("File name: ${file.name}");
-      print("File size: ${file.size}");
-
       List<List<dynamic>> csvTable = [];
 
       if (kIsWeb) {
@@ -55,7 +86,7 @@ class _HomePageState extends State<HomePage> {
           String fileContent = String.fromCharCodes(file.bytes!);
           csvTable = const CsvToListConverter().convert(fileContent);
         } else {
-          _showError("Selected file is empty or couldn't be read.");
+          _showMessage("Selected file is empty or couldn't be read.");
         }
       } else {
         if (file.path != null) {
@@ -63,25 +94,25 @@ class _HomePageState extends State<HomePage> {
           String fileContent = await csvFile.readAsString();
           csvTable = const CsvToListConverter().convert(fileContent);
         } else {
-          _showError("Selected file is empty or couldn't be read.");
+          _showMessage("Selected file is empty or couldn't be read.");
         }
       }
 
       uploaded = await _db.uploadToFirebase(csvTable);
-      _showError("Uploading passwords, please wait...");
+      _showMessage("Uploading passwords, please wait...");
 
       if (uploaded) {
-        _showError("Passwords uploaded successfully.");
-        print("done uploading");
+        _showMessage("Passwords uploaded successfully.");
+        _initializeCategoryCounts(); // Refresh counts after uploading
       } else {
-        _showError("Failed to upload passwords.");
+        _showMessage("Failed to upload passwords.");
       }
     } else {
-      _showError("No file selected.");
+      _showMessage("No file selected.");
     }
   }
 
-  void _showError(String message) {
+  void _showMessage(String message) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
   }
@@ -103,8 +134,7 @@ class _HomePageState extends State<HomePage> {
                 title: Text('Import Passwords'),
                 onTap: () {
                   Navigator.pop(context);
-                  _importPasswords(
-                      context); // Call the import function directly
+                  _importPasswords(context);
                 },
               ),
               ListTile(
@@ -212,10 +242,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class Category {
-  final String title;
-  final int count;
-  final IconData icon;
-  final Widget page;
+  String title;
+  int count;
+  IconData icon;
+  Widget page;
 
   Category(this.title, this.count, this.icon, this.page);
 }
@@ -286,6 +316,8 @@ class AddPasswordPage extends StatefulWidget {
 }
 
 class AddPasswordPageState extends State<AddPasswordPage> {
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   final _formKey = GlobalKey<FormState>();
   String? _selectedCategory;
   final _usernameController = TextEditingController();
@@ -312,29 +344,14 @@ class AddPasswordPageState extends State<AddPasswordPage> {
 
       try {
         if (category != null) {
-          final passwordData = {
-            'username': username,
-            'password': password,
-            'email': email,
-            'notes': notes,
-            'category': category,
-          };
+          bool uploaded = await _db.uploadToFirebaseSingle(
+              username, password, email, notes, category);
 
-          // Save the password to Firestore
-          await FirebaseFirestore.instance
-              .collection('passwords')
-              .add(passwordData);
-
-          // Update the password count for the selected category
-          final categoryDocRef =
-              FirebaseFirestore.instance.collection('categories').doc(category);
-          final categoryDoc = await categoryDocRef.get();
-          final currentCount = categoryDoc.data()?['count'] ?? 0;
-          await categoryDocRef.update({'count': currentCount + 1});
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Password saved successfully!')),
-          );
+          if (uploaded) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Password saved successfully!')),
+            );
+          }
           Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
