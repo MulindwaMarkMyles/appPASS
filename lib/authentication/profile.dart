@@ -5,7 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/services/database.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
