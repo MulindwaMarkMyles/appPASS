@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
@@ -10,8 +12,16 @@ import 'deleted.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final List<Category> categories = [
     Category('All', 0, Ionicons.key_outline, All()),
     Category('Passkeys', 0, Ionicons.person_outline, PasskeysPage()),
@@ -21,56 +31,52 @@ class HomePage extends StatelessWidget {
     Category('Deleted', 0, Ionicons.trash_bin_outline, Deleted()),
   ];
 
-  HomePage({Key? key}) : super(key: key);
-
   Future<void> _importPasswords(BuildContext context) async {
+    bool uploaded = false;
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['csv'],
     );
 
     if (result != null && result.files.isNotEmpty) {
-      final file = result.files.single;
-      final csvContent = String.fromCharCodes(file.bytes!);
+      PlatformFile file = result.files.first;
+      print("File name: ${file.name}");
+      print("File size: ${file.size}");
 
-      try {
-        List<List<dynamic>> rows =
-            const CsvToListConverter().convert(csvContent);
+      List<List<dynamic>> csvTable = [];
 
-        for (var row in rows) {
-          if (row.length >= 5) {
-            final username = row[0].toString();
-            final password = row[1].toString();
-            final email = row[2].toString();
-            final website = row[3].toString();
-            final notes = row[4].toString();
-
-            final passwordData = {
-              'username': username,
-              'password': password,
-              'email': email,
-              'website': website,
-              'notes': notes,
-              'category': 'All',
-            };
-
-            await FirebaseFirestore.instance
-                .collection('passwords')
-                .add(passwordData);
-          }
+      if (kIsWeb) {
+        if (file.bytes != null) {
+          String fileContent = String.fromCharCodes(file.bytes!);
+          csvTable = const CsvToListConverter().convert(fileContent);
         }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Passwords imported successfully!')),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Failed to import passwords. Please try again.')),
-        );
-        print('Error importing passwords: $e');
+      } else {
+        if (file.path != null) {
+          File csvFile = File(file.path!);
+          String fileContent = await csvFile.readAsString();
+          csvTable = const CsvToListConverter().convert(fileContent);
+        } else {
+          _showError("Selected file is empty or couldn't be read.");
+        }
       }
+
+      uploaded = await _db.uploadToFirebase(csvTable);
+      _showError("Uploading passwords, please wait...");
+
+      if (uploaded) {
+        _showError("Passwords uploaded successfully.");
+        print("done uploading");
+      } else {
+        _showError("Failed to upload passwords.");
+      }
+    } else {
+      _showError("No file selected.");
     }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _showPopupMenu(BuildContext context) {
