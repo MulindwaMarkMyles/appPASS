@@ -85,7 +85,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                obscureText: false,
                 validator: (value) => value?.isEmpty ?? true ? 'Please enter a password' : null,
               ),
               TextFormField(

@@ -8,7 +8,8 @@ import 'Wifi.dart';
 import 'security.dart';
 import 'deleted.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'ImportPasswordsPage.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:csv/csv.dart';
 
 class HomePage extends StatelessWidget {
   final List<Category> categories = [
@@ -16,11 +17,57 @@ class HomePage extends StatelessWidget {
     Category('Passkeys', 0, Ionicons.person_outline, PasskeysPage()),
     Category('Codes', 0, Ionicons.lock_closed_outline, Codes()),
     Category('Wi-Fi', 0, Ionicons.wifi_outline, Wifi()),
-    Category('Security', 0, Ionicons.alert_circle_outline,Security()),
+    Category('Security', 0, Ionicons.alert_circle_outline, Security()),
     Category('Deleted', 0, Ionicons.trash_bin_outline, Deleted()),
   ];
 
   HomePage({Key? key}) : super(key: key);
+
+  Future<void> _importPasswords(BuildContext context) async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv'],
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      final file = result.files.single;
+      final csvContent = String.fromCharCodes(file.bytes!);
+
+      try {
+        List<List<dynamic>> rows = const CsvToListConverter().convert(csvContent);
+
+        for (var row in rows) {
+          if (row.length >= 5) {
+            final username = row[0].toString();
+            final password = row[1].toString();
+            final email = row[2].toString();
+            final website = row[3].toString();
+            final notes = row[4].toString();
+
+            final passwordData = {
+              'username': username,
+              'password': password,
+              'email': email,
+              'website': website,
+              'notes': notes,
+              'category': 'All',
+            };
+
+            await FirebaseFirestore.instance.collection('passwords').add(passwordData);
+          }
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Passwords imported successfully!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to import passwords. Please try again.')),
+        );
+        print('Error importing passwords: $e');
+      }
+    }
+  }
 
   void _showPopupMenu(BuildContext context) {
     showModalBottomSheet(
@@ -39,11 +86,7 @@ class HomePage extends StatelessWidget {
                 title: Text('Import Passwords'),
                 onTap: () {
                   Navigator.pop(context);
-                  // Implement your import passwords logic here
-                  Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ImportPasswordsPage()),
-                  );
+                  _importPasswords(context); // Call the import function directly
                 },
               ),
               ListTile(
@@ -65,7 +108,6 @@ class HomePage extends StatelessWidget {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -230,83 +272,67 @@ class AddPasswordPageState extends State<AddPasswordPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
-  final _websiteController = TextEditingController();
   final _notesController = TextEditingController();
-   @override
+
+  @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
     _emailController.dispose();
-    _websiteController.dispose();
     _notesController.dispose();
     super.dispose();
   }
 
   Future<void> _savePassword() async {
-  if (_formKey.currentState?.validate() ?? false) {
-    final username = _usernameController.text;
-    final password = _passwordController.text;
-    final email = _emailController.text;
-    final website = _websiteController.text;
-    final notes = _notesController.text;
-    final category = _selectedCategory;
+    if (_formKey.currentState?.validate() ?? false) {
+      final username = _usernameController.text;
+      final password = _passwordController.text;
+      final email = _emailController.text;
+      final notes = _notesController.text;
+      final category = _selectedCategory;
 
-    try {
-      if (category != null) {
-        final passwordData = {
-          'username': username,
-          'password': password,
-          'email': email,
-          'website': website,
-          'notes': notes,
-          'category': category,
-        };
+      try {
+        if (category != null) {
+          final passwordData = {
+            'username': username,
+            'password': password,
+            'email': email,
+            'notes': notes,
+            'category': category,
+          };
 
-        // Save the password to Firestore
-        await FirebaseFirestore.instance.collection('passwords').add(passwordData);
+          // Save the password to Firestore
+          await FirebaseFirestore.instance.collection('passwords').add(passwordData);
 
-        // Update the password count for the selected category
-        final categoryDocRef = FirebaseFirestore.instance.collection('categories').doc(category);
-        final categoryDoc = await categoryDocRef.get();
-        final currentCount = categoryDoc.exists ? (categoryDoc.data()?['count'] ?? 0) : 0;
-        await categoryDocRef.set({'count': currentCount + 1}, SetOptions(merge: true));
+          // Update the password count for the selected category
+          final categoryDocRef = FirebaseFirestore.instance.collection('categories').doc(category);
+          final categoryDoc = await categoryDocRef.get();
+          final currentCount = categoryDoc.data()?['count'] ?? 0;
+          await categoryDocRef.update({'count': currentCount + 1});
 
-        // Check if the widget is still mounted before showing the SnackBar
-        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Password saved successfully!')),
           );
-        }
-
-        // Navigate back to the previous screen
-        if (mounted) {
           Navigator.pop(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Please select a category.')),
+          );
         }
-      }
-    } catch (e) {
-      // Check if the widget is still mounted before showing the SnackBar
-      if (mounted) {
+      } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to save password. Please try again.')),
         );
+        print('Error saving password: $e');
       }
-      print('Error saving password: $e');
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Add Password',
-          style: GoogleFonts.poppins(
-            color: Color.fromARGB(255, 243, 134, 84),
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        title: Text('Add Password'),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: Padding(
@@ -314,71 +340,53 @@ class AddPasswordPageState extends State<AddPasswordPage> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
                 controller: _usernameController,
                 decoration: InputDecoration(labelText: 'Username'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a username';
-                  }
-                  return null;
-                },
+                validator: (value) => value!.isEmpty ? 'Please enter a username' : null,
               ),
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(labelText: 'Password'),
+                validator: (value) => value!.isEmpty ? 'Please enter a password' : null,
                 obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  return null;
-                },
               ),
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              TextFormField(
-                controller: _websiteController,
-                decoration: InputDecoration(labelText: 'Website'),
-                keyboardType: TextInputType.url,
+                validator: (value) => value!.isEmpty ? 'Please enter an email' : null,
               ),
               TextFormField(
                 controller: _notesController,
                 decoration: InputDecoration(labelText: 'Notes'),
               ),
+              SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
                 decoration: InputDecoration(labelText: 'Category'),
-                items: widget.categories
-                    .map((category) => DropdownMenuItem<String>(
-                          value: category.title,
-                          child: Text(category.title),
-                        ))
-                    .toList(),
+                items: widget.categories.map((category) {
+                  return DropdownMenuItem<String>(
+                    value: category.title,
+                    child: Text(category.title),
+                  );
+                }).toList(),
                 onChanged: (value) {
                   setState(() {
                     _selectedCategory = value;
                   });
                 },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a category';
-                  }
-                  return null;
-                },
+                validator: (value) => value == null ? 'Please select a category' : null,
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _savePassword,
+                child: Text('Save Password'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 243, 134, 84),
-                  ),
-                  child: Text('Save Password'),
-                  ),
+                  backgroundColor: Color.fromARGB(255, 243, 117, 59),
+                ),
+              ),
             ],
           ),
         ),
