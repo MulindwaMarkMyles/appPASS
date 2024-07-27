@@ -49,7 +49,7 @@ dependencies:
   http: ^1.2.2
   url_launcher: ^6.0.9
   google_sign_in: ^6.2.1
-  encryptor: ^0.0.1
+  encrypt: any
   
   
 dev_dependencies:

@@ -1,8 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encryptor/encryptor.dart';
 import 'dart:convert';
-import 'dart:math';
-import 'dart:typed_data';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:encrypt/encrypt.dart';
+// import 'dart:convert';
+// import 'dart:math';
+// import 'dart:typed_data';
 
 class DatabaseUser {
   final String name;
@@ -63,28 +65,38 @@ class DatabaseService {
 
   Future<bool> uploadToFirebase(List<List<dynamic>> csvTable) async {
     try {
-      var key = 'OWfrRaS5OfRU1a0TqpVc0aL1_4gbaOSjfODJ15cGmRA=';
+      final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
+      final b64key = Key.fromBase64(base64Encode(key.bytes));
+      final fernet = Fernet(b64key);
+      final encrypter = Encrypter(fernet);
+      String password;
 
       CollectionReference userPasswordsCollection =
           users.doc(uid).collection('passwords');
 
       for (List<dynamic> row in csvTable) {
         if (row.length >= 4) {
-          // Encrypt the password field using RSA
-          final encryptedPassword = Encryptor.encrypt(key, row[3].toString());
+          password = row[3].toString();
+          if (password.isEmpty) {
+            print('Password is empty, defaulting to one.');
+            password = "default-password-apppass";
+          }
+
+          final encryptedPassword = encrypter.encrypt(password);
 
           Map<String, dynamic> data = {
             'name': row[0].toString(),
             'url': row[1].toString(),
             'username': row[2].toString(),
-            'password': encryptedPassword,
+            'password': encryptedPassword.base64,
           };
           await userPasswordsCollection.add(data);
         }
       }
       return true;
-    } catch (e) {
+    } catch (e, stacktrace) {
       print("Error uploading to Firebase: $e");
+      print("Stack trace: $stacktrace");
       return false;
     }
   }
@@ -106,12 +118,16 @@ class DatabaseService {
   }
 
   Future<List<Map<String, dynamic>>> decryptPasswords(
-      List<Map<String, dynamic>> encryptedPasswords) async {
-    var key = 'OWfrRaS5OfRU1a0TqpVc0aL1_4gbaOSjfODJ15cGmRA=';
+    List<Map<String, dynamic>> encryptedPasswords) async {
+    final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
+      final b64key = Key.fromBase64(base64Encode(key.bytes));
+      final fernet = Fernet(b64key);
+      final encrypter = Encrypter(fernet);
+
 
     return Future.wait(encryptedPasswords.map((password) async {
       final decryptedPassword =
-          Encryptor.decrypt(key, password['password'].toString());
+      encrypter.decrypt64(password['password'].toString());
       return {
         'name': password['name'],
         'url': password['url'],

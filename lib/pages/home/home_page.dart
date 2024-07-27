@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
@@ -13,6 +12,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:app_pass/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -22,6 +25,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
+  bool uploaded = false;
   final List<Category> categories = [
     Category('All', 0, Ionicons.key_outline, All()),
     Category('Passkeys', 0, Ionicons.person_outline, PasskeysPage()),
@@ -32,7 +38,6 @@ class _HomePageState extends State<HomePage> {
   ];
 
   Future<void> _importPasswords(BuildContext context) async {
-    bool uploaded = false;
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['csv'],
@@ -49,6 +54,8 @@ class _HomePageState extends State<HomePage> {
         if (file.bytes != null) {
           String fileContent = String.fromCharCodes(file.bytes!);
           csvTable = const CsvToListConverter().convert(fileContent);
+        } else {
+          _showError("Selected file is empty or couldn't be read.");
         }
       } else {
         if (file.path != null) {
