@@ -2,29 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'PasswordDetailsPage.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-Future<List<Map<String, dynamic>>> _fetchPasswords(String category) async {
-  try {
-    final querySnapshot = await FirebaseFirestore.instance
-        .collection('passwords')
-        .where('category', isEqualTo: category)
-        .get();
-
-    return querySnapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      final id = doc.id;
-      return {'id': id, ...data}; // Include the document ID with the data
-    }).toList();
-  } catch (e) {
-    print('Error fetching passwords: $e');
-    return [];
-  }
-}
-
 
 class Security extends StatefulWidget {
   @override
@@ -39,12 +19,12 @@ class SecurityState extends State<Security> {
   @override
   void initState() {
     super.initState();
-    _passwordsFuture = _fetchPasswords('Security');
+    _passwordsFuture = _db.fetchPasswords('Security');
   }
 
   void _refreshPasswords() {
     setState(() {
-      _passwordsFuture = _fetchPasswords('Security');
+      _passwordsFuture = _db.fetchPasswords('Security');
     });
   }
 

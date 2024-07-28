@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PasswordDetailsPage extends StatefulWidget {
   final Map<String, dynamic> passwordData;
@@ -16,7 +17,9 @@ class PasswordDetailsPage extends StatefulWidget {
 }
 
 class PasswordDetailsPageState extends State<PasswordDetailsPage> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController _nameController;
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   late TextEditingController _emailController;
@@ -26,16 +29,18 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   @override
   void initState() {
     super.initState();
+    _nameController = TextEditingController(text: widget.passwordData['name']);
     _usernameController = TextEditingController(text: widget.passwordData['username']);
     _passwordController = TextEditingController(text: widget.passwordData['password']);
     _emailController = TextEditingController(text: widget.passwordData['email']);
-    _websiteController = TextEditingController(text: widget.passwordData['website']);
+    _websiteController = TextEditingController(text: widget.passwordData['url']);
     _notesController = TextEditingController(text: widget.passwordData['notes']);
   }
 
   Future<void> _updatePassword() async {
     if (_formKey.currentState?.validate() ?? false) {
       final updatedData = {
+        'name': _nameController.text,
         'username': _usernameController.text,
         'password': _passwordController.text,
         'email': _emailController.text,
@@ -45,7 +50,13 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
       };
 
       try {
-        await FirebaseFirestore.instance.collection('passwords').doc(widget.passwordId).update(updatedData);
+        final CollectionReference users =
+            FirebaseFirestore.instance.collection('users');
+        await users
+            .doc(uid)
+            .collection('passwords')
+            .doc(widget.passwordId)
+            .update(updatedData);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Password updated successfully!')),
         );
@@ -81,6 +92,11 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
                 controller: _usernameController,
                 decoration: InputDecoration(labelText: 'Username'),
                 validator: (value) => value?.isEmpty ?? true ? 'Please enter a username' : null,
+              ),
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Name'),
+                validator: (value) => value?.isEmpty ?? true ? 'Please enter a name for the password' : null,
               ),
               TextFormField(
                 controller: _passwordController,

@@ -2,35 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app_pass/services/database.dart';
 
-// Function to fetch passwords in the "deleted" category
-Future<List<Map<String, dynamic>>> _fetchDeletedPasswords() async {
-  try {
-    final querySnapshot = await FirebaseFirestore.instance
-        .collection('passwords')
-        .where('category', isEqualTo: 'deleted')
-        .get();
-
-    return querySnapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      final id = doc.id;
-      return {'id': id, ...data}; // Include the document ID with the data
-    }).toList();
-  } catch (e) {
-    print('Error fetching deleted passwords: $e');
-    return [];
-  }
-}
 
 // Function to undo the deletion of a password
-Future<void> _undoDeletePassword(String passwordId, String originalCategory) async {
+Future<void> _undoDeletePassword(
+    String passwordId, String originalCategory) async {
   try {
     await FirebaseFirestore.instance
         .collection('passwords')
         .doc(passwordId)
         .update({
       'category': originalCategory,
-      'originalCategory': FieldValue.delete(), // Remove the original category field
+      'originalCategory':
+          FieldValue.delete(), // Remove the original category field
     });
   } catch (e) {
     print('Error undoing delete: $e');
@@ -55,17 +41,19 @@ class Deleted extends StatefulWidget {
 }
 
 class DeletedState extends State<Deleted> {
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
 
   @override
   void initState() {
     super.initState();
-    _passwordsFuture = _fetchDeletedPasswords();
+    _passwordsFuture = _db.fetchPasswords("deleted");
   }
 
   void _refreshPasswords() {
     setState(() {
-      _passwordsFuture = _fetchDeletedPasswords();
+      _passwordsFuture = _db.fetchPasswords("deleted");
     });
   }
 
@@ -75,7 +63,8 @@ class DeletedState extends State<Deleted> {
       builder: (context) {
         return AlertDialog(
           title: Text('Permanently Delete Password'),
-          content: Text('Are you sure you want to permanently delete this password? This action cannot be undone.'),
+          content: Text(
+              'Are you sure you want to permanently delete this password? This action cannot be undone.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
@@ -127,7 +116,8 @@ class DeletedState extends State<Deleted> {
             itemBuilder: (context, index) {
               final password = passwords[index];
               final passwordId = password['id'];
-              final originalCategory = password['originalCategory'] ?? 'unknown';
+              final originalCategory =
+                  password['originalCategory'] ?? 'unknown';
 
               return ListTile(
                 title: Text(password['website'] ?? 'No website'),

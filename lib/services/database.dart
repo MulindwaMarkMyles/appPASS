@@ -89,6 +89,9 @@ class DatabaseService {
             'url': row[1].toString(),
             'username': row[2].toString(),
             'password': encryptedPassword.base64,
+            'notes': '',
+            'email': '',
+            'category': 'All',
           };
           await userPasswordsCollection.add(data);
         }
@@ -100,7 +103,15 @@ class DatabaseService {
       return false;
     }
   }
-  Future<bool> uploadToFirebaseSingle(String username, String password, String email, String notes, String? category) async {
+
+  Future<bool> uploadToFirebaseSingle(
+      String name,
+      String username,
+      String password,
+      String email,
+      String notes,
+      String? category,
+      String website) async {
     try {
       final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
       final b64key = Key.fromBase64(base64Encode(key.bytes));
@@ -110,20 +121,19 @@ class DatabaseService {
       CollectionReference userPasswordsCollection =
           users.doc(uid).collection('passwords');
 
+      final encryptedPassword = encrypter.encrypt(password);
 
-          final encryptedPassword = encrypter.encrypt(password);
-
-          Map<String, dynamic> data = {
-            'name': username,
-            'url': "",
-            'username': username,
-            'email': email,
-            'notes': notes,
-            'category': category,
-            'password': encryptedPassword.base64,
-          };
-          await userPasswordsCollection.add(data);
-        return true;
+      Map<String, dynamic> data = {
+        'name': name,
+        'url': website,
+        'username': username,
+        'email': email,
+        'notes': notes,
+        'category': category,
+        'password': encryptedPassword.base64,
+      };
+      await userPasswordsCollection.add(data);
+      return true;
     } catch (e) {
       print("Error uploading to Firebase: $e");
       return false;
@@ -147,27 +157,28 @@ class DatabaseService {
   }
 
   Future<List<Map<String, dynamic>>> decryptPasswords(
-    List<Map<String, dynamic>> encryptedPasswords) async {
+      List<Map<String, dynamic>> encryptedPasswords) async {
     final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
-      final b64key = Key.fromBase64(base64Encode(key.bytes));
-      final fernet = Fernet(b64key);
-      final encrypter = Encrypter(fernet);
-
+    final b64key = Key.fromBase64(base64Encode(key.bytes));
+    final fernet = Fernet(b64key);
+    final encrypter = Encrypter(fernet);
 
     return Future.wait(encryptedPasswords.map((password) async {
       final decryptedPassword =
-      encrypter.decrypt64(password['password'].toString());
+          encrypter.decrypt64(password['password'].toString());
       return {
         'name': password['name'],
         'url': password['url'],
         'username': password['username'],
         'password': decryptedPassword,
+        'email': password['email'],
+        'notes': password['notes'],
         'category': password['category'] ??
             'All', // Assuming each password has a category field
       };
     }));
   }
-  
+
   Future<Map<String, int>> getCategoryCounts() async {
     try {
       final snapshot = await users.doc(uid).collection('passwords').get();
@@ -176,6 +187,7 @@ class DatabaseService {
       for (var doc in snapshot.docs) {
         final data = doc.data() as Map<String, dynamic>;
         final category = data['category'] ?? 'All';
+        print(category);
         if (counts.containsKey(category)) {
           counts[category] = counts[category]! + 1;
         } else {
@@ -204,13 +216,35 @@ class DatabaseService {
       return {};
     }
   }
+
   Future<void> movePasswordToDeleted(String passwordId) async {
     try {
-      await users.doc(uid).collection('passwords')
+      await users
+          .doc(uid)
+          .collection('passwords')
           .doc(passwordId)
           .update({'category': 'deleted'});
     } catch (e) {
       print('Error moving password to deleted: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchPasswords(String category) async {
+    try {
+      final querySnapshot = await users
+          .doc(uid)
+          .collection('passwords')
+          .where('category', isEqualTo: category)
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        final id = doc.id;
+        return {'id': id, ...data}; // Include the document ID with the data
+      }).toList();
+    } catch (e) {
+      print('Error fetching passwords: $e');
+      return [];
     }
   }
 }

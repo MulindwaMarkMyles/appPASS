@@ -320,32 +320,38 @@ class AddPasswordPageState extends State<AddPasswordPage> {
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   final _formKey = GlobalKey<FormState>();
   String? _selectedCategory;
+  final _nameController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
   final _notesController = TextEditingController();
+  final _websiteController = TextEditingController();
 
   @override
   void dispose() {
+    _nameController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
     _emailController.dispose();
     _notesController.dispose();
+    _websiteController.dispose();
     super.dispose();
   }
 
   Future<void> _savePassword() async {
     if (_formKey.currentState?.validate() ?? false) {
+      final name = _nameController.text;
       final username = _usernameController.text;
       final password = _passwordController.text;
       final email = _emailController.text;
       final notes = _notesController.text;
+      final website = _websiteController.text;
       final category = _selectedCategory;
 
       try {
         if (category != null) {
-          bool uploaded = await _db.uploadToFirebaseSingle(
-              username, password, email, notes, category);
+          bool uploaded = await _db.uploadToFirebaseSingle(name,
+              username, password, email, notes, category, website);
 
           if (uploaded) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -386,6 +392,18 @@ class AddPasswordPageState extends State<AddPasswordPage> {
                 decoration: InputDecoration(labelText: 'Username'),
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter a username' : null,
+              ),
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Name'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter a name for the password' : null,
+              ),
+              TextFormField(
+                controller: _websiteController,
+                decoration: InputDecoration(labelText: 'Website'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter a website or url' : null,
               ),
               TextFormField(
                 controller: _passwordController,
