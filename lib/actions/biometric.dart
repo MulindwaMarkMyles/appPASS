@@ -83,3 +83,5 @@ Future<void> cancelAuthentication() async {
   await auth.stopAuthentication();
   print('cancelAuthentication'); // Debug log
 }
+// got widget from pub.dev, ex
+//tracted parts of code and used it to create functions that i could use in other screens
