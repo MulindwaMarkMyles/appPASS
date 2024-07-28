@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: app_pass
+=======
+name: learning_three
+>>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -19,7 +23,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
+<<<<<<< HEAD
   sdk: ">=2.12.0 <3.0.0"
+=======
+  sdk: '>=3.4.3 <4.0.0'
+>>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,6 +38,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+<<<<<<< HEAD
   provider: ^6.1.2
   qr_flutter: ^4.0.0
   cupertino_icons: ^1.0.2
@@ -52,6 +61,17 @@ dependencies:
   encrypt: any
   
   
+=======
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.6
+  flutter_screen_lock: ^9.1.0
+  local_auth: ^2.2.0
+  biometric_authentication: ^1.0.5
+
+>>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,7 +81,11 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
+<<<<<<< HEAD
   flutter_lints: ^4.0.0
+=======
+  flutter_lints: ^3.0.0
+>>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,9 +97,12 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+<<<<<<< HEAD
   assets:
     - assets/
     
+=======
+>>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -93,10 +120,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+<<<<<<< HEAD
   fonts:
     - family: Gammli
       fonts:
         - asset: assets/fonts/GaMaamli-Regular.ttf
+=======
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+>>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
