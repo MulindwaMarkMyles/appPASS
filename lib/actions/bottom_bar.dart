@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ionicons/ionicons.dart';
-
 import '/pages/home/home_page.dart';
 import '/pages/menu/menu.dart';
 import '/pages/build/build.dart';
@@ -67,8 +66,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         onTap: (index) {
           setState(() {
             _page = index;
-            _pageController.animateToPage(index,
-                duration: Duration(milliseconds: 400), curve: Curves.easeInOut);
+            _pageController.jumpToPage(index);
           });
         },
         letIndexChange: (index) => true,

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "584858405851",
+    "project_id": "app-pass-bbdd7",
+    "storage_bucket": "app-pass-bbdd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584858405851:android:70e54faa250e461b9175fe",
+        "android_client_info": {
+          "package_name": "com.appPASS.app_pass"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtPGuVP26LaJH7VVlItAqYM01xv65I11c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

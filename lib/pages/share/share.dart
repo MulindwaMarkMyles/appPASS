@@ -4,16 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SharePage extends StatefulWidget {
+  const SharePage({Key? key}) : super(key: key);
+
   @override
-  _SharePageState createState() => _SharePageState();
+  SharePageState createState() => SharePageState();
 }
 
-class _SharePageState extends State<SharePage> {
+class SharePageState extends State<SharePage> {
   bool viewOnly = false;
   bool viewAndEdit = false;
   bool require2FA = false;
   bool notifyOnAccess = false;
   bool receiveEmailConfirmation = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -128,14 +131,14 @@ class _SharePageState extends State<SharePage> {
               child: ElevatedButton(
                 onPressed: () {
                   // Logic to share the password
+                 
                 },
-                child: Text('Share',
-                style: TextStyle(
-                  color: Colors.white
-                ),
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 243, 134, 84),
+                ),
+                child: Text(
+                  'Share',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),

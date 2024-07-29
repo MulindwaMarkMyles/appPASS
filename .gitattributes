@@ -1,0 +1,2 @@
+# Ensure the google-services.json file uses LF line endings
+android/app/google-services.json text eol=lf
