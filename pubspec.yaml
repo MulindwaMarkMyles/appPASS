@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 name: app_pass
-=======
-name: learning_three
->>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
