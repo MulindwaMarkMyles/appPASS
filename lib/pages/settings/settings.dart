@@ -176,7 +176,9 @@ class SettingsPage extends StatelessWidget {
                       case 'sharePassword':
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => SharePage(password: 'YourPasswordHere'), // Replace with actual password
+                            builder: (_) => SharePage(
+                                password:
+                                    'YourPasswordHere'), // Replace with actual password
                           ),
                         );
                         break;
@@ -205,7 +207,8 @@ class SettingsPage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => AboutDetailScreen(
                               title: 'Contact Us',
-                              content: 'Contact G-09 Developer through mail:g09@mac.ac.ug as well as all media platforms at G-09',
+                              content:
+                                  'Contact G-09 Developer through mail:g09@mac.ac.ug as well as all media platforms at G-09',
                             ),
                           ),
                         );

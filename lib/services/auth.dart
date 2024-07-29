@@ -92,7 +92,27 @@ class AuthService {
       );
 
       // Sign in to Firebase with the credential
-      return await _auth.signInWithCredential(credential);
+      UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      // Extract user details from the GoogleSignInAccount
+      String displayName = googleUser.displayName ?? '';
+      String email = googleUser.email;
+      String username = email.split('@')[0];
+      String uid = userCredential.user?.uid ?? '';
+
+      // Create an instance of DatabaseService
+      DatabaseService dbService = DatabaseService(uid: uid);
+
+      // Update the user data in Firestore
+      await dbService.updateUserData(
+        username,
+        displayName,
+        0, // Assuming phone number is not provided by Google
+       email,
+      );
+
+      return userCredential;
     } catch (e) {
       // Print the error message and return null
       print(e.toString());
