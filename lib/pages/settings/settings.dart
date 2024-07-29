@@ -35,30 +35,30 @@ class SettingsPage extends StatelessWidget {
         ),
       ],
     ),
-    SettingsSection(
-      title: 'Notifications',
-      icon: Ionicons.notifications_outline,
-      settingsOptions: [
-        SettingsOption(
-          key: 'emailNotifications',
-          label: 'Email Notifications',
-          helpText: 'Receive notifications via email',
-          icon: Ionicons.mail_outline,
-        ),
-        SettingsOption(
-          key: 'pushNotifications',
-          label: 'Push Notifications',
-          helpText: 'Receive push notifications',
-          icon: Ionicons.notifications_outline,
-        ),
-        SettingsOption(
-          key: 'smsNotifications',
-          label: 'SMS Notifications',
-          helpText: 'Receive notifications via SMS',
-          icon: Ionicons.chatbubble_ellipses_outline,
-        ),
-      ],
-    ),
+    // SettingsSection(
+    //   title: 'Notifications',
+    //   icon: Ionicons.notifications_outline,
+    //   settingsOptions: [
+    //     SettingsOption(
+    //       key: 'emailNotifications',
+    //       label: 'Email Notifications',
+    //       helpText: 'Receive notifications via email',
+    //       icon: Ionicons.mail_outline,
+    //     ),
+    //     SettingsOption(
+    //       key: 'pushNotifications',
+    //       label: 'Push Notifications',
+    //       helpText: 'Receive push notifications',
+    //       icon: Ionicons.notifications_outline,
+    //     ),
+    //     SettingsOption(
+    //       key: 'smsNotifications',
+    //       label: 'SMS Notifications',
+    //       helpText: 'Receive notifications via SMS',
+    //       icon: Ionicons.chatbubble_ellipses_outline,
+    //     ),
+    //   ],
+    // ),
     SettingsSection(
       title: 'Privacy',
       icon: Ionicons.lock_closed_outline,
@@ -261,12 +261,40 @@ class SettingsPage extends StatelessWidget {
                 Ionicons.log_out_outline,
                 color: iconColor,
               ),
-              onPressed: () {
-                print('Logout');
-                _auth.signOut();
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => LoginOrSignup()),
+              onPressed: () async {
+                bool? confirmLogout = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Confirm Logout'),
+                      content: Text('Are you sure you want to log out?'),
+                      backgroundColor: Color.fromRGBO(244, 220, 205, 1),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('Cancel',
+                          selectionColor: Color.fromRGBO(248, 245, 243, 1),),
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                        ),
+                        TextButton(
+                          child: Text('Logout',
+                          selectionColor: Color.fromRGBO(244, 240, 237, 1),),
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 );
+
+                if (confirmLogout == true) {
+                  _auth.signOut();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => LoginOrSignup()),
+                  );
+                }
               },
             ),
           ],
