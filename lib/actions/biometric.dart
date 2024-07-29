@@ -9,14 +9,14 @@ enum _SupportState {
 
 Future<bool> supportsBiometric() async {
   LocalAuthentication auth = LocalAuthentication();
-  _SupportState _supportState = _SupportState.unknown;
+  _SupportState supportState = _SupportState.unknown;
   bool isSupported = await auth.isDeviceSupported();
-  _supportState =
+  supportState =
       isSupported ? _SupportState.supported : _SupportState.unsupported;
 
-  print('supportsBiometric: $_supportState'); // Debug log
+  print('supportsBiometric: $supportState'); // Debug log
 
-  return _supportState == _SupportState.supported;
+  return supportState == _SupportState.supported;
 }
 
 Future<bool> checkBiometrics() async {
@@ -48,7 +48,7 @@ Future<bool> authenticate() async {
   bool authenticated = false;
   try {
     authenticated = await auth.authenticate(
-      localizedReason: '',
+      localizedReason: 'Please Authenticate to continue.',
       options: const AuthenticationOptions(
         stickyAuth: true,
       ),
@@ -83,5 +83,3 @@ Future<void> cancelAuthentication() async {
   await auth.stopAuthentication();
   print('cancelAuthentication'); // Debug log
 }
-// got widget from pub.dev, ex
-//tracted parts of code and used it to create functions that i could use in other screens
