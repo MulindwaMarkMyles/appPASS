@@ -20,11 +20,11 @@ class HomePageState extends State<HomePage> {
       type: FileType.custom,
       allowedExtensions: ['csv'],
     );
-
     if (result != null) {
       String fileContent = utf8.decode(result.files.first.bytes!);
       List<List<dynamic>> csvTable =
           const CsvToListConverter().convert(fileContent);
+      
       setState(() {
         _passwords = csvTable;
       });

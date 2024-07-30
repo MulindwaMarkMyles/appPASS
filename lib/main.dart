@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-<<<<<<< HEAD
 class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -42,10 +41,3 @@ class AuthenticationWrapper extends StatelessWidget {
     }
   }
 }
-=======
-enum _SupportState {
-  unknown,
-  supported,
-  unsupported,
-}
->>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42

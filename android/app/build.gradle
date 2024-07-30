@@ -1,16 +1,12 @@
 plugins {
     id "com.android.application"
-<<<<<<< HEAD
     // START: FlutterFire Configuration
     id 'com.google.gms.google-services'
     // END: FlutterFire Configuration
-=======
->>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
-<<<<<<< HEAD
 dependencies {
   // Import the Firebase BoM
   implementation platform('com.google.firebase:firebase-bom:33.1.1')
@@ -24,9 +20,6 @@ dependencies {
   // Add the dependencies for any other desired Firebase products
   // https://firebase.google.com/docs/android/setup#available-libraries
 }
-=======
-
->>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
@@ -46,11 +39,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-<<<<<<< HEAD
     namespace = "com.example.app_pass"
-=======
-    namespace = "com.example.learning_three"
->>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -61,21 +50,14 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-<<<<<<< HEAD
         applicationId = "com.appPASS.app_pass"
-=======
-        applicationId = "com.example.learning_three"
->>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
-<<<<<<< HEAD
         minSdkVersion 23
-=======
->>>>>>> 2759c992f6bec2e76cadcf1dab5e9890edf9fa42
     }
 
     buildTypes {
