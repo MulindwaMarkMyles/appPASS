@@ -417,53 +417,88 @@ class AddPasswordPageState extends State<AddPasswordPage> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              TextFormField(
+              buildTextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                prefixIcon: Icon(Ionicons.person_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
+                labelText: 'Username',
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter a username' : null,
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                labelText: 'Name',
                 validator: (value) => value!.isEmpty
                     ? 'Please enter a name for the password'
                     : null,
+                prefixIcon: Icon(Ionicons.person_circle_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _websiteController,
-                decoration: InputDecoration(labelText: 'Website'),
+                labelText: 'Website',
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter a website or url' : null,
+                prefixIcon: Icon(Ionicons.logo_web_component,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
+                labelText: 'Password',
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter a password' : null,
+                prefixIcon: Icon(Ionicons.lock_closed_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
                 obscureText: true,
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                labelText: 'Email',
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter an email' : null,
+                prefixIcon: Icon(Ionicons.mail_unread_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _notesController,
-                decoration: InputDecoration(labelText: 'Notes'),
+                labelText: 'Notes',
+                prefixIcon: Icon(Ionicons.text_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
+                validator: (value) => null,
               ),
               SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
-                decoration: InputDecoration(labelText: 'Category'),
+                decoration: InputDecoration(
+                  labelText: 'Category',
+                  prefixIcon: Icon(Ionicons.list_outline,
+                      color: Color.fromRGBO(248, 105, 17, 1)),
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                ),
                 items: widget.categories.map((category) {
                   return DropdownMenuItem<String>(
                     value: category.title,
-                    child: Text(category.title),
+                    child: Text(category.title,
+                        style: TextStyle(
+                            fontFamily: GoogleFonts.poppins().fontFamily)),
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -473,13 +508,39 @@ class AddPasswordPageState extends State<AddPasswordPage> {
                 },
                 validator: (value) =>
                     value == null ? 'Please select a category' : null,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _savePassword,
-                child: Text('Save Password'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 243, 117, 59),
+                  backgroundColor:
+                      Color.fromRGBO(248, 105, 17, 1), // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.transparent
+                          : Color.fromRGBO(248, 105, 17, 1),
+                      width: 1.5,
+                    ),
+                  ),
+                  textStyle: TextStyle(
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Save Changes',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: GoogleFonts.poppins().fontFamily,
+                      fontSize: 17,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -492,9 +553,13 @@ class AddPasswordPageState extends State<AddPasswordPage> {
   Widget buildTextFormField({
     required String labelText,
     required Icon prefixIcon,
+    bool obscureText = false,
     required TextEditingController controller,
+    required String? Function(String?) validator,
   }) {
     return TextFormField(
+      obscureText: obscureText,
+      validator: validator,
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
@@ -516,5 +581,4 @@ class AddPasswordPageState extends State<AddPasswordPage> {
       ),
     );
   }
-
 }

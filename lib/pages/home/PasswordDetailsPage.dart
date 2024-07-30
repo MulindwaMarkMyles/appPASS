@@ -52,7 +52,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
         'username': _usernameController.text,
         'password': _passwordController.text,
         'email': _emailController.text,
-        'website': _websiteController.text,
+        'url': _websiteController.text,
         'notes': _notesController.text,
         'category': widget.passwordData['category'],
       };
@@ -68,6 +68,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Password updated successfully!')),
         );
+        Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -141,34 +142,34 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-  onPressed: _updatePassword,
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Color.fromRGBO(248, 105, 17, 1), // Background color
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-      side: BorderSide(
-        color: Theme.of(context).brightness == Brightness.light
-            ? Colors.transparent
-            : Color.fromRGBO(248, 105, 17, 1),
-        width: 1.5,
-      ),
-    ),
-    textStyle: TextStyle(
-      fontFamily: GoogleFonts.poppins().fontFamily,
-    ),
-  ),
-  child: Center(
-    child: Text(
-      'Save Changes',
-      style: TextStyle(
-        color: Colors.white,
-        fontFamily: GoogleFonts.poppins().fontFamily,
-        fontSize: 17,
-      ),
-    ),
-  ),
-),
-
+                onPressed: _updatePassword,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Color.fromRGBO(248, 105, 17, 1), // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.transparent
+                          : Color.fromRGBO(248, 105, 17, 1),
+                      width: 1.5,
+                    ),
+                  ),
+                  textStyle: TextStyle(
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Save Changes',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: GoogleFonts.poppins().fontFamily,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
