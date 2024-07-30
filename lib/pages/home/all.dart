@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'PasswordDetailsPage.dart';
@@ -62,14 +63,14 @@ class _AllState extends State<All> {
               return Container(
                 margin: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(246, 208, 183, 1), // Add margin here
+                  color: Color.fromRGBO(250, 230, 216, 1), // Add margin here
                   border: Border.all(
-                      color: const Color.fromARGB(188, 0, 0, 0), width: 1.2),
+                      color: Color.fromARGB(139, 0, 0, 0), width: 1.2),
                   borderRadius: BorderRadius.circular(9),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey
-                          .withOpacity(0.5), // Shadow color with opacity
+                          .withOpacity(0.3), // Shadow color with opacity
                       spreadRadius: 2, // Spread radius
                       blurRadius: 5, // Blur radius
                       offset: Offset(0, 3), // Offset in the x and y direction
@@ -81,11 +82,21 @@ class _AllState extends State<All> {
                     password['url'] ?? 'url',
                     style: GoogleFonts.poppins(
                       color: Color.fromARGB(255, 243, 134, 84),
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  subtitle: Text('.' * (password['password']?.length ?? 0)),
+                  subtitle: Text(
+                    password['password'] != null
+                        ? '.' * (password['password'].length ~/ 4)
+                        : '',
+                    style:TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
