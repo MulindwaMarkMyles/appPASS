@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:file_picker/file_picker.dart';
-import 'dart:convert';
+import 'dart:io';
 import 'package:csv/csv.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,10 +21,11 @@ class HomePageState extends State<HomePage> {
       allowedExtensions: ['csv'],
     );
     if (result != null) {
-      String fileContent = utf8.decode(result.files.first.bytes!);
+      File csvFile = File(result.files.first.path!);
+      String fileContent = await csvFile.readAsString();
       List<List<dynamic>> csvTable =
           const CsvToListConverter().convert(fileContent);
-      
+
       setState(() {
         _passwords = csvTable;
       });
@@ -173,24 +174,24 @@ class PasswordsPage extends StatelessWidget {
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: ListView.builder(
-          itemCount: passwords.length,
-          itemBuilder: (context, index) {
-            List<dynamic> passwordDetails =
-                passwords[index]; // Get the details of each password
-            return ListTile(
-              title: Text(
-                  passwordDetails[0]), // Assuming first column is password name
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: passwordDetails.skip(1).map((detail) {
-                  // Iterate over the remaining fields
-                  return Text(
-                      detail.toString()); // Display each field as a Text widget
-                }).toList(),
-              ),
-            );
-          },
-          ),
+        itemCount: passwords.length,
+        itemBuilder: (context, index) {
+          List<dynamic> passwordDetails =
+              passwords[index]; // Get the details of each password
+          return ListTile(
+            title: Text(
+                passwordDetails[0]), // Assuming first column is password name
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: passwordDetails.skip(1).map((detail) {
+                // Iterate over the remaining fields
+                return Text(
+                    detail.toString()); // Display each field as a Text widget
+              }).toList(),
+            ),
+          );
+        },
+      ),
     );
   }
 }
