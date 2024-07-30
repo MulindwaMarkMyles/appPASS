@@ -12,7 +12,7 @@
           "package_name": "com.appPASS.app_pass"
         }
       },
-      "oauth_client": [],
+      "oauth_client": ["584858405851-muu8mlpdc525e9gvf07pjp4rjidre9bv.apps.googleusercontent.com"],
       "api_key": [
         {
           "current_key": "AIzaSyCtPGuVP26LaJH7VVlItAqYM01xv65I11c"

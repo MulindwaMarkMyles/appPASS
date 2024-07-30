@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
@@ -31,6 +32,8 @@ class _HomePageState extends State<HomePage> {
   int _wifiCount = 0;
   int _securityCount = 0;
   int _deletedCount = 0;
+  String password = '';
+  List<List<dynamic>> _data = [];
   final List<Category> categories = [
     Category('All', 0, Ionicons.key_outline, All()),
     Category('Passkeys', 0, Ionicons.person_outline, PasskeysPage()),
@@ -80,46 +83,52 @@ class _HomePageState extends State<HomePage> {
     if (result != null && result.files.isNotEmpty) {
       PlatformFile file = result.files.first;
       List<List<dynamic>> csvTable = [];
+      _showMessage("Uploading passwords, please wait...");
 
       try {
         if (kIsWeb) {
           if (file.bytes != null) {
             String fileContent = String.fromCharCodes(file.bytes!);
             csvTable = const CsvToListConverter().convert(fileContent);
+            setState(() {
+              _data = csvTable;
+            });
           } else {
             _showMessage("Selected file is empty or couldn't be read.");
             return;
           }
         } else {
+          file = result.files.single;
           if (file.path != null) {
-            File csvFile = File(file.path!);
-            String fileContent = await csvFile.readAsString();
-            csvTable = const CsvToListConverter().convert(fileContent);
+            final input = File(file.path!).openRead();
+            csvTable = await input
+                .transform(utf8.decoder)
+                .transform(const CsvToListConverter(
+                    eol: '\n')) // Ensure correct end-of-line handling
+                .toList();
+            setState(() {
+              _data = csvTable;
+            });
           } else {
             _showMessage("Selected file is empty or couldn't be read.");
             return;
           }
         }
 
-        // Process and upload passwords from csvTable
-        for (var row in csvTable) {
-          print(row);
-          // Assuming each row contains [name, username, password, email, notes, category, website]
-          if (row.length >= 4) {
-            await _db.uploadToFirebaseSingle(
-              row[0].toString(),
-              row[2].toString(),
-              row[3].toString(),
-              row[2].toString(),
-              "",
-              "",
-              row[1].toString(),
-            );
-          }
-        }
+        // Log the content of csvTable for debugging
+        print("CSV Table Content: $csvTable");
 
-        _showMessage("Passwords uploaded successfully.");
-        _initializeCategoryCounts(); // Refresh counts after uploading
+        // Log the number of rows to be uploaded
+        print("Number of rows to upload: ${csvTable.length}");
+
+        // Upload passwords to Firebase
+        bool uploadSuccess = await _db.uploadToFirebase(_data);
+        if (uploadSuccess) {
+          _showMessage("Passwords uploaded successfully.");
+          _initializeCategoryCounts(); // Refresh counts after uploading
+        } else {
+          _showMessage("Failed to upload passwords.");
+        }
       } catch (e) {
         _showMessage("Failed to upload passwords: $e");
       }

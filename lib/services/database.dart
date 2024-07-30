@@ -187,7 +187,6 @@ class DatabaseService {
       for (var doc in snapshot.docs) {
         final data = doc.data() as Map<String, dynamic>;
         final category = data['category'] ?? 'All';
-        print(category);
         if (counts.containsKey(category)) {
           counts[category] = counts[category]! + 1;
         } else {
