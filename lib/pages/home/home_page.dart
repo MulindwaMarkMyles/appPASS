@@ -488,4 +488,33 @@ class AddPasswordPageState extends State<AddPasswordPage> {
       ),
     );
   }
+
+  Widget buildTextFormField({
+    required String labelText,
+    required Icon prefixIcon,
+    required TextEditingController controller,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: prefixIcon,
+        labelStyle: TextStyle(
+          color: Colors.black,
+          fontFamily: GoogleFonts.poppins().fontFamily,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+      ),
+      style: TextStyle(
+        color: Colors.black,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      ),
+    );
+  }
+
 }

@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ionicons/ionicons.dart';
 
 class PasswordDetailsPage extends StatefulWidget {
   final Map<String, dynamic> passwordData;
@@ -30,11 +33,16 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.passwordData['name']);
-    _usernameController = TextEditingController(text: widget.passwordData['username']);
-    _passwordController = TextEditingController(text: widget.passwordData['password']);
-    _emailController = TextEditingController(text: widget.passwordData['email']);
-    _websiteController = TextEditingController(text: widget.passwordData['url']);
-    _notesController = TextEditingController(text: widget.passwordData['notes']);
+    _usernameController =
+        TextEditingController(text: widget.passwordData['username']);
+    _passwordController =
+        TextEditingController(text: widget.passwordData['password']);
+    _emailController =
+        TextEditingController(text: widget.passwordData['email']);
+    _websiteController =
+        TextEditingController(text: widget.passwordData['url']);
+    _notesController =
+        TextEditingController(text: widget.passwordData['notes']);
   }
 
   Future<void> _updatePassword() async {
@@ -62,7 +70,8 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update password. Please try again.')),
+          SnackBar(
+              content: Text('Failed to update password. Please try again.')),
         );
         print('Error updating password: $e');
       }
@@ -73,56 +82,124 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Password Details'),
+        title: Text(
+          'Password Details',
+          style: GoogleFonts.poppins(
+            color: Color.fromARGB(255, 243, 134, 84),
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              TextFormField(
+              buildTextFormField(
+                labelText: 'Url',
+                prefixIcon: Icon(Ionicons.logo_web_component,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
                 controller: _websiteController,
-                decoration: InputDecoration(labelText: 'Website'),
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter a website' : null,
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter a username' : null,
+                labelText: "Username",
+                prefixIcon: Icon(Ionicons.person_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter a name for the password' : null,
+                labelText: 'Name',
+                prefixIcon: Icon(Ionicons.person_circle,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: false,
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter a password' : null,
+                labelText: 'Password',
+                prefixIcon: Icon(Ionicons.lock_closed_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                labelText: 'Email',
+                prefixIcon: Icon(Ionicons.mail_unread_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _notesController,
-                decoration: InputDecoration(labelText: 'Notes'),
+                labelText: 'Notes',
+                prefixIcon: Icon(Ionicons.text_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _updatePassword,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 243, 134, 84),
-                ),
-                child: Text('Save Changes'),
-              ),
+  onPressed: _updatePassword,
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Color.fromRGBO(248, 105, 17, 1), // Background color
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+      side: BorderSide(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.transparent
+            : Color.fromRGBO(248, 105, 17, 1),
+        width: 1.5,
+      ),
+    ),
+    textStyle: TextStyle(
+      fontFamily: GoogleFonts.poppins().fontFamily,
+    ),
+  ),
+  child: Center(
+    child: Text(
+      'Save Changes',
+      style: TextStyle(
+        color: Colors.white,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+        fontSize: 17,
+      ),
+    ),
+  ),
+),
+
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildTextFormField({
+    required String labelText,
+    required Icon prefixIcon,
+    required TextEditingController controller,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: prefixIcon,
+        labelStyle: TextStyle(
+          color: Colors.black,
+          fontFamily: GoogleFonts.poppins().fontFamily,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+      ),
+      style: TextStyle(
+        color: Colors.black,
+        fontFamily: GoogleFonts.poppins().fontFamily,
       ),
     );
   }
