@@ -1,39 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_pass/services/database.dart';
 
 
 // Function to undo the deletion of a password
-Future<void> _undoDeletePassword(
-    String passwordId, String originalCategory) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection('passwords')
-        .doc(passwordId)
-        .update({
-      'category': originalCategory,
-      'originalCategory':
-          FieldValue.delete(), // Remove the original category field
-    });
-  } catch (e) {
-    print('Error undoing delete: $e');
-  }
-}
+// Future<void> _undoDeletePassword(
+//     String passwordId, String originalCategory) async {
+//   try {
+//     await FirebaseFirestore.instance
+//         .collection('passwords')
+//         .doc(passwordId)
+//         .update({
+//       'category': originalCategory,
+//       'originalCategory':
+//           FieldValue.delete(), // Remove the original category field
+//     });
+//   } catch (e) {
+//     print('Error undoing delete: $e');
+//   }
+// }
 
 // Function to permanently delete a password
-Future<void> _permanentlyDeletePassword(String passwordId) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection('passwords')
-        .doc(passwordId)
-        .delete();
-  } catch (e) {
-    print('Error permanently deleting password: $e');
-  }
-}
+
 
 class Deleted extends StatefulWidget {
   @override
@@ -80,7 +70,7 @@ class DeletedState extends State<Deleted> {
     );
 
     if (shouldDelete ?? false) {
-      await _permanentlyDeletePassword(passwordId);
+      await _db.permanentlyDeletePassword(passwordId);
       _refreshPasswords();
     }
   }
@@ -116,32 +106,67 @@ class DeletedState extends State<Deleted> {
             itemBuilder: (context, index) {
               final password = passwords[index];
               final passwordId = password['id'];
-              final originalCategory =
-                  password['originalCategory'] ?? 'unknown';
+              // final originalCategory =
+              //     password['originalCategory'] ?? 'unknown';
 
-              return ListTile(
-                title: Text(password['website'] ?? 'No website'),
-                subtitle: Text('.' * (password['password']?.length ?? 0)),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(Ionicons.arrow_undo_outline),
-                      onPressed: () async {
-                        // Undo the deletion
-                        await _undoDeletePassword(passwordId, originalCategory);
-                        // Refresh the list
-                        _refreshPasswords();
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Ionicons.trash_outline),
-                      onPressed: () async {
-                        // Confirm and permanently delete the password
-                        await _confirmPermanentlyDeletePassword(passwordId);
-                      },
+              return Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(250, 230, 216, 1), // Add margin here
+                  border: Border.all(
+                      color: Color.fromARGB(139, 0, 0, 0), width: 1.2),
+                  borderRadius: BorderRadius.circular(9),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey
+                          .withOpacity(0.3), // Shadow color with opacity
+                      spreadRadius: 2, // Spread radius
+                      blurRadius: 5, // Blur radius
+                      offset: Offset(0, 3), // Offset in the x and y direction
                     ),
                   ],
+                ),
+                child: ListTile(
+                  title: Text(
+                    password['url'] ?? 'url',
+                    style: GoogleFonts.poppins(
+                      color: Color.fromARGB(255, 243, 134, 84),
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  subtitle: Text(
+                    password['password'] != null
+                        ? '.' * (password['password'].length ~/ 4)
+                        : '',
+                    style:TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // IconButton(
+                      //   icon: Icon(Ionicons.arrow_undo_outline),
+                      //   onPressed: () async {
+                      //     // Undo the deletion
+                      //     await _undoDeletePassword(passwordId, originalCategory);
+                      //     // Refresh the list
+                      //     _refreshPasswords();
+                      //   },
+                      // ),
+                      IconButton(
+                        icon: Icon(Ionicons.trash_outline),
+                        onPressed: () async {
+                          // Confirm and permanently delete the password
+                          await _confirmPermanentlyDeletePassword(passwordId);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

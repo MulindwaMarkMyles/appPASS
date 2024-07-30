@@ -228,6 +228,14 @@ class DatabaseService {
     }
   }
 
+  Future<void> permanentlyDeletePassword(String passwordId) async {
+    try {
+      await users.doc(uid).collection('passwords').doc(passwordId).delete();
+    } catch (e) {
+      print('Error permanently deleting password: $e');
+    }
+  }
+
   Future<List<Map<String, dynamic>>> fetchPasswords(String category) async {
     try {
       final querySnapshot = await users
