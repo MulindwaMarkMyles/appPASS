@@ -81,36 +81,38 @@ class _HomePageState extends State<HomePage> {
       PlatformFile file = result.files.first;
       List<List<dynamic>> csvTable = [];
 
-      if (kIsWeb) {
-        if (file.bytes != null) {
-          String fileContent = String.fromCharCodes(file.bytes!);
-          csvTable = const CsvToListConverter().convert(fileContent);
+      try {
+        if (kIsWeb) {
+          if (file.bytes != null) {
+            String fileContent = String.fromCharCodes(file.bytes!);
+            csvTable = const CsvToListConverter().convert(fileContent);
+          } else {
+            _showMessage("Selected file is empty or couldn't be read.");
+            return;
+          }
         } else {
-          _showMessage("Selected file is empty or couldn't be read.");
+          if (file.path != null) {
+            File csvFile = File(file.path!);
+            String fileContent = await csvFile.readAsString();
+            csvTable = const CsvToListConverter().convert(fileContent);
+          } else {
+            _showMessage("Selected file is empty or couldn't be read.");
+            return;
+          }
         }
-      } else {
-        if (file.path != null) {
-          File csvFile = File(file.path!);
-          String fileContent = await csvFile.readAsString();
-          csvTable = const CsvToListConverter().convert(fileContent);
-        } else {
-          _showMessage("Selected file is empty or couldn't be read.");
-        }
-      }
 
-      uploaded = await _db.uploadToFirebase(csvTable);
-      _showMessage("Uploading passwords, please wait...");
+        await _db.uploadToFirebase(csvTable);
 
-      if (uploaded) {
         _showMessage("Passwords uploaded successfully.");
         _initializeCategoryCounts(); // Refresh counts after uploading
-      } else {
-        _showMessage("Failed to upload passwords.");
+      } catch (e) {
+        _showMessage("Failed to upload passwords: $e");
       }
     } else {
       _showMessage("No file selected.");
     }
   }
+
 
   void _showMessage(String message) {
     ScaffoldMessenger.of(context)
