@@ -163,6 +163,13 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
+                leading: Icon(Ionicons.refresh_circle_outline),
+                title: Text('Refresh Counts'),
+                onTap: () {
+                  _initializeCategoryCounts();
+                },
+              ),
+              ListTile(
                 leading: Icon(Ionicons.add_circle_outline),
                 title: Text('Add Password Manually'),
                 onTap: () {
