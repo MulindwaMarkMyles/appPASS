@@ -60,19 +60,25 @@ class _AllState extends State<All> {
               final password = passwords[index];
               final passwordId = password['id']; // Get the document ID
               return Container(
-                margin: EdgeInsets.all(8), // Add margin here
+                margin: EdgeInsets.all(8),
                 decoration: BoxDecoration(
+                  color: Color.fromRGBO(246, 208, 183, 1), // Add margin here
                   border: Border.all(
-                      color: const Color.fromARGB(188, 0, 0, 0), width: 1),
-                  borderRadius: BorderRadius.circular(6),
+                      color: const Color.fromARGB(188, 0, 0, 0), width: 1.2),
+                  borderRadius: BorderRadius.circular(9),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey
+                          .withOpacity(0.5), // Shadow color with opacity
+                      spreadRadius: 2, // Spread radius
+                      blurRadius: 5, // Blur radius
+                      offset: Offset(0, 3), // Offset in the x and y direction
+                    ),
+                  ],
                 ),
                 child: ListTile(
-                  // shape: RoundedRectangleBorder(
-                  //   side: BorderSide(color: Colors.black, width: 1),
-                  //   borderRadius: BorderRadius.circular(5),
-                  // ),
                   title: Text(
-                    password['username'] ?? 'username',
+                    password['url'] ?? 'url',
                     style: GoogleFonts.poppins(
                       color: Color.fromARGB(255, 243, 134, 84),
                       fontSize: 17,
