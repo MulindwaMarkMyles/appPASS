@@ -5,7 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import 'PasskeysPage.dart';
 import 'all.dart';
 import 'codes.dart';
-import 'Wifi.dart';
+import 'wifi.dart';
 import 'security.dart';
 import 'deleted.dart';
 import 'package:file_picker/file_picker.dart';
@@ -101,7 +101,22 @@ class _HomePageState extends State<HomePage> {
           }
         }
 
-        await _db.uploadToFirebase(csvTable);
+        // Process and upload passwords from csvTable
+        for (var row in csvTable) {
+          print(row);
+          // Assuming each row contains [name, username, password, email, notes, category, website]
+          if (row.length >= 4) {
+            await _db.uploadToFirebaseSingle(
+              row[0].toString(),
+              row[2].toString(),
+              row[3].toString(),
+              row[2].toString(),
+              "",
+              "",
+              row[1].toString(),
+            );
+          }
+        }
 
         _showMessage("Passwords uploaded successfully.");
         _initializeCategoryCounts(); // Refresh counts after uploading
@@ -112,7 +127,6 @@ class _HomePageState extends State<HomePage> {
       _showMessage("No file selected.");
     }
   }
-
 
   void _showMessage(String message) {
     ScaffoldMessenger.of(context)
@@ -352,8 +366,8 @@ class AddPasswordPageState extends State<AddPasswordPage> {
 
       try {
         if (category != null) {
-          bool uploaded = await _db.uploadToFirebaseSingle(name,
-              username, password, email, notes, category, website);
+          bool uploaded = await _db.uploadToFirebaseSingle(
+              name, username, password, email, notes, category, website);
 
           if (uploaded) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -398,8 +412,9 @@ class AddPasswordPageState extends State<AddPasswordPage> {
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter a name for the password' : null,
+                validator: (value) => value!.isEmpty
+                    ? 'Please enter a name for the password'
+                    : null,
               ),
               TextFormField(
                 controller: _websiteController,
