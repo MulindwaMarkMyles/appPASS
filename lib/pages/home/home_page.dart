@@ -90,8 +90,13 @@ class _HomePageState extends State<HomePage> {
   void _updateSearchQuery() {
     setState(() {
       _searchQuery = _searchController.text;
+      print("\n\n$_searchQuery \n\n");
       _filteredPasswords = _passwords.where((password) {
-        return password.url.toLowerCase().contains(_searchQuery.toLowerCase());
+        // Adjust the condition here if needed to search other fields
+        return password.username
+                .toLowerCase()
+                .contains(_searchQuery.toLowerCase()) ||
+            password.url.toLowerCase().contains(_searchQuery.toLowerCase());
       }).toList();
     });
   }
