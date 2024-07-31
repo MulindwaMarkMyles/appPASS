@@ -2,9 +2,16 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
-// import 'dart:convert';
-// import 'dart:math';
-// import 'dart:typed_data';
+
+
+class Password {
+  final String title;
+  final String username;
+  final String password;
+
+  Password({required this.title, required this.username, required this.password});
+}
+
 
 class DatabaseUser {
   final String name;
