@@ -185,7 +185,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Numbers'),
                     Checkbox(
                       value: includeNumbers,
-                      checkColor: MaterialStateProperty.all(Color.fromRGBO(248, 105, 17, 1)),
+                      checkColor: Color.fromRGBO(248, 105, 17, 1),
                       onChanged: (value) {
                         setState(() {
                           includeNumbers = value!;
@@ -199,7 +199,8 @@ class BuildPageState extends State<BuildPage> {
                     Text('Special Characters'),
                     Checkbox(
                       value: includeSpecialChars,
-                      checkColor: MaterialStateProperty.all(Color.fromRGBO(248, 105, 17, 1)),
+                      checkColor:Color.fromRGBO(248, 105, 17, 1),
+                      fillColor: WidgetStatePropertyAll(Color.fromARGB(255, 243, 220, 205)),
                       onChanged: (value) {
                         setState(() {
                           includeSpecialChars = value!;
