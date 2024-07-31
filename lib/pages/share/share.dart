@@ -52,11 +52,17 @@ class SharePage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
-          final passwords = snapshot.data!;
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No passwords found'));
+          }
+
+          final passwords = snapshot.data!.docs;
 
           return ListView.builder(
             itemCount: passwords.length,
             itemBuilder: (context, index) {
+              final passwordData = passwords[index].data() as Map<String, dynamic>;
+
               return Container(
                 margin: EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -66,8 +72,7 @@ class SharePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(9),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey
-                          .withOpacity(0.3), // Shadow color with opacity
+                      color: Colors.grey.withOpacity(0.3), // Shadow color with opacity
                       spreadRadius: 2, // Spread radius
                       blurRadius: 5, // Blur radius
                       offset: Offset(0, 3), // Offset in the x and y direction
@@ -76,7 +81,7 @@ class SharePage extends StatelessWidget {
                 ),
                 child: ListTile(
                   title: Text(
-                    passwords['url'] ?? 'url',
+                    passwordData['url'] ?? 'url',
                     style: GoogleFonts.poppins(
                       color: Color.fromARGB(255, 243, 134, 84),
                       fontSize: 16,
@@ -85,10 +90,10 @@ class SharePage extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    passwords['password'] != null
-                        ? '.' * (password['password'].length ~/ 4)
+                    passwordData['password'] != null
+                        ? '.' * (passwordData['password'].length ~/ 4)
                         : '',
-                    style:TextStyle(
+                    style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -97,9 +102,9 @@ class SharePage extends StatelessWidget {
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) {
                       if (value == 'email') {
-                        _sharePasswordViaEmail(passwords['password']);
+                        _sharePasswordViaEmail(passwordData['password']);
                       } else if (value == 'qr') {
-                        _showQRCode(context, passwords['password']);
+                        _showQRCode(context, passwordData['password']);
                       }
                     },
                     itemBuilder: (context) => [
