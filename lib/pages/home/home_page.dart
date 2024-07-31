@@ -269,6 +269,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
+              focusNode: _searchFocusNode,
               decoration: InputDecoration(
                 prefixIcon: Icon(Ionicons.search_outline,
                     color: Color.fromARGB(255, 243, 134, 84)),
@@ -285,55 +286,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(8.0),
-              itemCount: _filteredPasswords.length,
-              itemBuilder: (context, index) {
-                final password = _filteredPasswords[index].toMap();
-                final passwordId = _filteredPasswords[index].id;
-                return ListTile(
-                  title: Text(_filteredPasswords[index].username),
-                  subtitle: Text(_filteredPasswords[index].url),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PasswordDetailsPage(
-                            passwordData: password, passwordId: passwordId),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(8.0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 1,
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                return CategoryCard(
-                  title: category.title,
-                  count: category.count,
-                  icon: category.icon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => category.page,
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
+            child: _isSearching ? _buildSearchResults() : _buildCategoryGrid(),
           ),
         ],
       ),
@@ -342,6 +295,60 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color.fromARGB(255, 243, 117, 59),
         child: Icon(Ionicons.add_circle_outline, color: Colors.white),
       ),
+    );
+  }
+
+  Widget _buildSearchResults() {
+    return ListView.builder(
+      padding: EdgeInsets.all(8.0),
+      itemCount: _filteredPasswords.length,
+      itemBuilder: (context, index) {
+        final password = _filteredPasswords[index];
+        return ListTile(
+          title: Text(password.username),
+          subtitle: Text(password.url),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PasswordDetailsPage(
+                  passwordData: password.toMap(),
+                  passwordId: password.id,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildCategoryGrid() {
+    return GridView.builder(
+      padding: EdgeInsets.all(8.0),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 8,
+        childAspectRatio: 1,
+      ),
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        final category = categories[index];
+        return CategoryCard(
+          title: category.title,
+          count: category.count,
+          icon: category.icon,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => category.page,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
