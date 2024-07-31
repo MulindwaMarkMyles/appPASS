@@ -214,10 +214,27 @@ class BuildPageState extends State<BuildPage> {
                 onPressed: generatePassword,
                 child: Text(
                   'Generate',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    fontSize: 17,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 243, 134, 84),
+                  backgroundColor:
+                      Color.fromRGBO(248, 105, 17, 1), // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.transparent
+                          : Color.fromRGBO(248, 105, 17, 1),
+                      width: 1.5,
+                    ),
+                  ),
+                  textStyle: TextStyle(
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
                 ),
               ),
             ),

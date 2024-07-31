@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_pass/services/auth.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:app_pass/authentication/profile.dart'; // Import the profile screen
 
 class PasswordResetScreen extends StatefulWidget {
@@ -53,6 +54,22 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                     );
                   }
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Color.fromRGBO(248, 105, 17, 1), // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.transparent
+                          : Color.fromRGBO(248, 105, 17, 1),
+                      width: 1.5,
+                    ),
+                  ),
+                  textStyle: TextStyle(
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
                 child: Text('Reset Password'),
               ),
             ],
