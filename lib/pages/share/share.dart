@@ -55,7 +55,7 @@ class SharePage extends StatelessWidget {
           final passwords = snapshot.data!;
 
           return ListView.builder(
-            itemCount: passwords,
+            itemCount: passwords.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.all(8),
@@ -76,7 +76,7 @@ class SharePage extends StatelessWidget {
                 ),
                 child: ListTile(
                   title: Text(
-                    password['url'] ?? 'url',
+                    passwords['url'] ?? 'url',
                     style: GoogleFonts.poppins(
                       color: Color.fromARGB(255, 243, 134, 84),
                       fontSize: 16,
@@ -85,7 +85,7 @@ class SharePage extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    password['password'] != null
+                    passwords['password'] != null
                         ? '.' * (password['password'].length ~/ 4)
                         : '',
                     style:TextStyle(
@@ -97,9 +97,9 @@ class SharePage extends StatelessWidget {
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) {
                       if (value == 'email') {
-                        _sharePasswordViaEmail(passwords[index]);
+                        _sharePasswordViaEmail(passwords['password']);
                       } else if (value == 'qr') {
-                        _showQRCode(context, passwords[index]);
+                        _showQRCode(context, passwords['password']);
                       }
                     },
                     itemBuilder: (context) => [
