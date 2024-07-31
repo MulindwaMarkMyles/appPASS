@@ -274,11 +274,11 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(8.0),
               itemCount: _filteredPasswords.length,
               itemBuilder: (context, index) {
-                final  password = _filteredPasswords[index];
-                final passwordId = password.id;
+                final  password = _filteredPasswords[index].toMap();
+                final passwordId = _filteredPasswords[index].id;
                 return ListTile(
-                  title: Text(password.name),
-                  subtitle: Text(password.username),
+                  title: Text(_filteredPasswords[index].name),
+                  subtitle: Text(_filteredPasswords[index].username),
                   onTap: () {
                     Navigator.push(
                       context,
