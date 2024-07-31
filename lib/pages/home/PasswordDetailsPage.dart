@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:app_pass/services/database.dart';
 
 class PasswordDetailsPage extends StatefulWidget {
   final Map<String, dynamic> passwordData;
@@ -21,6 +22,8 @@ class PasswordDetailsPage extends StatefulWidget {
 
 class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _usernameController;
@@ -233,7 +236,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
             _obscurePassword ? Ionicons.eye_off_outline : Ionicons.eye_outline,
           ),
           onPressed: () {
-            _
+            _db.decryptPassword(password);
             setState(() {
               _obscurePassword = !_obscurePassword;
             });
