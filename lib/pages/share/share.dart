@@ -52,13 +52,10 @@ class SharePage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
-          final passwords = snapshot.data?.docs
-                  .map((doc) => doc['password'] as String)
-                  .toList() ??
-              [];
+          final passwords = snapshot.data!;
 
           return ListView.builder(
-            itemCount: passwords.length,
+            itemCount: passwords,
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.all(8),
@@ -79,7 +76,7 @@ class SharePage extends StatelessWidget {
                 ),
                 child: ListTile(
                   title: Text(
-                    passwords[index],
+                    password['url'] ?? 'url',
                     style: GoogleFonts.poppins(
                       color: Color.fromARGB(255, 243, 134, 84),
                       fontSize: 16,
@@ -88,7 +85,9 @@ class SharePage extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    password['url',
+                    password['password'] != null
+                        ? '.' * (password['password'].length ~/ 4)
+                        : '',
                     style:TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
