@@ -259,6 +259,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _searchController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Ionicons.search_outline,
                     color: Color.fromARGB(255, 243, 134, 84)),
