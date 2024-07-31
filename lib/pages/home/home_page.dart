@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _searchQuery = _searchController.text;
       _filteredPasswords = _passwords.where((password) {
-        return password.title.toLowerCase().contains(_searchQuery.toLowerCase());
+        return password.url.toLowerCase().contains(_searchQuery.toLowerCase());
       }).toList();
     });
   }

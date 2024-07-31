@@ -7,6 +7,7 @@ class Password {
   final String name;
   final String username;
   final String password;
+  final String 
   final String id;
 
   Password(
