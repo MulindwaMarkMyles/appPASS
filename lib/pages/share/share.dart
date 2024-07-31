@@ -61,8 +61,40 @@ class SharePage extends StatelessWidget {
             itemCount: passwords.length,
             itemBuilder: (context, index) {
               return Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(250, 230, 216, 1), // Add margin here
+                  border: Border.all(
+                      color: Color.fromARGB(139, 0, 0, 0), width: 1.2),
+                  borderRadius: BorderRadius.circular(9),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey
+                          .withOpacity(0.3), // Shadow color with opacity
+                      spreadRadius: 2, // Spread radius
+                      blurRadius: 5, // Blur radius
+                      offset: Offset(0, 3), // Offset in the x and y direction
+                    ),
+                  ],
+                ),
                 child: ListTile(
-                  title: Text(passwords[index]),
+                  title: Text(
+                    passwords[index],
+                    style: GoogleFonts.poppins(
+                      color: Color.fromARGB(255, 243, 134, 84),
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  subtitle: Text(
+                    password['url',
+                    style:TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) {
                       if (value == 'email') {
