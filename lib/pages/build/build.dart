@@ -158,6 +158,7 @@ class BuildPageState extends State<BuildPage> {
                     Checkbox(
                       value: includeUppercase,
                       checkColor: Color.fromRGBO(248, 105, 17, 1),
+                      fillColor: WidgetStatePropertyAll(Color.fromARGB(255, 243, 220, 205)),
                       onChanged: (value) {
                         setState(() {
                           includeUppercase = value!;
@@ -172,6 +173,7 @@ class BuildPageState extends State<BuildPage> {
                     Checkbox(
                       value: includeLowercase,
                       checkColor: Color.fromRGBO(248, 105, 17, 1),
+                      fillColor: WidgetStatePropertyAll(Color.fromARGB(255, 243, 220, 205)),
                       onChanged: (value) {
                         setState(() {
                           includeLowercase = value!;
@@ -186,6 +188,7 @@ class BuildPageState extends State<BuildPage> {
                     Checkbox(
                       value: includeNumbers,
                       checkColor: Color.fromRGBO(248, 105, 17, 1),
+                      fillColor: WidgetStatePropertyAll(Color.fromARGB(255, 243, 220, 205)),
                       onChanged: (value) {
                         setState(() {
                           includeNumbers = value!;
