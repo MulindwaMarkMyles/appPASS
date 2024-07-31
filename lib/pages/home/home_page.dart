@@ -52,6 +52,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _initializeCategoryCounts();
+    _searchController.addListener(_updateSearchQuery);
+    _fetchPasswords();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<void> _initializeCategoryCounts() async {
@@ -76,6 +84,27 @@ class _HomePageState extends State<HomePage> {
       });
     } catch (e) {
       _showMessage("Failed to load category counts: $e");
+    }
+  }
+
+  void _updateSearchQuery() {
+    setState(() {
+      _searchQuery = _searchController.text;
+      _filteredPasswords = _passwords.where((password) {
+        return password.title.toLowerCase().contains(_searchQuery.toLowerCase());
+      }).toList();
+    });
+  }
+
+  Future<void> _fetchPasswords() async {
+    try {
+      List<Password> passwords = await _db.getThePasswords();
+      setState(() {
+        _passwords = passwords;
+        _filteredPasswords = passwords;
+      });
+    } catch (e) {
+      _showMessage("Failed to load passwords: $e");
     }
   }
 
@@ -228,7 +257,7 @@ class _HomePageState extends State<HomePage> {
               decoration: InputDecoration(
                 prefixIcon: Icon(Ionicons.search_outline,
                     color: Color.fromARGB(255, 243, 134, 84)),
-                hintText: 'Search',
+                hintText: 'Search Passwords',
                 hintStyle: TextStyle(color: Color.fromARGB(255, 9, 3, 3)),
                 filled: true,
                 fillColor: Color.fromRGBO(246, 208, 183, 1),
@@ -238,6 +267,27 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               style: TextStyle(color: Colors.black),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.all(8.0),
+              itemCount: _filteredPasswords.length,
+              itemBuilder: (context, index) {
+                final password = _filteredPasswords[index];
+                return ListTile(
+                  title: Text(password.title),
+                  subtitle: Text(password.username),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PasswordDetailsPage(password: password),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
           Expanded(
