@@ -95,20 +95,26 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   }
 
   Future<void> _togglePasswordVisibility() async {
-    if (_obscurePassword) {
-      try {
+    try {
+      if (_obscurePassword) {
         String decryptedPassword = await _db.decryptPassword(_passwordController.text);
         setState(() {
           _passwordController.text = decryptedPassword;
         });
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Failed to decrypt password. Please try again.')),
-        );
-        print('Error decrypting password: $e');
+      } else {
+        String encryptedPassword = await _db.encryptPassword(_passwordController.text);
+        setState(() {
+          _passwordController.text = encryptedPassword;
+        });
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Failed to process password. Please try again.')),
+      );
+      print('Error processing password: $e');
     }
+
     setState(() {
       _obscurePassword = !_obscurePassword;
     });
