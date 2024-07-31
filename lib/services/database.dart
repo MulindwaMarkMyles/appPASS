@@ -35,6 +35,18 @@ class Password {
       id: data['id'] ?? '',
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'username': username,
+      'password': password,
+      'email': email,
+      'notes': notes,
+      'category': category,
+      'url': url,
+    };
+  }
 }
 
 class DatabaseUser {

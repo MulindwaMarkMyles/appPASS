@@ -284,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            PasswordDetailsPage(passwordData: password, passwordId: passwordId,),
+                            PasswordDetailsPage(passwordData: password, passwordId: passwordId),
                       ),
                     );
                   },
