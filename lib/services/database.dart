@@ -3,15 +3,22 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
 
-
 class Password {
   final String title;
   final String username;
   final String password;
 
-  Password({required this.title, required this.username, required this.password});
-}
+  Password(
+      {required this.title, required this.username, required this.password});
 
+  factory Password.fromMap(Map<String, dynamic> data) {
+    return Password(
+      title: data['title'] ?? '',
+      username: data['username'] ?? '',
+      password: data['password'] ?? '',
+    );
+  }
+}
 
 class DatabaseUser {
   final String name;
@@ -155,11 +162,22 @@ class DatabaseService {
         return [];
       }
 
-      return snapshot.docs
-          .map((doc) => doc.data())
-          .toList();
+      return snapshot.docs.map((doc) => doc.data()).toList();
     } catch (e) {
       throw Exception("Error fetching passwords: $e");
+    }
+  }
+
+  Future<List<Password>> getThePasswords() async {
+    try {
+      QuerySnapshot snapshot =
+          await users.doc(uid).collection('passwords').get();
+      return snapshot.docs.map((doc) {
+        return Password.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      print("Failed to fetch passwords: $e");
+      return [];
     }
   }
 
@@ -172,6 +190,7 @@ class DatabaseService {
     String decryptedPassword = encrypter.decrypt64(password);
     return decryptedPassword;
   }
+
   Future<String> encryptPassword(String password) async {
     final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
     final b64key = Key.fromBase64(base64Encode(key.bytes));
