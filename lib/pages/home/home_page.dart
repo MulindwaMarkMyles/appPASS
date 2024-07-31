@@ -274,7 +274,8 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(8.0),
               itemCount: _filteredPasswords.length,
               itemBuilder: (context, index) {
-                final password = _filteredPasswords[index];
+                final  password = _filteredPasswords[index];
+                final passwordId = password.id;
                 return ListTile(
                   title: Text(password.name),
                   subtitle: Text(password.username),
@@ -282,7 +283,8 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PasswordDetailsPage(password: password),
+                        builder: (context) =>
+                            PasswordDetailsPage(passwordData: password, passwordId: passwordId,),
                       ),
                     );
                   },
