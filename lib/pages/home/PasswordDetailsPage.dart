@@ -233,7 +233,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
             _obscurePassword ? Ionicons.eye_off_outline : Ionicons.eye_outline,
           ),
           onPressed: () {
-            
+            _
             setState(() {
               _obscurePassword = !_obscurePassword;
             });

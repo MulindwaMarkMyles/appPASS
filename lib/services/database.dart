@@ -156,27 +156,14 @@ class DatabaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> decryptPasswords(
-      List<Map<String, dynamic>> encryptedPasswords) async {
+  Future<String> decryptPassword(String password) async {
     final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
     final b64key = Key.fromBase64(base64Encode(key.bytes));
     final fernet = Fernet(b64key);
     final encrypter = Encrypter(fernet);
 
-    return Future.wait(encryptedPasswords.map((password) async {
-      final decryptedPassword =
-          encrypter.decrypt64(password['password'].toString());
-      return {
-        'name': password['name'],
-        'url': password['url'],
-        'username': password['username'],
-        'password': decryptedPassword,
-        'email': password['email'],
-        'notes': password['notes'],
-        'category': password['category'] ??
-            'All', // Assuming each password has a category field
-      };
-    }));
+    String decryptedPassword = await encrypter.decrypt64(password);
+    return decryptedPassword;
   }
 
   Future<Map<String, int>> getCategoryCounts() async {
