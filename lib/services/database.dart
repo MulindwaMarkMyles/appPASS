@@ -7,17 +7,31 @@ class Password {
   final String name;
   final String username;
   final String password;
-  final String 
+  final String email;
+  final String notes;
+  final String category;
+  final String url;
   final String id;
 
   Password(
-      {required this.name, required this.username, required this.password, required this.id});
+      {required this.name,
+      required this.username,
+      required this.password,
+      required this.email,
+      required this.notes,
+      required this.category,
+      required this.url,
+      required this.id});
 
   factory Password.fromMap(Map<String, dynamic> data) {
     return Password(
       name: data['title'] ?? '',
       username: data['username'] ?? '',
       password: data['password'] ?? '',
+      email: data['email'] ?? '',
+      notes: data['notes'] ?? '',
+      category: data['category'] ?? '',
+      url: data['url'] ?? '',
       id: data['id'] ?? '',
     );
   }
