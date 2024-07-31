@@ -25,7 +25,7 @@ class Password {
 
   factory Password.fromMap(Map<String, dynamic> data) {
     return Password(
-      name: data['title'] ?? '',
+      name: data['name'] ?? '',
       username: data['username'] ?? '',
       password: data['password'] ?? '',
       email: data['email'] ?? '',
