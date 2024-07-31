@@ -34,7 +34,9 @@ class _HomePageState extends State<HomePage> {
   int _securityCount = 0;
   int _deletedCount = 0;
   String password = '';
+  bool _isSearching = false;
   List<List<dynamic>> _data = [];
+  final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   List<Password> _passwords = [];
@@ -53,13 +55,21 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _initializeCategoryCounts();
     _searchController.addListener(_updateSearchQuery);
+    _searchFocusNode.addListener(_onSearchFocusChange);
     _fetchPasswords();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
+  }
+
+  void _onSearchFocusChange() {
+    setState(() {
+      _isSearching = _searchFocusNode.hasFocus;
+    });
   }
 
   Future<void> _initializeCategoryCounts() async {
@@ -90,7 +100,6 @@ class _HomePageState extends State<HomePage> {
   void _updateSearchQuery() {
     setState(() {
       _searchQuery = _searchController.text;
-      print("\n\n$_searchQuery \n\n");
       _filteredPasswords = _passwords.where((password) {
         // Adjust the condition here if needed to search other fields
         return password.username
