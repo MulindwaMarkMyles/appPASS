@@ -276,7 +276,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final password = _filteredPasswords[index];
                 return ListTile(
-                  title: Text(password.title),
+                  title: Text(password.name),
                   subtitle: Text(password.username),
                   onTap: () {
                     Navigator.push(

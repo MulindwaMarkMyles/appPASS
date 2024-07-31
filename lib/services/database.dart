@@ -4,18 +4,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
 
 class Password {
-  final String title;
+  final String name;
   final String username;
   final String password;
+  final String id;
 
   Password(
-      {required this.title, required this.username, required this.password});
+      {required this.name, required this.username, required this.password, required this.id});
 
   factory Password.fromMap(Map<String, dynamic> data) {
     return Password(
-      title: data['title'] ?? '',
+      name: data['title'] ?? '',
       username: data['username'] ?? '',
       password: data['password'] ?? '',
+      id: data['id'] ?? '',
     );
   }
 }
