@@ -28,6 +28,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   late TextEditingController _emailController;
   late TextEditingController _websiteController;
   late TextEditingController _notesController;
+  bool _obscurePassword = true;
 
   @override
   void initState() {
@@ -43,6 +44,17 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
         TextEditingController(text: widget.passwordData['url']);
     _notesController =
         TextEditingController(text: widget.passwordData['notes']);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _emailController.dispose();
+    _websiteController.dispose();
+    _notesController.dispose();
+    super.dispose();
   }
 
   Future<void> _updatePassword() async {
@@ -120,19 +132,11 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
                     color: Color.fromRGBO(248, 105, 17, 1)),
               ),
               SizedBox(height: 20),
-              Row(
-                children: [
-                  buildTextFormField(
-                    controller: _passwordController,
-                    labelText: 'Password',
-                    prefixIcon: Icon(Ionicons.lock_closed_outline,
-                        color: Color.fromRGBO(248, 105, 17, 1)),
-                  ),
-                  IconButton(
-                    icon: Icon(Ionicons.eye_outline),
-                    onPressed: (){},
-                  ),
-                ],
+              buildPasswordFormField(
+                controller: _passwordController,
+                labelText: 'Password',
+                prefixIcon: Icon(Ionicons.lock_closed_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
               SizedBox(height: 20),
               buildTextFormField(
@@ -191,11 +195,49 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
     required TextEditingController controller,
   }) {
     return TextFormField(
-      // maxLength: 20,
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: prefixIcon,
+        labelStyle: TextStyle(
+          color: Colors.black,
+          fontFamily: GoogleFonts.poppins().fontFamily,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+      ),
+      style: TextStyle(
+        color: Colors.black,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      ),
+    );
+  }
+
+  Widget buildPasswordFormField({
+    required String labelText,
+    required Icon prefixIcon,
+    required TextEditingController controller,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: _obscurePassword,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: prefixIcon,
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword ? Ionicons.eye_off_outline : Ionicons.eye_outline,
+          ),
+          onPressed: () {
+            setState(() {
+              _obscurePassword = !_obscurePassword;
+            });
+          },
+        ),
         labelStyle: TextStyle(
           color: Colors.black,
           fontFamily: GoogleFonts.poppins().fontFamily,
