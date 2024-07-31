@@ -94,6 +94,26 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
     }
   }
 
+  Future<void> _togglePasswordVisibility() async {
+    if (_obscurePassword) {
+      try {
+        String decryptedPassword = await _db.decryptPassword(_passwordController.text);
+        setState(() {
+          _passwordController.text = decryptedPassword;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Failed to decrypt password. Please try again.')),
+        );
+        print('Error decrypting password: $e');
+      }
+    }
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -235,12 +255,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
           icon: Icon(
             _obscurePassword ? Ionicons.eye_off_outline : Ionicons.eye_outline,
           ),
-          onPressed: () {
-            // _db.decryptPassword(password);
-            setState(() {
-              _obscurePassword = !_obscurePassword;
-            });
-          },
+          onPressed: _togglePasswordVisibility,
         ),
         labelStyle: TextStyle(
           color: Colors.black,
