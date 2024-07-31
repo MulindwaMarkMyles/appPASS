@@ -298,34 +298,34 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          // Expanded(
-          //   child: GridView.builder(
-          //     padding: EdgeInsets.all(8.0),
-          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //       crossAxisCount: 2,
-          //       mainAxisSpacing: 8,
-          //       crossAxisSpacing: 8,
-          //       childAspectRatio: 1,
-          //     ),
-          //     itemCount: categories.length,
-          //     itemBuilder: (context, index) {
-          //       final category = categories[index];
-          //       return CategoryCard(
-          //         title: category.title,
-          //         count: category.count,
-          //         icon: category.icon,
-          //         onTap: () {
-          //           Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //               builder: (context) => category.page,
-          //             ),
-          //           );
-          //         },
-          //       );
-          //     },
-          //   ),
-          // ),
+          Expanded(
+            child: GridView.builder(
+              padding: EdgeInsets.all(8.0),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 1,
+              ),
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return CategoryCard(
+                  title: category.title,
+                  count: category.count,
+                  icon: category.icon,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => category.page,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
