@@ -159,6 +159,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Uppercase'),
                     Checkbox(
                       value: includeUppercase,
+                      fillColor: Color.fromRGBO(248, 105, 17, 1),
                       onChanged: (value) {
                         setState(() {
                           includeUppercase = value!;
@@ -172,6 +173,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Lowercase'),
                     Checkbox(
                       value: includeLowercase,
+                      fillColor: Color.fromRGBO(248, 105, 17, 1),
                       onChanged: (value) {
                         setState(() {
                           includeLowercase = value!;
@@ -199,7 +201,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Special Characters'),
                     Checkbox(
                       value: includeSpecialChars,
-                      fillColor: Color(Color.fromRGBO(248, 105, 17, 1)),
+                      fillColor:Color.fromRGBO(248, 105, 17, 1),
                       onChanged: (value) {
                         setState(() {
                           includeSpecialChars = value!;
