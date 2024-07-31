@@ -165,6 +165,15 @@ class DatabaseService {
     String decryptedPassword = await encrypter.decrypt64(password);
     return decryptedPassword;
   }
+  Future<String> encryptPassword(String password) async {
+    final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
+    final b64key = Key.fromBase64(base64Encode(key.bytes));
+    final fernet = Fernet(b64key);
+    final encrypter = Encrypter(fernet);
+
+    String encryptedPassword = await encrypter.encrypt(password).base64;
+    return encryptedPassword;
+  }
 
   Future<Map<String, int>> getCategoryCounts() async {
     try {
