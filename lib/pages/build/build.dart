@@ -90,10 +90,8 @@ class BuildPageState extends State<BuildPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-           
             SizedBox(height: 20),
             Text(
               'Generate strong secure passwords to keep your account safe online',
