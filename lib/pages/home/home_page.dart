@@ -9,6 +9,7 @@ import 'codes.dart';
 import 'wifi.dart';
 import 'security.dart';
 import 'deleted.dart';
+import 'package:app_pass/pages/home/PasswordDetailsPage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
