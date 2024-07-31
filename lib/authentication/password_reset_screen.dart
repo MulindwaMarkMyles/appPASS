@@ -32,8 +32,25 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Ionicons.mail_outline),
+                  labelText: "Email",
+                  prefixIcon: Icon(Ionicons.mail_outline,
+                      color: Color.fromRGBO(248, 105, 17, 1)),
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                ),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
