@@ -62,6 +62,13 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
 
   Future<void> _updatePassword() async {
     if (_formKey.currentState?.validate() ?? false) {
+      if (!_obscurePassword) {
+        String encryptedPassword =
+            await _db.encryptPassword(_passwordController.text);
+        setState(() {
+          _passwordController.text = encryptedPassword;
+        });
+      }
       final updatedData = {
         'name': _nameController.text,
         'username': _usernameController.text,
@@ -97,12 +104,14 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   Future<void> _togglePasswordVisibility() async {
     try {
       if (_obscurePassword) {
-        String decryptedPassword = await _db.decryptPassword(_passwordController.text);
+        String decryptedPassword =
+            await _db.decryptPassword(_passwordController.text);
         setState(() {
           _passwordController.text = decryptedPassword;
         });
       } else {
-        String encryptedPassword = await _db.encryptPassword(_passwordController.text);
+        String encryptedPassword =
+            await _db.encryptPassword(_passwordController.text);
         setState(() {
           _passwordController.text = encryptedPassword;
         });
