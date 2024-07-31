@@ -350,7 +350,7 @@ class _HomePageState extends State<HomePage> {
               password.url,
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),
