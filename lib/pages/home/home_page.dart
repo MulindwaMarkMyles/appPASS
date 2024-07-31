@@ -237,6 +237,15 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+  
+  void _cancelSearch() {
+    _searchController.clear();
+    _searchFocusNode.unfocus();
+    setState(() {
+      _isSearching = false;
+      _filteredPasswords = _passwords;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -273,6 +282,13 @@ class _HomePageState extends State<HomePage> {
               decoration: InputDecoration(
                 prefixIcon: Icon(Ionicons.search_outline,
                     color: Color.fromARGB(255, 243, 134, 84)),
+                suffixIcon: _isSearching
+                    ? IconButton(
+                        icon: Icon(Ionicons.close_outline,
+                            color: Color.fromARGB(255, 243, 134, 84)),
+                        onPressed: _cancelSearch,
+                      )
+                    : null,
                 hintText: 'Search Passwords',
                 hintStyle: TextStyle(color: Color.fromARGB(255, 9, 3, 3)),
                 filled: true,
