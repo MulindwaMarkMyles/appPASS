@@ -120,11 +120,19 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
                     color: Color.fromRGBO(248, 105, 17, 1)),
               ),
               SizedBox(height: 20),
-              buildTextFormField(
-                controller: _passwordController,
-                labelText: 'Password',
-                prefixIcon: Icon(Ionicons.lock_closed_outline,
-                    color: Color.fromRGBO(248, 105, 17, 1)),
+              Row(
+                children: [
+                  buildTextFormField(
+                    controller: _passwordController,
+                    labelText: 'Password',
+                    prefixIcon: Icon(Ionicons.lock_closed_outline,
+                        color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                  IconButton(
+                    icon: Icon(Ionicons.eye_outline),
+                    onPressed: (){},
+                  ),
+                ],
               ),
               SizedBox(height: 20),
               buildTextFormField(
