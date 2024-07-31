@@ -35,6 +35,10 @@ class _HomePageState extends State<HomePage> {
   int _deletedCount = 0;
   String password = '';
   List<List<dynamic>> _data = [];
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  List<Password> _passwords = [];
+  List<Password> _filteredPasswords = [];
   final List<Category> categories = [
     Category('All', 0, Ionicons.key_outline, All()),
     Category('Passkeys', 0, Ionicons.person_outline, PasskeysPage()),
