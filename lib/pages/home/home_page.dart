@@ -99,7 +99,6 @@ class _HomePageState extends State<HomePage> {
   Future<void> _fetchPasswords() async {
     try {
       List<Password> passwords = await _db.getThePasswords();
-      print(passwords);
       setState(() {
         _passwords = passwords;
         _filteredPasswords = passwords;
