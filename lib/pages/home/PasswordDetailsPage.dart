@@ -183,6 +183,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
     required TextEditingController controller,
   }) {
     return TextFormField(
+      maxLength: 20,
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
