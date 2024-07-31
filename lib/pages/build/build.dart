@@ -1,5 +1,3 @@
-// ignore_for_file: sort_child_properties_last
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math';
@@ -159,7 +157,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Uppercase'),
                     Checkbox(
                       value: includeUppercase,
-                      fillColor: Color.fromRGBO(248, 105, 17, 1),
+                      checkColor: Color.fromRGBO(248, 105, 17, 1),
                       onChanged: (value) {
                         setState(() {
                           includeUppercase = value!;
@@ -173,7 +171,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Lowercase'),
                     Checkbox(
                       value: includeLowercase,
-                      fillColor: Color.fromRGBO(248, 105, 17, 1),
+                      checkColor: Color.fromRGBO(248, 105, 17, 1),
                       onChanged: (value) {
                         setState(() {
                           includeLowercase = value!;
@@ -187,7 +185,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Numbers'),
                     Checkbox(
                       value: includeNumbers,
-                      fillColor: Color.fromRGBO(248, 105, 17, 1),
+                      checkColor: MaterialStateProperty.all(Color.fromRGBO(248, 105, 17, 1)),
                       onChanged: (value) {
                         setState(() {
                           includeNumbers = value!;
@@ -201,7 +199,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Special Characters'),
                     Checkbox(
                       value: includeSpecialChars,
-                      fillColor:Color.fromRGBO(248, 105, 17, 1),
+                      checkColor: MaterialStateProperty.all(Color.fromRGBO(248, 105, 17, 1)),
                       onChanged: (value) {
                         setState(() {
                           includeSpecialChars = value!;
