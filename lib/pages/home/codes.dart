@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 class Codes extends StatefulWidget {
+  const Codes({Key? key}) : super(key: key);
+
   @override
   CodesState createState() => CodesState();
 }

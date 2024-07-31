@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'PasswordDetailsPage.dart';
@@ -7,6 +6,8 @@ import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class All extends StatefulWidget {
+  const All({Key? key}) : super(key: key);
+
   @override
   _AllState createState() => _AllState();
 }

@@ -26,6 +26,8 @@ import 'package:app_pass/services/database.dart';
 
 
 class Deleted extends StatefulWidget {
+  const Deleted({Key? key}) : super(key: key);
+
   @override
   DeletedState createState() => DeletedState();
 }

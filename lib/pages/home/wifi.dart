@@ -6,6 +6,8 @@ import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Wifi extends StatefulWidget {
+  const Wifi({Key? key}) : super(key: key);
+
   @override
   WifiState createState() => WifiState();
 }

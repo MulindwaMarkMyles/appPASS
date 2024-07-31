@@ -104,8 +104,8 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 14),
               IconButton(onPressed: () async {
-                  UserCredential? the_user =  await _auth.signInWithGoogle();
-                  if (the_user != null) {
+                  UserCredential? theUser =  await _auth.signInWithGoogle();
+                  if (theUser != null) {
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (_) => BottomNavBar()));}
                   },

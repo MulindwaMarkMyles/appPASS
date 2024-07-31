@@ -105,7 +105,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService _auth = AuthService();
+    final AuthService auth = AuthService();
     final Color scaffoldBackgroundColor = Color.fromARGB(255, 243, 220, 205);
     final Color iconColor = Color.fromARGB(255, 243, 134, 84);
 
@@ -263,7 +263,7 @@ class SettingsPage extends StatelessWidget {
               ),
               onPressed: () {
                 print('Logout');
-                _auth.signOut();
+                auth.signOut();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (_) => LoginOrSignup()),
                 );
@@ -306,7 +306,7 @@ class AboutDetailScreen extends StatelessWidget {
   final String title;
   final String content;
 
-  AboutDetailScreen({required this.title, required this.content});
+  const AboutDetailScreen({Key? key, required this.title, required this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

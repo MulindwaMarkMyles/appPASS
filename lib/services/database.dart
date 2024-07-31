@@ -149,7 +149,7 @@ class DatabaseService {
       }
 
       return snapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
+          .map((doc) => doc.data())
           .toList();
     } catch (e) {
       throw Exception("Error fetching passwords: $e");
@@ -162,7 +162,7 @@ class DatabaseService {
     final fernet = Fernet(b64key);
     final encrypter = Encrypter(fernet);
 
-    String decryptedPassword = await encrypter.decrypt64(password);
+    String decryptedPassword = encrypter.decrypt64(password);
     return decryptedPassword;
   }
   Future<String> encryptPassword(String password) async {
@@ -171,7 +171,7 @@ class DatabaseService {
     final fernet = Fernet(b64key);
     final encrypter = Encrypter(fernet);
 
-    String encryptedPassword = await encrypter.encrypt(password).base64;
+    String encryptedPassword = encrypter.encrypt(password).base64;
     return encryptedPassword;
   }
 
@@ -181,7 +181,7 @@ class DatabaseService {
       final counts = <String, int>{};
 
       for (var doc in snapshot.docs) {
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data();
         final category = data['category'] ?? 'All';
         if (counts.containsKey(category)) {
           counts[category] = counts[category]! + 1;
@@ -241,7 +241,7 @@ class DatabaseService {
           .get();
 
       return querySnapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data();
         final id = doc.id;
         return {'id': id, ...data}; // Include the document ID with the data
       }).toList();

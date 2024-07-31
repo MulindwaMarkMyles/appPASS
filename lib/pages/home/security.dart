@@ -6,6 +6,8 @@ import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Security extends StatefulWidget {
+  const Security({Key? key}) : super(key: key);
+
   @override
   SecurityState createState() => SecurityState();
 }

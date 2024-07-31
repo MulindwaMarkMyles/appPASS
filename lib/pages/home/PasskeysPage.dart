@@ -5,7 +5,9 @@ import 'PasswordDetailsPage.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class PasskeysPage extends StatefulWidget { // Changed the class name to 'PasskeysPage'
+class PasskeysPage extends StatefulWidget {
+  const PasskeysPage({Key? key}) : super(key: key);
+ // Changed the class name to 'PasskeysPage'
   @override
   PasskeysPageState createState() => PasskeysPageState();
 }
