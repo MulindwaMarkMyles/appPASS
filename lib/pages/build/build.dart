@@ -185,6 +185,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Numbers'),
                     Checkbox(
                       value: includeNumbers,
+                      fillColor: Color.fromRGBO(248, 105, 17, 1),
                       onChanged: (value) {
                         setState(() {
                           includeNumbers = value!;
@@ -198,6 +199,7 @@ class BuildPageState extends State<BuildPage> {
                     Text('Special Characters'),
                     Checkbox(
                       value: includeSpecialChars,
+                      fillColor: Color(Color.fromRGBO(248, 105, 17, 1)),
                       onChanged: (value) {
                         setState(() {
                           includeSpecialChars = value!;
