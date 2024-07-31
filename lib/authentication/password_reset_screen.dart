@@ -70,7 +70,14 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                     fontFamily: GoogleFonts.poppins().fontFamily,
                   ),
                 ),
-                child: Text('Reset Password'),
+                child: Text(
+                  'Reset Password',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    fontSize: 17,
+                  ),
+                ),
               ),
             ],
           ),
