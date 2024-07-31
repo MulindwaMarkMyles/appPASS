@@ -278,8 +278,8 @@ class _HomePageState extends State<HomePage> {
                 final password = _filteredPasswords[index].toMap();
                 final passwordId = _filteredPasswords[index].id;
                 return ListTile(
-                  title: Text(_filteredPasswords[index].name),
-                  subtitle: Text(_filteredPasswords[index].username),
+                  title: Text(_filteredPasswords[index].username),
+                  subtitle: Text(_filteredPasswords[index].url),
                   onTap: () {
                     Navigator.push(
                       context,
