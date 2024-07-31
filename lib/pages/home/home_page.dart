@@ -99,6 +99,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _fetchPasswords() async {
     try {
       List<Password> passwords = await _db.getThePasswords();
+      print(passwords);
       setState(() {
         _passwords = passwords;
         _filteredPasswords = passwords;
@@ -274,7 +275,7 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(8.0),
               itemCount: _filteredPasswords.length,
               itemBuilder: (context, index) {
-                final  password = _filteredPasswords[index].toMap();
+                final password = _filteredPasswords[index].toMap();
                 final passwordId = _filteredPasswords[index].id;
                 return ListTile(
                   title: Text(_filteredPasswords[index].name),
@@ -283,8 +284,8 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            PasswordDetailsPage(passwordData: password, passwordId: passwordId),
+                        builder: (context) => PasswordDetailsPage(
+                            passwordData: password, passwordId: passwordId),
                       ),
                     );
                   },
@@ -292,34 +293,34 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(8.0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 1,
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                return CategoryCard(
-                  title: category.title,
-                  count: category.count,
-                  icon: category.icon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => category.page,
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
+          // Expanded(
+          //   child: GridView.builder(
+          //     padding: EdgeInsets.all(8.0),
+          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //       crossAxisCount: 2,
+          //       mainAxisSpacing: 8,
+          //       crossAxisSpacing: 8,
+          //       childAspectRatio: 1,
+          //     ),
+          //     itemCount: categories.length,
+          //     itemBuilder: (context, index) {
+          //       final category = categories[index];
+          //       return CategoryCard(
+          //         title: category.title,
+          //         count: category.count,
+          //         icon: category.icon,
+          //         onTap: () {
+          //           Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //               builder: (context) => category.page,
+          //             ),
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
