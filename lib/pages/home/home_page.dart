@@ -60,7 +60,6 @@ class _HomePageState extends State<HomePage> {
     _fetchPasswords();
   }
 
-
   void _refreshData() async {
     await _initializeCategoryCounts();
     await _fetchPasswords();
@@ -280,6 +279,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: RefreshIndicator(
+        color: Color.fromARGB(255, 243, 134, 84),
         onRefresh: _refreshDataFuture,
         child: Column(
           children: [
