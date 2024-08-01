@@ -48,7 +48,7 @@ class WifiState extends State<Wifi> {
             ),
             SizedBox(width: 10),
             Text(
-              'All Passwords',
+              'Wi-fi Passwords',
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
                   color: Color.fromARGB(255, 243, 134, 84),
