@@ -1,6 +1,6 @@
 import os, time
 
-count:int = 0
+count:int = 1
 
 while(True):
     os.system("git add .")

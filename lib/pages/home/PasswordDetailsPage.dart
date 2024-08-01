@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/services/database.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:app_pass/actions/biometric_stub.dart';
 
 class PasswordDetailsPage extends StatefulWidget {
   final Map<String, dynamic> passwordData;
@@ -32,6 +34,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   late TextEditingController _websiteController;
   late TextEditingController _notesController;
   bool _obscurePassword = true;
+  bool authenticated = false;
 
   @override
   void initState() {
@@ -104,11 +107,22 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   Future<void> _togglePasswordVisibility() async {
     try {
       if (_obscurePassword) {
-        String decryptedPassword =
-            await _db.decryptPassword(_passwordController.text);
-        setState(() {
-          _passwordController.text = decryptedPassword;
-        });
+        if (kIsWeb) {
+          authenticated = true;
+        } else {
+          authenticated = await isAuthenticated();
+        }
+        if (authenticated) {
+          String decryptedPassword =
+              await _db.decryptPassword(_passwordController.text);
+          setState(() {
+            _passwordController.text = decryptedPassword;
+          });
+        } else {
+          _obscurePassword = !_obscurePassword;
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Authentication Failed.")));
+        }
       } else {
         String encryptedPassword =
             await _db.encryptPassword(_passwordController.text);
