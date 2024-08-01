@@ -76,7 +76,7 @@ class _AllState extends State<All> {
         builder: (context, snapshot) {
           // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: LoadingAnimationWidget.sta);
           }
           // Show an error message if an error occurs
           else if (snapshot.hasError) {
