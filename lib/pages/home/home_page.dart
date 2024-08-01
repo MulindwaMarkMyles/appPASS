@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
     await _initializeCategoryCounts();
     await _fetchPasswords();
   }
-  
+
   Future<void> _refreshDataFuture() async {
     await _initializeCategoryCounts();
     await _fetchPasswords();
@@ -222,13 +222,6 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.pop(context);
                   _importPasswords(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Ionicons.refresh_circle_outline),
-                title: Text('Refresh Counts'),
-                onTap: () {
-                  _initializeCategoryCounts();
                 },
               ),
               ListTile(
