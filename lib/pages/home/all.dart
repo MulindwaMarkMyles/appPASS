@@ -4,6 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import 'PasswordDetailsPage.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // Define the All StatefulWidget
 class All extends StatefulWidget {
