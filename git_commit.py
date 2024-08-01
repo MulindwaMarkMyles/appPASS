@@ -5,7 +5,7 @@ count:int = 1
 while(True):
     os.system("git add .")
     time.sleep(10)
-    os.system("git commit -m \"homepage\" ")
+    os.system("git commit -m \"codes.dart\" ")
     time.sleep(10)
     os.system("git push origin mulindwa")
     print(f"Done pushing - {count}")

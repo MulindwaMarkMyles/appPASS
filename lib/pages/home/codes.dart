@@ -5,7 +5,7 @@ import 'PasswordDetailsPage.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
+// Define the Codes StatefulWidget
 class Codes extends StatefulWidget {
   const Codes({Key? key}) : super(key: key);
 
