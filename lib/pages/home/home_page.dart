@@ -69,12 +69,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void didUpdateWidget(covariant HomePage oldWidget) {
     super.didUpdateWidget(oldWidget);
+    print('didUpdateWidget called');
     _refreshData();
   }
 
   void _refreshData() async {
+    print('Refreshing data...');
     await _initializeCategoryCounts();
     await _fetchPasswords();
+    print('Data refreshed');
   }
 
   @override
