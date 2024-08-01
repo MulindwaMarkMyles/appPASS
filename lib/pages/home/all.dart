@@ -167,7 +167,7 @@ class _AllState extends State<All> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                shape: S
+                                shape: ShapeBorder(),
                                 title: Text('Delete Password',
                                     style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w500)),
