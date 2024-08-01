@@ -31,18 +31,21 @@ class AddPasswordScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // ListTile for displaying a placeholder icon and text
             ListTile(
               leading: CircleAvatar(
                 child: Text('U'),
               ),
               title: const Text('uh'),
             ),
+            // TextField for entering the username
             const TextField(
               decoration: InputDecoration(
                 labelText: 'Username',
                 hintText: 'user',
               ),
             ),
+            // TextField for selecting a group with a dropdown icon
             const TextField(
               decoration: InputDecoration(
                 labelText: 'Group',
@@ -50,13 +53,15 @@ class AddPasswordScreen extends StatelessWidget {
                 suffixIcon: Icon(Icons.arrow_drop_down),
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 16.0), // Spacing between elements
+            
+             // TextField for adding notes with multiple lines
             const TextField(
               decoration: InputDecoration(
                 labelText: 'Notes',
                 hintText: 'Add Notes',
               ),
-              maxLines: 4,
+              maxLines: 4, // Allow multiple lines for notes
             ),
           ],
         ),
