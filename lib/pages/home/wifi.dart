@@ -33,6 +33,12 @@ class WifiState extends State<Wifi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           'Wi-Fi Passwords',
           style: GoogleFonts.poppins(

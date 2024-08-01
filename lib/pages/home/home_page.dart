@@ -61,6 +61,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initializeCategoryCounts();
+    _fetchPasswords();
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     _searchFocusNode.dispose();
@@ -68,8 +75,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onSearchFocusChange() {
-    _fetchPasswords();
-    _initializeCategoryCounts();
+    // _fetchPasswords();
+    // _initializeCategoryCounts();
     setState(() {
       _isSearching = _searchFocusNode.hasFocus;
     });
