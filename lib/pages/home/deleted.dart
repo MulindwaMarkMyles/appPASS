@@ -12,7 +12,7 @@ Future<List<Map<String, dynamic>>> _fetchDeletedPasswords() async {
         .get();
 
     return querySnapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>;
+      final data = doc.data();
       final id = doc.id;
       return {'id': id, ...data}; // Include the document ID with the data
     }).toList();
@@ -50,6 +50,8 @@ Future<void> _permanentlyDeletePassword(String passwordId) async {
 }
 
 class Deleted extends StatefulWidget {
+  const Deleted({Key? key}) : super(key: key);
+
   @override
   DeletedState createState() => DeletedState();
 }

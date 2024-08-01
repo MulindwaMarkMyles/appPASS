@@ -109,7 +109,7 @@ class DatabaseService {
     try {
       final snapshot = await users.doc(uid).collection('passwords').get();
       return snapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
+          .map((doc) => doc.data())
           .toList();
     } catch (e) {
       throw Exception("Error fetching passwords: $e");

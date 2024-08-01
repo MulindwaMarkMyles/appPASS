@@ -382,10 +382,10 @@ class AddPasswordPageState extends State<AddPasswordPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _savePassword,
-                child: Text('Save Password'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 243, 117, 59),
                 ),
+                child: Text('Save Password'),
               ),
             ],
           ),

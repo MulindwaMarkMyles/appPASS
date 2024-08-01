@@ -13,7 +13,7 @@ Future<List<Map<String, dynamic>>> _fetchPasswords(String category) async {
         .get();
 
     return querySnapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>;
+      final data = doc.data();
       final id = doc.id;
       return {'id': id, ...data}; // Include the document ID with the data
     }).toList();
@@ -35,6 +35,8 @@ Future<void> _movePasswordToDeleted(String passwordId) async {
 }
 
 class Wifi extends StatefulWidget {
+  const Wifi({Key? key}) : super(key: key);
+
   @override
   WifiState createState() => WifiState();
 }
