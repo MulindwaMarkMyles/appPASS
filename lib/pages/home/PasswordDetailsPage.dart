@@ -106,11 +106,11 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   }
 
   Future<Color> getPasswordStrengthColor(String password) async {
-    String decyptedPass = password;
+    String decyptedPass;
     if (_obscurePassword) {
-      String decyptedPass = await _db.decryptPassword(password);
+      decyptedPass = await _db.decryptPassword(password);
     } else {
-      String decyptedPass = password;
+      decyptedPass = password;
     }
     double strength = estimatePasswordStrength(decyptedPass);
 
