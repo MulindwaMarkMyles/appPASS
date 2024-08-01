@@ -146,6 +146,7 @@ class DeletedState extends State<Deleted> {
                     ),
                   ),
                   trailing: Row(
+                    // Trailing icons for permanently deleting
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
