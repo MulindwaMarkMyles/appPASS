@@ -280,6 +280,8 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: LiquidPullToRefresh(
+        showChildOpacityTransition: false,
+        springAnimationDurationInMilliseconds: 350,
         backgroundColor: Color.fromARGB(255, 243, 134, 84),
         color:Color.fromRGBO(246, 208, 183, 1) ,
         onRefresh: _refreshDataFuture,
