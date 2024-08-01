@@ -63,8 +63,18 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _initializeCategoryCounts();
-    _fetchPasswords();
+    // No need to re-fetch here if not necessary; use another mechanism
+  }
+
+  @override
+  void didUpdateWidget(covariant HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _refreshData();
+  }
+
+  void _refreshData() async {
+    await _initializeCategoryCounts();
+    await _fetchPasswords();
   }
 
   @override
