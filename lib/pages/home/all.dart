@@ -10,11 +10,11 @@ class All extends StatefulWidget {
   const All({Key? key}) : super(key: key);
 
   @override
-  _AllState createState() => _AllState();
+  AllState createState() => AllState();
 }
 
 // Define the state for All widget
-class _AllState extends State<All> {
+class AllState extends State<All> {
   // Initialize a Future to fetch passwords
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
   // Initialize the DatabaseService with the current user's UID
@@ -56,6 +56,7 @@ class _AllState extends State<All> {
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _passwordsFuture,
         builder: (context, snapshot) {
+           // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
