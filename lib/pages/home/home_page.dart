@@ -15,6 +15,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -278,8 +279,9 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
-      body: RefreshIndicator(
-        color: Color.fromARGB(255, 243, 134, 84),
+      body: LiquidPullToRefresh(
+        backgroundColor: Color.fromARGB(255, 243, 134, 84),
+        color:Color.fromRGBO(246, 208, 183, 1) ,
         onRefresh: _refreshDataFuture,
         child: Column(
           children: [
