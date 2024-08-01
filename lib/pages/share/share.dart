@@ -4,17 +4,22 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ionicons/ionicons.dart';
 
 class SharePage extends StatelessWidget {
-  SharePage({Key? key, required this.password}) : super(key: key);
 
-  final String password;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Row(
           children: [
             Image.asset(
@@ -61,7 +66,8 @@ class SharePage extends StatelessWidget {
           return ListView.builder(
             itemCount: passwords.length,
             itemBuilder: (context, index) {
-              final passwordData = passwords[index].data() as Map<String, dynamic>;
+              final passwordData =
+                  passwords[index].data() as Map<String, dynamic>;
 
               return Container(
                 margin: EdgeInsets.all(8),
@@ -72,7 +78,8 @@ class SharePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(9),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3), // Shadow color with opacity
+                      color: Colors.grey
+                          .withOpacity(0.3), // Shadow color with opacity
                       spreadRadius: 2, // Spread radius
                       blurRadius: 5, // Blur radius
                       offset: Offset(0, 3), // Offset in the x and y direction
