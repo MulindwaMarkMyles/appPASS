@@ -304,7 +304,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
     required String labelText,
     required Icon prefixIcon,
     required TextEditingController controller,
-    required 
+    required borderColor,
   }) {
     return TextFormField(
       controller: controller,
