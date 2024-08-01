@@ -104,10 +104,12 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
     }
   }
 
-  Color getPasswordStrengthColor(String password) {
-    if (password.length < 6) {
+  Future<Color> getPasswordStrengthColor(String password) async {
+    String _decypted_pass = await _db.decryptPassword(password);
+
+    if (_decypted_pass.length < 6) {
       return Colors.red; // Weak password
-    } else if (password.length < 10) {
+    } else if (_decypted_pass.length < 10) {
       return Colors.orange; // Medium password
     } else {
       return Colors.green; // Strong password
@@ -302,6 +304,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
     required String labelText,
     required Icon prefixIcon,
     required TextEditingController controller,
+    required 
   }) {
     return TextFormField(
       controller: controller,
