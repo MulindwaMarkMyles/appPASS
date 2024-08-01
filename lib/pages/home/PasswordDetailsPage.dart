@@ -106,11 +106,12 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   }
 
   Future<Color> getPasswordStrengthColor(String password) async {
-    String _decypted_pass = await _db.decryptPassword(password);
+    String decypted_pass = await _db.decryptPassword(password);
+    double strength = estimatePasswordStrength(decypted_pass);
 
-    if (_decypted_pass.length < 6) {
+    if (strength < 0.3) {
       return Colors.red; // Weak password
-    } else if (_decypted_pass.length < 10) {
+    } else if (strength < 0.7) {
       return Colors.orange; // Medium password
     } else {
       return Colors.green; // Strong password
