@@ -5,26 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_pass/services/database.dart';
 
 
-// Function to undo the deletion of a password
-// Future<void> _undoDeletePassword(
-//     String passwordId, String originalCategory) async {
-//   try {
-//     await FirebaseFirestore.instance
-//         .collection('passwords')
-//         .doc(passwordId)
-//         .update({
-//       'category': originalCategory,
-//       'originalCategory':
-//           FieldValue.delete(), // Remove the original category field
-//     });
-//   } catch (e) {
-//     print('Error undoing delete: $e');
-//   }
-// }
-
-// Function to permanently delete a password
-
-
 class Deleted extends StatefulWidget {
   const Deleted({Key? key}) : super(key: key);
 
