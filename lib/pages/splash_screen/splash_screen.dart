@@ -20,22 +20,33 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _checkBiometricSupport();
+    _startSplashScreen();
   }
 
-  Future<void> _checkBiometricSupport() async {
-    bool authenticated = false;
-    if (kIsWeb) {
-      authenticated = true;
-    } else {
-      authenticated = await isAuthenticated();
-    }
+  void _startSplashScreen() {
+    // Display the splash screen for 3 seconds before checking biometric support
+    Timer(Duration(seconds: 3), () async {
+      bool authenticated;
+      if (kIsWeb) {
+        authenticated = true;
+      } else {
+        authenticated = await isAuthenticated();
+      }
 
-    if (authenticated) {
-      _navigateToNextScreen();
-    } else {
-      _exitApp();
-    }
+      if (authenticated) {
+        _navigateToNextScreen();
+      } else {
+        _exitApp();
+      }
+    });
+
+    // Ensure the splash screen is shown for a total of 5 seconds
+    Timer(Duration(seconds: 7), () {
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context); // If possible, pop the splash screen to avoid blocking the stack
+      }
+      // Proceed with navigation or exiting based on authentication status
+    });
   }
 
   void _navigateToNextScreen() {
