@@ -13,11 +13,18 @@ class Codes extends StatefulWidget {
   CodesState createState() => CodesState();
 }
 
+// Define the state for Codes widget
 class CodesState extends State<Codes> {
+
+  // Initialize a Future to fetch passwords
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
+
+  // Initialize the DatabaseService with the current user's UID
   final DatabaseService _db =
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
 
+ 
+ // Fetch passwords when the state is initialized
   @override
   void initState() {
     super.initState();
