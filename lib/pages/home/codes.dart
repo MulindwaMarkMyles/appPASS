@@ -31,14 +31,18 @@ class CodesState extends State<Codes> {
     _passwordsFuture = _db.fetchPasswords('Codes');
   }
 
+// Refresh the passwords list
   void _refreshPasswords() {
     setState(() {
       _passwordsFuture = _db.fetchPasswords('Codes');
     });
   }
+
+   // Build the widget tree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // AppBar configuration
       appBar: AppBar(
         title: Text(
           'Codes',
@@ -50,6 +54,7 @@ class CodesState extends State<Codes> {
         ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
+      // Body containing a FutureBuilder
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _passwordsFuture,
         builder: (context, snapshot) {
