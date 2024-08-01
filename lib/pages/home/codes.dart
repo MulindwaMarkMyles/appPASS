@@ -58,13 +58,19 @@ class CodesState extends State<Codes> {
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _passwordsFuture,
         builder: (context, snapshot) {
+          // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          } 
+          // Show an error message if an error occurs
+           else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          } 
+           // Show a message if no data is available
+           else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No passwords found.'));
           }
+          // Retrieve passwords from snapshot
           final passwords = snapshot.data!;
           return ListView.builder(
             itemCount: passwords.length,
