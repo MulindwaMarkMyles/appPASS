@@ -60,24 +60,10 @@ class _HomePageState extends State<HomePage> {
     _fetchPasswords();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // No need to re-fetch here if not necessary; use another mechanism
-  }
-
-  @override
-  void didUpdateWidget(covariant HomePage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print('didUpdateWidget called');
-    _refreshData();
-  }
 
   void _refreshData() async {
-    print('Refreshing data...');
     await _initializeCategoryCounts();
     await _fetchPasswords();
-    print('Data refreshed');
   }
 
   @override
@@ -196,7 +182,7 @@ class _HomePageState extends State<HomePage> {
         bool uploadSuccess = await _db.uploadToFirebase(_data);
         if (uploadSuccess) {
           _showMessage("Passwords uploaded successfully.");
-          _initializeCategoryCounts(); // Refresh counts after uploading
+          _refreshData(); // Refresh counts after uploading
         } else {
           _showMessage("Failed to upload passwords.");
         }
