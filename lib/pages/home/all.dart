@@ -76,7 +76,9 @@ class _AllState extends State<All> {
         builder: (context, snapshot) {
           // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: LoadingAnimationWidget.sta);
+            return Center(
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: Color.fromARGB(255, 243, 134, 84), size: 50));
           }
           // Show an error message if an error occurs
           else if (snapshot.hasError) {
