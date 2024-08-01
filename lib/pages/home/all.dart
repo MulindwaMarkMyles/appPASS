@@ -77,7 +77,7 @@ class _AllState extends State<All> {
           // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
+                child: LoadingAnimationWidget.threeRotatingDots(
                     color: Color.fromARGB(255, 243, 134, 84), size: 50));
           }
           // Show an error message if an error occurs

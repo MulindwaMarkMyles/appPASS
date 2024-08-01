@@ -4,6 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import 'PasswordDetailsPage.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // Define the Codes StatefulWidget
 class Codes extends StatefulWidget {
@@ -15,7 +16,6 @@ class Codes extends StatefulWidget {
 
 // Define the state for Codes widget
 class CodesState extends State<Codes> {
-
   // Initialize a Future to fetch passwords
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
 
@@ -23,8 +23,7 @@ class CodesState extends State<Codes> {
   final DatabaseService _db =
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
 
- 
- // Fetch passwords when the state is initialized
+  // Fetch passwords when the state is initialized
   @override
   void initState() {
     super.initState();
@@ -38,7 +37,7 @@ class CodesState extends State<Codes> {
     });
   }
 
-   // Build the widget tree
+  // Build the widget tree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,20 +76,22 @@ class CodesState extends State<Codes> {
         builder: (context, snapshot) {
           // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } 
+            return Center(
+                child: LoadingAnimationWidget.threeRotatingDots(
+                    color: Color.fromARGB(255, 243, 134, 84), size: 50));
+          }
           // Show an error message if an error occurs
-           else if (snapshot.hasError) {
+          else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } 
-           // Show a message if no data is available
-           else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          }
+          // Show a message if no data is available
+          else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No passwords found.'));
           }
           // Retrieve passwords from snapshot
           final passwords = snapshot.data!;
 
-           // Build a list of passwords
+          // Build a list of passwords
           return ListView.builder(
             itemCount: passwords.length,
             itemBuilder: (context, index) {
@@ -124,12 +125,12 @@ class CodesState extends State<Codes> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                   // Display a placeholder for the password
+                  // Display a placeholder for the password
                   subtitle: Text(
                     password['password'] != null
                         ? '.' * (password['password'].length ~/ 4)
                         : '',
-                    style:TextStyle(
+                    style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -139,7 +140,7 @@ class CodesState extends State<Codes> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton( 
+                      IconButton(
                         // Icon button to view password details
                         icon: Icon(Ionicons.key_outline),
                         onPressed: () {
@@ -148,8 +149,10 @@ class CodesState extends State<Codes> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => PasswordDetailsPage(
-                                passwordData: password, // This should be a map containing the password details
-                                passwordId: passwordId, // This should be the document ID of the password
+                                passwordData:
+                                    password, // This should be a map containing the password details
+                                passwordId:
+                                    passwordId, // This should be the document ID of the password
                               ),
                             ),
                           );
@@ -165,14 +168,17 @@ class CodesState extends State<Codes> {
                             builder: (context) {
                               return AlertDialog(
                                 title: Text('Delete Password'),
-                                content: Text('Are you sure you want to delete this password?'),
+                                content: Text(
+                                    'Are you sure you want to delete this password?'),
                                 actions: [
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(false),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
                                     child: Text('Cancel'),
                                   ),
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(true),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
                                     child: Text('Delete'),
                                   ),
                                 ],
@@ -199,4 +205,3 @@ class CodesState extends State<Codes> {
     );
   }
 }
-
