@@ -24,15 +24,20 @@ class _IndividualPasswordViewScreenState extends State<IndividualPasswordViewScr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // AppBar configuration
       appBar: AppBar(
         title: const Text('Passkeys'),
         actions: [
+          
+          // IconButton for sharing the password
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
               // Share password logic
             },
           ),
+
+           // TextButton for editing the password
           TextButton(
             onPressed: () {
               // Edit password logic
@@ -49,6 +54,8 @@ class _IndividualPasswordViewScreenState extends State<IndividualPasswordViewScr
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+             // ListTile for displaying the password's website and last modified date
             ListTile(
               leading: CircleAvatar(
                 child: Text('B'),
@@ -75,6 +82,7 @@ class _IndividualPasswordViewScreenState extends State<IndividualPasswordViewScr
     );
   }
 
+  // Function to toggle password visibility
   void _togglePasswordVisibility() {
     setState(() {
       _isPasswordVisible = !_isPasswordVisible;
