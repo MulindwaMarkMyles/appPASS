@@ -80,8 +80,8 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 20),
             SizedBox(
               width: 200, // Set the desired width here
-              child: LoadingAnimationWidget.stretchedDots(
-                  color: Color.fromRGBO(248, 105, 17, 1), size: 70),
+              child: LoadingAnimationWidget.waveDots(
+                  color: Color.fromRGBO(248, 105, 17, 1), size: 50),
             ),
           ],
         ),
