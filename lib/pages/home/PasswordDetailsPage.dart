@@ -221,6 +221,21 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
                     color: Color.fromRGBO(248, 105, 17, 1)),
                 borderColor: getPasswordStrengthColor(_passwordController.text)
               ),
+              FutureBuilder<Color>(
+                future: getPasswordStrengthColor(),
+                builder: (context, snapshot) {
+                  Color borderColor = snapshot.data ?? Colors.grey; // Default color
+                  if (snapshot.hasError) {
+                    borderColor = Colors.grey; // Handle errors by defaulting to grey
+                  }
+                  return buildPasswordFormField(
+                    controller: _passwordController,
+                    labelText: 'Password',
+                    prefixIcon: Icon(Ionicons.lock_closed_outline, color: Color.fromRGBO(248, 105, 17, 1)),
+                    borderColor: borderColor,
+                  );
+                },
+              ),
               SizedBox(height: 20),
               buildTextFormField(
                 controller: _emailController,
