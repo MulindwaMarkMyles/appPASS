@@ -17,6 +17,7 @@ class DeletedState extends State<Deleted> {
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
 
+//define the deleted statefulwidget
   @override
   void initState() {
     super.initState();
