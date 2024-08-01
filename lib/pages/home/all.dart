@@ -68,8 +68,11 @@ class _AllState extends State<All> {
            else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No passwords found.'));
           }
-
+         
+           // Retrieve passwords from snapshot
           final passwords = snapshot.data!;
+
+          // Build a list of passwords
           return ListView.builder(
             itemCount: passwords.length,
             itemBuilder: (context, index) {
@@ -93,6 +96,7 @@ class _AllState extends State<All> {
                   ],
                 ),
                 child: ListTile(
+                   // Display password URL
                   title: Text(
                     password['url'] ?? 'url',
                     style: GoogleFonts.poppins(
@@ -103,6 +107,7 @@ class _AllState extends State<All> {
                     ),
                   ),
                   subtitle: Text(
+                    // Display a placeholder for the password
                     password['password'] != null
                         ? '.' * (password['password'].length ~/ 4)
                         : '',
@@ -112,6 +117,7 @@ class _AllState extends State<All> {
                       color: Colors.black,
                     ),
                   ),
+                  // Trailing icons for viewing details and deleting
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
