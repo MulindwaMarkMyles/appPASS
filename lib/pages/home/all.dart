@@ -167,7 +167,8 @@ class _AllState extends State<All> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Delete Password'),
+                                title:
+                                    Text('Delete Password', style: TextStyle()),
                                 content: Text(
                                     'Are you sure you want to delete this password?'),
                                 actions: [
