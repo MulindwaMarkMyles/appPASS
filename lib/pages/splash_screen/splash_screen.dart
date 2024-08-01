@@ -61,10 +61,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(250, 185, 145, 1),
       body: Center(
-        child: ListView(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: ,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
                 'assets/logo_square.png', // Add your logo asset here
