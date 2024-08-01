@@ -207,6 +207,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
                 labelText: 'Password',
                 prefixIcon: Icon(Ionicons.lock_closed_outline,
                     color: Color.fromRGBO(248, 105, 17, 1)),
+                borderColor: 
               ),
               SizedBox(height: 20),
               buildTextFormField(

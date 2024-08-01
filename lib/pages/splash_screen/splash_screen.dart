@@ -61,32 +61,30 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(250, 185, 145, 1),
       body: Center(
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/logo_square.png', // Add your logo asset here
-                height: 200,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/logo_square.png', // Add your logo asset here
+              height: 200,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'appPASS',
+              style: TextStyle(
+                fontSize: 40,
+                fontFamily: 'Gammli',
+                color: Color.fromRGBO(248, 105, 17, 1),
               ),
-              SizedBox(height: 20),
-              Text(
-                'appPASS',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontFamily: 'Gammli',
-                  color: Color.fromRGBO(248, 105, 17, 1),
-                ),
-              ),
-              SizedBox(height: 100),
-              SizedBox(
-                width: 200, // Set the desired width here
-                child: LoadingAnimationWidget.inkDrop(
-                    color: Color.fromRGBO(248, 105, 17, 1), size: 30),
-              ),
-            ],
-          ),
-        ]),
+            ),
+            SizedBox(height: 100),
+            SizedBox(
+              width: 200, // Set the desired width here
+              child: LoadingAnimationWidget.inkDrop(
+                  color: Color.fromRGBO(248, 105, 17, 1), size: 30),
+            ),
+          ],
+        ),
       ),
     );
   }
