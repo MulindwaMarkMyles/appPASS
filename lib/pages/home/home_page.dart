@@ -710,21 +710,3 @@ class AddPasswordPageState extends State<AddPasswordPage> {
   }
 }
 
-class AddPasswordScreen extends StatelessWidget {
-  final Function onPasswordAdded;
-
-  const AddPasswordScreen({required this.onPasswordAdded});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Password'),
-        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
-      ),
-      body: Center(
-        child: Text('Add Password Screen'),
-      ),
-    );
-  }
-}
