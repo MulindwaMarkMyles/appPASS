@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(250, 185, 145, 1),
       body: Center(
-        child: Column(
+        child: ListView(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
@@ -77,11 +77,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: Color.fromRGBO(248, 105, 17, 1),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 100),
             SizedBox(
               width: 200, // Set the desired width here
-              child: LoadingAnimationWidget.waveDots(
-                  color: Color.fromRGBO(248, 105, 17, 1), size: 50),
+              child: LoadingAnimationWidget.inkDrop(
+                  color: Color.fromRGBO(248, 105, 17, 1), size: 30),
             ),
           ],
         ),
