@@ -56,7 +56,7 @@ class _AllState extends State<All> {
             ),
             SizedBox(width: 10),
             Text(
-              'Settings',
+              'All Passwords',
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
                   color: Color.fromARGB(255, 243, 134, 84),
