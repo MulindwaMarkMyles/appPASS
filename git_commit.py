@@ -9,5 +9,5 @@ while(True):
     time.sleep(10)
     os.system("git push origin mulindwa")
     print(f"Done pushing - {count}")
-    time.sleep(120)
+    time.sleep(60)
     count += 1
