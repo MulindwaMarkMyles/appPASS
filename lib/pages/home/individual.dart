@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//define stateful widget
 class IndividualPasswordViewScreen extends StatefulWidget {
   const IndividualPasswordViewScreen({Key? key}) : super(key: key);
 
@@ -7,9 +8,11 @@ class IndividualPasswordViewScreen extends StatefulWidget {
   _IndividualPasswordViewScreenState createState() => _IndividualPasswordViewScreenState();
 }
 
+// Define the state for IndividualPasswordViewScreen widget
 class _IndividualPasswordViewScreenState extends State<IndividualPasswordViewScreen> {
   bool _isPasswordVisible = false;
 
+  // Function to handle authentication logic
   void _authenticate() {
     // Add authentication logic here
     setState(() {
@@ -17,6 +20,7 @@ class _IndividualPasswordViewScreenState extends State<IndividualPasswordViewScr
     });
   }
 
+  // Build the widget tree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
