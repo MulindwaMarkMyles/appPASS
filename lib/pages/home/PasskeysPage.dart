@@ -40,13 +40,25 @@ class PasskeysPageState extends State<PasskeysPage> {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          'Passkeys Passwords',
-          style: GoogleFonts.poppins(
-            color: Color.fromARGB(255, 243, 134, 84),
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/Image1.png',
+              width: 40,
+              height: 40,
+            ),
+            SizedBox(width: 10),
+            Text(
+              'PassKeys',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  color: Color.fromARGB(255, 243, 134, 84),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
