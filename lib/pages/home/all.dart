@@ -167,22 +167,33 @@ class _AllState extends State<All> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
+                                shape: S
                                 title: Text('Delete Password',
                                     style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500
-                                    )),
+                                        fontWeight: FontWeight.w500)),
                                 content: Text(
-                                    'Are you sure you want to delete this password?'),
+                                    'Are you sure you want to delete this password?',
+                                    style: GoogleFonts.poppins()),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.of(context).pop(false),
-                                    child: Text('Cancel'),
+                                    child: Text('Cancel',
+                                        style: GoogleFonts.poppins(
+                                          color:
+                                              Color.fromARGB(255, 243, 134, 84),
+                                          fontSize: 16,
+                                        )),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.of(context).pop(true),
-                                    child: Text('Delete'),
+                                    child: Text('Delete',
+                                        style: GoogleFonts.poppins(
+                                          color:
+                                              Color.fromARGB(255, 243, 134, 84),
+                                          fontSize: 16,
+                                        )),
                                   ),
                                 ],
                               );
