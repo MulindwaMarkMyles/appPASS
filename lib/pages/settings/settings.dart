@@ -318,7 +318,7 @@ class SettingsPage extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(
-                Ionicons.logo_xing,
+                Ionicons.logo_twitter,
                 color: iconColor,
               ),
               onPressed: () {
