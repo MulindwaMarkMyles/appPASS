@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:app_pass/actions/biometric_stub.dart';
 import 'package:app_pass/authentication/login_or_signup.dart';
 import 'package:app_pass/actions/bottom_bar.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   final String page;
@@ -79,11 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 20),
             SizedBox(
               width: 200, // Set the desired width here
-              child: LinearProgressIndicator(
-                backgroundColor: Colors.white,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Color.fromRGBO(247, 105, 17, 1),
-                ),
+              child: LoadingAnimationWidget.
               ),
             ),
           ],
