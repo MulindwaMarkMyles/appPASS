@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_pass/services/database.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 //define the deleted statefulwidget
 class Deleted extends StatefulWidget {
@@ -32,7 +33,7 @@ class DeletedState extends State<Deleted> {
     });
   }
 
- // Confirm and permanently delete a password
+  // Confirm and permanently delete a password
   Future<void> _confirmPermanentlyDeletePassword(String passwordId) async {
     final shouldDelete = await showDialog<bool>(
       context: context,
@@ -88,20 +89,22 @@ class DeletedState extends State<Deleted> {
         builder: (context, snapshot) {
           // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: LoadingAnimationWidget.threeRotatingDots(
+                    color: Color.fromARGB(255, 243, 134, 84), size: 50));
           }
           // Show an error message if an error occurs
-           else if (snapshot.hasError) {
+          else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } 
-           // Show a message if no data is available
-           else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          }
+          // Show a message if no data is available
+          else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No deleted passwords found.'));
           }
 
           // Retrieve passwords from snapshot
           final passwords = snapshot.data!;
-          
+
           // Build a list of passwords
           return ListView.builder(
             itemCount: passwords.length,
@@ -144,7 +147,7 @@ class DeletedState extends State<Deleted> {
                     password['password'] != null
                         ? '.' * (password['password'].length ~/ 4)
                         : '',
-                    style:TextStyle(
+                    style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,

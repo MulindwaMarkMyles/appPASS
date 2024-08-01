@@ -65,7 +65,8 @@ class WifiState extends State<Wifi> {
         future: _passwordsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: LoadingAnimationWidget.threeRotatingDots(
+                    color: Color.fromARGB(255, 243, 134, 84), size: 50));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

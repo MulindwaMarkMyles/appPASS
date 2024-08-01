@@ -4,11 +4,12 @@ import 'package:ionicons/ionicons.dart';
 import 'PasswordDetailsPage.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 //define stateful widget
 class PasskeysPage extends StatefulWidget {
   const PasskeysPage({Key? key}) : super(key: key);
- // Changed the class name to 'PasskeysPage'
+  // Changed the class name to 'PasskeysPage'
   @override
   PasskeysPageState createState() => PasskeysPageState();
 }
@@ -21,12 +22,14 @@ class PasskeysPageState extends State<PasskeysPage> {
   @override
   void initState() {
     super.initState();
-    _passwordsFuture = _db.fetchPasswords('Passkeys'); // Changed the category to 'Passkeys'
+    _passwordsFuture =
+        _db.fetchPasswords('Passkeys'); // Changed the category to 'Passkeys'
   }
 
   void _refreshPasswords() {
     setState(() {
-      _passwordsFuture = _db.fetchPasswords('Passkeys'); // Changed the category to 'Passkeys'
+      _passwordsFuture =
+          _db.fetchPasswords('Passkeys'); // Changed the category to 'Passkeys'
     });
   }
 
@@ -66,7 +69,9 @@ class PasskeysPageState extends State<PasskeysPage> {
         future: _passwordsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: LoadingAnimationWidget.threeRotatingDots(
+                    color: Color.fromARGB(255, 243, 134, 84), size: 50));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -110,7 +115,7 @@ class PasskeysPageState extends State<PasskeysPage> {
                     password['password'] != null
                         ? '.' * (password['password'].length ~/ 4)
                         : '',
-                    style:TextStyle(
+                    style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -127,8 +132,10 @@ class PasskeysPageState extends State<PasskeysPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => PasswordDetailsPage(
-                                passwordData: password, // This should be a map containing the password details
-                                passwordId: passwordId, // This should be the document ID of the password
+                                passwordData:
+                                    password, // This should be a map containing the password details
+                                passwordId:
+                                    passwordId, // This should be the document ID of the password
                               ),
                             ),
                           );
@@ -143,14 +150,17 @@ class PasskeysPageState extends State<PasskeysPage> {
                             builder: (context) {
                               return AlertDialog(
                                 title: Text('Delete Password'),
-                                content: Text('Are you sure you want to delete this password?'),
+                                content: Text(
+                                    'Are you sure you want to delete this password?'),
                                 actions: [
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(false),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
                                     child: Text('Cancel'),
                                   ),
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(true),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
                                     child: Text('Delete'),
                                   ),
                                 ],
