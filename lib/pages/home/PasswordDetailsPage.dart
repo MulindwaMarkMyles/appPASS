@@ -323,10 +323,10 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
           fontFamily: GoogleFonts.poppins().fontFamily,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+          borderSide: BorderSide(color: borderColor),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+          borderSide: BorderSide(color: borderColor),
         ),
       ),
       style: TextStyle(
