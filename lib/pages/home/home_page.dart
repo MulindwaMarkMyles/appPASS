@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
   String _searchQuery = '';
   List<Password> _passwords = [];
   List<Password> _filteredPasswords = [];
+  List<Password> passwords = [];
   final List<Category> categories = [
     Category('All', 0, Ionicons.key_outline, All()),
     Category('Passkeys', 0, Ionicons.person_outline, PasskeysPage()),
@@ -67,6 +68,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onSearchFocusChange() {
+    _fetchPasswords();
+    _initializeCategoryCounts();
     setState(() {
       _isSearching = _searchFocusNode.hasFocus;
     });
@@ -112,7 +115,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _fetchPasswords() async {
     try {
-      List<Password> passwords = await _db.getThePasswords();
+      passwords = await _db.getThePasswords();
       setState(() {
         _passwords = passwords;
         _filteredPasswords = passwords;
@@ -709,4 +712,3 @@ class AddPasswordPageState extends State<AddPasswordPage> {
     );
   }
 }
-
