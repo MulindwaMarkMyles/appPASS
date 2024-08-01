@@ -4,7 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_pass/services/database.dart';
 
-
+//define the deleted statefulwidget
 class Deleted extends StatefulWidget {
   const Deleted({Key? key}) : super(key: key);
 
@@ -12,24 +12,27 @@ class Deleted extends StatefulWidget {
   DeletedState createState() => DeletedState();
 }
 
+// Define the state for Deleted widget
 class DeletedState extends State<Deleted> {
   final DatabaseService _db =
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
 
-//define the deleted statefulwidget
+// Fetch passwords when the state is initialized
   @override
   void initState() {
     super.initState();
     _passwordsFuture = _db.fetchPasswords("deleted");
   }
 
+// Refresh the passwords list
   void _refreshPasswords() {
     setState(() {
       _passwordsFuture = _db.fetchPasswords("deleted");
     });
   }
 
+ // Confirm and permanently delete a password
   Future<void> _confirmPermanentlyDeletePassword(String passwordId) async {
     final shouldDelete = await showDialog<bool>(
       context: context,
