@@ -61,9 +61,11 @@ class DeletedState extends State<Deleted> {
     }
   }
 
+// Build the widget tree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       // AppBar configuration
       appBar: AppBar(
         title: Text(
           'Deleted Passwords',
@@ -75,12 +77,16 @@ class DeletedState extends State<Deleted> {
         ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
+      // Body containing a FutureBuilder
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _passwordsFuture,
         builder: (context, snapshot) {
+          // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          }
+          // Show an error message if an error occurs
+           else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No deleted passwords found.'));
