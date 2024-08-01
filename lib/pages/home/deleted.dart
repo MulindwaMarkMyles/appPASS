@@ -134,6 +134,7 @@ class DeletedState extends State<Deleted> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  // Display a placeholder for the password
                   subtitle: Text(
                     password['password'] != null
                         ? '.' * (password['password'].length ~/ 4)
@@ -147,15 +148,6 @@ class DeletedState extends State<Deleted> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // IconButton(
-                      //   icon: Icon(Ionicons.arrow_undo_outline),
-                      //   onPressed: () async {
-                      //     // Undo the deletion
-                      //     await _undoDeletePassword(passwordId, originalCategory);
-                      //     // Refresh the list
-                      //     _refreshPasswords();
-                      //   },
-                      // ),
                       IconButton(
                         icon: Icon(Ionicons.trash_outline),
                         onPressed: () async {
