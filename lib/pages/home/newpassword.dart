@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+//define stateless widget
 class AddPasswordScreen extends StatelessWidget {
   final Function onPasswordAdded;
 
+  // Constructor for AddPasswordScreen
   const AddPasswordScreen({Key? key, required this.onPasswordAdded}) : super(key: key);
 
   @override
@@ -11,6 +13,7 @@ class AddPasswordScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('New Password'),
         actions: [
+          // TextButton to save the password
           TextButton(
             onPressed: () {
               // Save password logic
