@@ -10,11 +10,11 @@ class All extends StatefulWidget {
   const All({Key? key}) : super(key: key);
 
   @override
-  AllState createState() => AllState();
+  _AllState createState() => _AllState();
 }
 
 // Define the state for All widget
-class AllState extends State<All> {
+class _AllState extends State<All> {
   // Initialize a Future to fetch passwords
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
   // Initialize the DatabaseService with the current user's UID
@@ -59,9 +59,13 @@ class AllState extends State<All> {
            // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          }
+          // Show an error message if an error occurs
+           else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          } 
+          // Show a message if no data is available
+           else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No passwords found.'));
           }
 
