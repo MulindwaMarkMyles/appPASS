@@ -217,15 +217,15 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
               FutureBuilder<Color>(
                 future: getPasswordStrengthColor(_passwordController.text),
                 builder: (context, snapshot) {
-                  Color borderColor = snapshot.data ?? Color.fromRGBO(248, 105, 17, 1); // Default color
+                  Color color = snapshot.data ?? Colors.black; // Default color
                   if (snapshot.hasError) {
-                    borderColor = Color.fromRGBO(248, 105, 17, 1); // Handle errors by defaulting to grey
+                    color = Colors.black; // Handle errors by defaulting to grey
                   }
                   return buildPasswordFormField(
                     controller: _passwordController,
                     labelText: 'Password',
                     prefixIcon: Icon(Ionicons.lock_closed_outline, color: Color.fromRGBO(248, 105, 17, 1)),
-                    color: borderColor,
+                    color: color,
                   );
                 },
               ),
