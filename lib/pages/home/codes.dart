@@ -86,7 +86,9 @@ class CodesState extends State<Codes> {
           }
           // Show a message if no data is available
           else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No passwords found.'));
+            return Center(
+                child:
+                    Text('No passwords found.', style: GoogleFonts.poppins()));
           }
           // Retrieve passwords from snapshot
           final passwords = snapshot.data!;

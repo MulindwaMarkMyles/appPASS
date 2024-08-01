@@ -72,7 +72,9 @@ class SecurityState extends State<Security> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No passwords found.'));
+            return Center(
+                child:
+                    Text('No passwords found.', style: GoogleFonts.poppins()));
           }
 
           final passwords = snapshot.data!;
@@ -179,7 +181,6 @@ class SecurityState extends State<Security> {
                                   ),
                                 ],
                               );
-
                             },
                           );
                           if (shouldDelete ?? false) {
