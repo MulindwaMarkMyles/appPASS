@@ -7,6 +7,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:app_pass/actions/biometric_stub.dart';
+import 'package:password_strength/password_strength.dart';
 
 class PasswordDetailsPage extends StatefulWidget {
   final Map<String, dynamic> passwordData;
