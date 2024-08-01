@@ -36,7 +36,7 @@ class _AllState extends State<All> {
     });
   }
 
- // Build the widget tree
+  // Build the widget tree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,13 +47,25 @@ class _AllState extends State<All> {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          'All Passwords',
-          style: GoogleFonts.poppins(
-            color: Color.fromARGB(255, 243, 134, 84),
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/Image1.png',
+              width: 40,
+              height: 40,
+            ),
+            SizedBox(width: 10),
+            Text(
+              'Settings',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  color: Color.fromARGB(255, 243, 134, 84),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
@@ -61,20 +73,20 @@ class _AllState extends State<All> {
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _passwordsFuture,
         builder: (context, snapshot) {
-           // Show a loading spinner while waiting for data
+          // Show a loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
           // Show an error message if an error occurs
-           else if (snapshot.hasError) {
+          else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } 
+          }
           // Show a message if no data is available
-           else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No passwords found.'));
           }
-         
-           // Retrieve passwords from snapshot
+
+          // Retrieve passwords from snapshot
           final passwords = snapshot.data!;
 
           // Build a list of passwords
@@ -101,7 +113,7 @@ class _AllState extends State<All> {
                   ],
                 ),
                 child: ListTile(
-                   // Display password URL
+                  // Display password URL
                   title: Text(
                     password['url'] ?? 'url',
                     style: GoogleFonts.poppins(
@@ -116,7 +128,7 @@ class _AllState extends State<All> {
                     password['password'] != null
                         ? '.' * (password['password'].length ~/ 4)
                         : '',
-                    style:TextStyle(
+                    style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
