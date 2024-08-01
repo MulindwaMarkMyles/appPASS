@@ -58,7 +58,7 @@ class CodesState extends State<Codes> {
             ),
             SizedBox(width: 10),
             Text(
-              'All Passwords',
+              'Codes',
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
                   color: Color.fromARGB(255, 243, 134, 84),
