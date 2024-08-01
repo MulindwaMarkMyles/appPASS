@@ -72,6 +72,8 @@ class CodesState extends State<Codes> {
           }
           // Retrieve passwords from snapshot
           final passwords = snapshot.data!;
+
+           // Build a list of passwords
           return ListView.builder(
             itemCount: passwords.length,
             itemBuilder: (context, index) {
@@ -95,6 +97,7 @@ class CodesState extends State<Codes> {
                   ],
                 ),
                 child: ListTile(
+                  // Display username
                   title: Text(
                     password['username'] ?? 'username',
                     style: GoogleFonts.poppins(
@@ -104,6 +107,7 @@ class CodesState extends State<Codes> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                   // Display a placeholder for the password
                   subtitle: Text(
                     password['password'] != null
                         ? '.' * (password['password'].length ~/ 4)
@@ -114,10 +118,12 @@ class CodesState extends State<Codes> {
                       color: Colors.black,
                     ),
                   ),
+                  // Trailing icons for viewing details and deleting
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
+                      IconButton( 
+                        // Icon button to view password details
                         icon: Icon(Ionicons.key_outline),
                         onPressed: () {
                           // Navigate to the password details page
@@ -132,6 +138,7 @@ class CodesState extends State<Codes> {
                           );
                         },
                       ),
+                      
                       IconButton(
                         icon: Icon(Ionicons.trash_outline),
                         onPressed: () async {
