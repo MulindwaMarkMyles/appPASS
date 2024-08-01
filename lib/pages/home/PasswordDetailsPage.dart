@@ -106,8 +106,13 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   }
 
   Future<Color> getPasswordStrengthColor(String password) async {
-    String decypted_pass = await _db.decryptPassword(password);
-    double strength = estimatePasswordStrength(decypted_pass);
+    String decyptedPass = password;
+    if (_obscurePassword) {
+      String decyptedPass = await _db.decryptPassword(password);
+    } else {
+      String decyptedPass = password;
+    }
+    double strength = estimatePasswordStrength(decyptedPass);
 
     if (strength < 0.3) {
       return Colors.red; // Weak password
@@ -226,7 +231,8 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
                   return buildPasswordFormField(
                     controller: _passwordController,
                     labelText: 'Password',
-                    prefixIcon: Icon(Ionicons.lock_closed_outline, color: Color.fromRGBO(248, 105, 17, 1)),
+                    prefixIcon: Icon(Ionicons.lock_closed_outline,
+                        color: Color.fromRGBO(248, 105, 17, 1)),
                     color: color,
                   );
                 },
