@@ -22,22 +22,25 @@ class _AllState extends State<All> {
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   bool uploaded = false;
 
-
+// Fetch passwords when the state is initialized
   @override
   void initState() {
     super.initState();
     _passwordsFuture = _db.fetchPasswords('All');
   }
 
+// Refresh the passwords list
   void _refreshPasswords() {
     setState(() {
       _passwordsFuture = _db.fetchPasswords('All');
     });
   }
 
+ // Build the widget tree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // AppBar configuration
       appBar: AppBar(
         title: Text(
           'All Passwords',
@@ -49,6 +52,7 @@ class _AllState extends State<All> {
         ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
+      // Body containing a FutureBuilder
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _passwordsFuture,
         builder: (context, snapshot) {
