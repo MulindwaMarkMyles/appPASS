@@ -147,7 +147,12 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           'Password Details',
           style: GoogleFonts.poppins(
