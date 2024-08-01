@@ -224,15 +224,15 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
               FutureBuilder<Color>(
                 future: getPasswordStrengthColor(_passwordController.text),
                 builder: (context, snapshot) {
-                  Color borderColor = snapshot.data ?? Colors.grey; // Default color
+                  Color borderColor = snapshot.data ?? Color.fromRGBO(248, 105, 17, 1); // Default color
                   if (snapshot.hasError) {
-                    borderColor = Colors.grey; // Handle errors by defaulting to grey
+                    borderColor = Color.fromRGBO(248, 105, 17, 1); // Handle errors by defaulting to grey
                   }
                   return buildPasswordFormField(
                     controller: _passwordController,
                     labelText: 'Password',
                     prefixIcon: Icon(Ionicons.lock_closed_outline, color: Color.fromRGBO(248, 105, 17, 1)),
-                    borderColor: borderColor,
+                    color: borderColor,
                   );
                 },
               ),
@@ -319,7 +319,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
     required String labelText,
     required Icon prefixIcon,
     required TextEditingController controller,
-    required Color borderColor,
+    required Color color,
   }) {
     return TextFormField(
       controller: controller,
@@ -338,14 +338,14 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
           fontFamily: GoogleFonts.poppins().fontFamily,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: borderColor),
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: borderColor),
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
         ),
       ),
       style: TextStyle(
-        color: Colors.black,
+        color: color,
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
     );
