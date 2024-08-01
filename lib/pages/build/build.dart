@@ -1,5 +1,3 @@
-// ignore_for_file: sort_child_properties_last
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math';
@@ -90,10 +88,8 @@ class BuildPageState extends State<BuildPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-           
             SizedBox(height: 20),
             Text(
               'Generate strong secure passwords to keep your account safe online',
@@ -161,6 +157,8 @@ class BuildPageState extends State<BuildPage> {
                     Text('Uppercase'),
                     Checkbox(
                       value: includeUppercase,
+                      checkColor: Color.fromRGBO(248, 105, 17, 1),
+                      fillColor: WidgetStatePropertyAll(Color.fromARGB(255, 243, 220, 205)),
                       onChanged: (value) {
                         setState(() {
                           includeUppercase = value!;
@@ -174,6 +172,8 @@ class BuildPageState extends State<BuildPage> {
                     Text('Lowercase'),
                     Checkbox(
                       value: includeLowercase,
+                      checkColor: Color.fromRGBO(248, 105, 17, 1),
+                      fillColor: WidgetStatePropertyAll(Color.fromARGB(255, 243, 220, 205)),
                       onChanged: (value) {
                         setState(() {
                           includeLowercase = value!;
@@ -187,6 +187,8 @@ class BuildPageState extends State<BuildPage> {
                     Text('Numbers'),
                     Checkbox(
                       value: includeNumbers,
+                      checkColor: Color.fromRGBO(248, 105, 17, 1),
+                      fillColor: WidgetStatePropertyAll(Color.fromARGB(255, 243, 220, 205)),
                       onChanged: (value) {
                         setState(() {
                           includeNumbers = value!;
@@ -200,6 +202,8 @@ class BuildPageState extends State<BuildPage> {
                     Text('Special Characters'),
                     Checkbox(
                       value: includeSpecialChars,
+                      checkColor:Color.fromRGBO(248, 105, 17, 1),
+                      fillColor: WidgetStatePropertyAll(Color.fromARGB(255, 243, 220, 205)),
                       onChanged: (value) {
                         setState(() {
                           includeSpecialChars = value!;
@@ -216,10 +220,27 @@ class BuildPageState extends State<BuildPage> {
                 onPressed: generatePassword,
                 child: Text(
                   'Generate',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    fontSize: 17,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 243, 134, 84),
+                  backgroundColor:
+                      Color.fromRGBO(248, 105, 17, 1), // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.transparent
+                          : Color.fromRGBO(248, 105, 17, 1),
+                      width: 1.5,
+                    ),
+                  ),
+                  textStyle: TextStyle(
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
                 ),
               ),
             ),

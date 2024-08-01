@@ -1,17 +1,46 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'PasskeysPage.dart';
 import 'all.dart';
 import 'codes.dart';
-import 'Wifi.dart';
+import 'wifi.dart';
 import 'security.dart';
 import 'deleted.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:app_pass/pages/home/PasswordDetailsPage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:app_pass/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
+  bool uploaded = false;
+  int _allCount = 0;
+  int _passKeyCount = 0;
+  int _codesCount = 0;
+  int _wifiCount = 0;
+  int _securityCount = 0;
+  int _deletedCount = 0;
+  String password = '';
+  bool _isSearching = false;
+  List<List<dynamic>> _data = [];
+  final FocusNode _searchFocusNode = FocusNode();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  List<Password> _passwords = [];
+  List<Password> _filteredPasswords = [];
   final List<Category> categories = [
     Category('All', 0, Ionicons.key_outline, All()),
     Category('Passkeys', 0, Ionicons.person_outline, PasskeysPage()),
@@ -21,7 +50,77 @@ class HomePage extends StatelessWidget {
     Category('Deleted', 0, Ionicons.trash_bin_outline, Deleted()),
   ];
 
-  HomePage({Key? key}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    _initializeCategoryCounts();
+    _searchController.addListener(_updateSearchQuery);
+    _searchFocusNode.addListener(_onSearchFocusChange);
+    _fetchPasswords();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _onSearchFocusChange() {
+    setState(() {
+      _isSearching = _searchFocusNode.hasFocus;
+    });
+  }
+
+  Future<void> _initializeCategoryCounts() async {
+    // Fetch category counts from Firestore and update the state
+    try {
+      // Assuming you have a function in DatabaseService to get counts
+      Map<String, int> counts = await _db.getCategoryCounts();
+      setState(() {
+        _allCount = counts['All'] ?? 0;
+        _passKeyCount = counts['Passkeys'] ?? 0;
+        _codesCount = counts['Codes'] ?? 0;
+        _wifiCount = counts['Wi-Fi'] ?? 0;
+        _securityCount = counts['Security'] ?? 0;
+        _deletedCount = counts['deleted'] ?? 0;
+
+        categories[0].count = _allCount;
+        categories[1].count = _passKeyCount;
+        categories[2].count = _codesCount;
+        categories[3].count = _wifiCount;
+        categories[4].count = _securityCount;
+        categories[5].count = _deletedCount;
+      });
+    } catch (e) {
+      _showMessage("Failed to load category counts: $e");
+    }
+  }
+
+  void _updateSearchQuery() {
+    setState(() {
+      _searchQuery = _searchController.text;
+      _filteredPasswords = _passwords.where((password) {
+        // Adjust the condition here if needed to search other fields
+        return password.username
+                .toLowerCase()
+                .contains(_searchQuery.toLowerCase()) ||
+            password.url.toLowerCase().contains(_searchQuery.toLowerCase());
+      }).toList();
+    });
+  }
+
+  Future<void> _fetchPasswords() async {
+    try {
+      List<Password> passwords = await _db.getThePasswords();
+      setState(() {
+        _passwords = passwords;
+        _filteredPasswords = passwords;
+      });
+    } catch (e) {
+      _showMessage("Failed to load passwords: $e");
+    }
+  }
 
   Future<void> _importPasswords(BuildContext context) async {
     final result = await FilePicker.platform.pickFiles(
@@ -30,43 +129,65 @@ class HomePage extends StatelessWidget {
     );
 
     if (result != null && result.files.isNotEmpty) {
-      final file = result.files.single;
-      final csvContent = String.fromCharCodes(file.bytes!);
+      PlatformFile file = result.files.first;
+      List<List<dynamic>> csvTable = [];
+      _showMessage("Uploading passwords, please wait...");
 
       try {
-        List<List<dynamic>> rows = const CsvToListConverter().convert(csvContent);
-
-        for (var row in rows) {
-          if (row.length >= 5) {
-            final username = row[0].toString();
-            final password = row[1].toString();
-            final email = row[2].toString();
-            final website = row[3].toString();
-            final notes = row[4].toString();
-
-            final passwordData = {
-              'username': username,
-              'password': password,
-              'email': email,
-              'website': website,
-              'notes': notes,
-              'category': 'All',
-            };
-
-            await FirebaseFirestore.instance.collection('passwords').add(passwordData);
+        if (kIsWeb) {
+          if (file.bytes != null) {
+            String fileContent = String.fromCharCodes(file.bytes!);
+            csvTable = const CsvToListConverter().convert(fileContent);
+            setState(() {
+              _data = csvTable;
+            });
+          } else {
+            _showMessage("Selected file is empty or couldn't be read.");
+            return;
+          }
+        } else {
+          file = result.files.single;
+          if (file.path != null) {
+            final input = File(file.path!).openRead();
+            csvTable = await input
+                .transform(utf8.decoder)
+                .transform(const CsvToListConverter(
+                    eol: '\n')) // Ensure correct end-of-line handling
+                .toList();
+            setState(() {
+              _data = csvTable;
+            });
+          } else {
+            _showMessage("Selected file is empty or couldn't be read.");
+            return;
           }
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Passwords imported successfully!')),
-        );
+        // Log the content of csvTable for debugging
+        print("CSV Table Content: $csvTable");
+
+        // Log the number of rows to be uploaded
+        print("Number of rows to upload: ${csvTable.length}");
+
+        // Upload passwords to Firebase
+        bool uploadSuccess = await _db.uploadToFirebase(_data);
+        if (uploadSuccess) {
+          _showMessage("Passwords uploaded successfully.");
+          _initializeCategoryCounts(); // Refresh counts after uploading
+        } else {
+          _showMessage("Failed to upload passwords.");
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to import passwords. Please try again.')),
-        );
-        print('Error importing passwords: $e');
+        _showMessage("Failed to upload passwords: $e");
       }
+    } else {
+      _showMessage("No file selected.");
     }
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _showPopupMenu(BuildContext context) {
@@ -86,7 +207,14 @@ class HomePage extends StatelessWidget {
                 title: Text('Import Passwords'),
                 onTap: () {
                   Navigator.pop(context);
-                  _importPasswords(context); // Call the import function directly
+                  _importPasswords(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Ionicons.refresh_circle_outline),
+                title: Text('Refresh Counts'),
+                onTap: () {
+                  _initializeCategoryCounts();
                 },
               ),
               ListTile(
@@ -97,7 +225,8 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddPasswordPage(categories: categories),
+                      builder: (context) =>
+                          AddPasswordPage(categories: categories),
                     ),
                   );
                 },
@@ -109,10 +238,20 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  void _cancelSearch() {
+    _searchController.clear();
+    _searchFocusNode.unfocus();
+    setState(() {
+      _isSearching = false;
+      _filteredPasswords = _passwords;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Image.asset(
@@ -138,10 +277,19 @@ class HomePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _searchController,
+              focusNode: _searchFocusNode,
               decoration: InputDecoration(
                 prefixIcon: Icon(Ionicons.search_outline,
                     color: Color.fromARGB(255, 243, 134, 84)),
-                hintText: 'Search',
+                suffixIcon: _isSearching
+                    ? IconButton(
+                        icon: Icon(Ionicons.close_outline,
+                            color: Color.fromARGB(255, 243, 134, 84)),
+                        onPressed: _cancelSearch,
+                      )
+                    : null,
+                hintText: 'Search Passwords',
                 hintStyle: TextStyle(color: Color.fromARGB(255, 9, 3, 3)),
                 filled: true,
                 fillColor: Color.fromRGBO(246, 208, 183, 1),
@@ -154,32 +302,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(8.0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 1,
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                return CategoryCard(
-                  title: category.title,
-                  count: category.count,
-                  icon: category.icon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => category.page,
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
+            child: _isSearching ? _buildSearchResults() : _buildCategoryGrid(),
           ),
         ],
       ),
@@ -190,13 +313,99 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildSearchResults() {
+    return ListView.builder(
+      padding: EdgeInsets.all(8.0),
+      itemCount: _filteredPasswords.length,
+      itemBuilder: (context, index) {
+        final password = _filteredPasswords[index];
+        return Container(
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(250, 230, 216, 1), // Add margin here
+            border: Border.all(color: Color.fromARGB(139, 0, 0, 0), width: 1.2),
+            borderRadius: BorderRadius.circular(9),
+            boxShadow: [
+              BoxShadow(
+                color:
+                    Colors.grey.withOpacity(0.3), // Shadow color with opacity
+                spreadRadius: 2, // Spread radius
+                blurRadius: 5, // Blur radius
+                offset: Offset(0, 3), // Offset in the x and y direction
+              ),
+            ],
+          ),
+          child: ListTile(
+            title: Text(
+              password.username,
+              style: GoogleFonts.poppins(
+                color: Color.fromARGB(255, 243, 134, 84),
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            subtitle: Text(
+              password.url,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PasswordDetailsPage(
+                    passwordData: password.toMap(),
+                    passwordId: password.id,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildCategoryGrid() {
+    return GridView.builder(
+      padding: EdgeInsets.all(8.0),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 8,
+        childAspectRatio: 1,
+      ),
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        final category = categories[index];
+        return CategoryCard(
+          title: category.title,
+          count: category.count,
+          icon: category.icon,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => category.page,
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 }
 
 class Category {
-  final String title;
-  final int count;
-  final IconData icon;
-  final Widget page;
+  String title;
+  int count;
+  IconData icon;
+  Widget page;
 
   Category(this.title, this.count, this.icon, this.page);
 }
@@ -267,52 +476,48 @@ class AddPasswordPage extends StatefulWidget {
 }
 
 class AddPasswordPageState extends State<AddPasswordPage> {
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   final _formKey = GlobalKey<FormState>();
   String? _selectedCategory;
+  final _nameController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
   final _notesController = TextEditingController();
+  final _websiteController = TextEditingController();
 
   @override
   void dispose() {
+    _nameController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
     _emailController.dispose();
     _notesController.dispose();
+    _websiteController.dispose();
     super.dispose();
   }
 
   Future<void> _savePassword() async {
     if (_formKey.currentState?.validate() ?? false) {
+      final name = _nameController.text;
       final username = _usernameController.text;
       final password = _passwordController.text;
       final email = _emailController.text;
       final notes = _notesController.text;
+      final website = _websiteController.text;
       final category = _selectedCategory;
 
       try {
         if (category != null) {
-          final passwordData = {
-            'username': username,
-            'password': password,
-            'email': email,
-            'notes': notes,
-            'category': category,
-          };
+          bool uploaded = await _db.uploadToFirebaseSingle(
+              name, username, password, email, notes, category, website);
 
-          // Save the password to Firestore
-          await FirebaseFirestore.instance.collection('passwords').add(passwordData);
-
-          // Update the password count for the selected category
-          final categoryDocRef = FirebaseFirestore.instance.collection('categories').doc(category);
-          final categoryDoc = await categoryDocRef.get();
-          final currentCount = categoryDoc.data()?['count'] ?? 0;
-          await categoryDocRef.update({'count': currentCount + 1});
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Password saved successfully!')),
-          );
+          if (uploaded) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Password saved successfully!')),
+            );
+          }
           Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -339,37 +544,88 @@ class AddPasswordPageState extends State<AddPasswordPage> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              TextFormField(
+              buildTextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
-                validator: (value) => value!.isEmpty ? 'Please enter a username' : null,
+                prefixIcon: Icon(Ionicons.person_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
+                labelText: 'Username',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter a username' : null,
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
+                controller: _nameController,
+                labelText: 'Name',
+                validator: (value) => value!.isEmpty
+                    ? 'Please enter a name for the password'
+                    : null,
+                prefixIcon: Icon(Ionicons.person_circle_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
+              ),
+              SizedBox(height: 20),
+              buildTextFormField(
+                controller: _websiteController,
+                labelText: 'Website',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter a website or url' : null,
+                prefixIcon: Icon(Ionicons.logo_web_component,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
+              ),
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                validator: (value) => value!.isEmpty ? 'Please enter a password' : null,
+                labelText: 'Password',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter a password' : null,
+                prefixIcon: Icon(Ionicons.lock_closed_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
                 obscureText: true,
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) => value!.isEmpty ? 'Please enter an email' : null,
+                labelText: 'Email',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter an email' : null,
+                prefixIcon: Icon(Ionicons.mail_unread_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              buildTextFormField(
                 controller: _notesController,
-                decoration: InputDecoration(labelText: 'Notes'),
+                labelText: 'Notes',
+                prefixIcon: Icon(Ionicons.text_outline,
+                    color: Color.fromRGBO(248, 105, 17, 1)),
+                validator: (value) => null,
               ),
               SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
-                decoration: InputDecoration(labelText: 'Category'),
+                decoration: InputDecoration(
+                  labelText: 'Category',
+                  prefixIcon: Icon(Ionicons.list_outline,
+                      color: Color.fromRGBO(248, 105, 17, 1)),
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                ),
                 items: widget.categories.map((category) {
                   return DropdownMenuItem<String>(
                     value: category.title,
-                    child: Text(category.title),
+                    child: Text(category.title,
+                        style: TextStyle(
+                            fontFamily: GoogleFonts.poppins().fontFamily)),
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -377,19 +633,97 @@ class AddPasswordPageState extends State<AddPasswordPage> {
                     _selectedCategory = value;
                   });
                 },
-                validator: (value) => value == null ? 'Please select a category' : null,
+                validator: (value) =>
+                    value == null ? 'Please select a category' : null,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _savePassword,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 243, 117, 59),
+                  backgroundColor:
+                      Color.fromRGBO(248, 105, 17, 1), // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.transparent
+                          : Color.fromRGBO(248, 105, 17, 1),
+                      width: 1.5,
+                    ),
+                  ),
+                  textStyle: TextStyle(
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
                 ),
-                child: Text('Save Password'),
+                child: Center(
+                  child: Text(
+                    'Save Changes',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: GoogleFonts.poppins().fontFamily,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildTextFormField({
+    required String labelText,
+    required Icon prefixIcon,
+    bool obscureText = false,
+    required TextEditingController controller,
+    required String? Function(String?) validator,
+  }) {
+    return TextFormField(
+      obscureText: obscureText,
+      validator: validator,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: prefixIcon,
+        labelStyle: TextStyle(
+          color: Colors.black,
+          fontFamily: GoogleFonts.poppins().fontFamily,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+      ),
+      style: TextStyle(
+        color: Colors.black,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      ),
+    );
+  }
+}
+
+class AddPasswordScreen extends StatelessWidget {
+  final Function onPasswordAdded;
+
+  const AddPasswordScreen({required this.onPasswordAdded});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Password'),
+        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
+      ),
+      body: Center(
+        child: Text('Add Password Screen'),
       ),
     );
   }

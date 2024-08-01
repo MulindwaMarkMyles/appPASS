@@ -3,11 +3,13 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SharePage extends StatelessWidget {
-  const SharePage({Key? key, required this.password}) : super(key: key);
+  SharePage({Key? key, required this.password}) : super(key: key);
 
   final String password;
+  final uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,11 @@ class SharePage extends StatelessWidget {
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('passwords').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('passwords')
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -46,34 +52,72 @@ class SharePage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
-          final passwords = snapshot.data?.docs
-                  .map((doc) => doc['password'] as String)
-                  .toList() ??
-              [];
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No passwords found'));
+          }
+
+          final passwords = snapshot.data!.docs;
 
           return ListView.builder(
             itemCount: passwords.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(passwords[index]),
-                trailing: PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'email') {
-                      _sharePasswordViaEmail(passwords[index]);
-                    } else if (value == 'qr') {
-                      _showQRCode(context, passwords[index]);
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'email',
-                      child: Text('Share via Email'),
-                    ),
-                    PopupMenuItem(
-                      value: 'qr',
-                      child: Text('Generate QR Code'),
+              final passwordData = passwords[index].data() as Map<String, dynamic>;
+
+              return Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(250, 230, 216, 1), // Add margin here
+                  border: Border.all(
+                      color: Color.fromARGB(139, 0, 0, 0), width: 1.2),
+                  borderRadius: BorderRadius.circular(9),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3), // Shadow color with opacity
+                      spreadRadius: 2, // Spread radius
+                      blurRadius: 5, // Blur radius
+                      offset: Offset(0, 3), // Offset in the x and y direction
                     ),
                   ],
+                ),
+                child: ListTile(
+                  title: Text(
+                    passwordData['url'] ?? 'url',
+                    style: GoogleFonts.poppins(
+                      color: Color.fromARGB(255, 243, 134, 84),
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  subtitle: Text(
+                    passwordData['password'] != null
+                        ? '.' * (passwordData['password'].length ~/ 4)
+                        : '',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  trailing: PopupMenuButton<String>(
+                    onSelected: (value) {
+                      if (value == 'email') {
+                        _sharePasswordViaEmail(passwordData['password']);
+                      } else if (value == 'qr') {
+                        _showQRCode(context, passwordData['password']);
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'email',
+                        child: Text('Share via Email'),
+                      ),
+                      PopupMenuItem(
+                        value: 'qr',
+                        child: Text('Generate QR Code'),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -114,7 +158,7 @@ class SharePage extends StatelessWidget {
                   version: QrVersions.auto,
                   size: 180, // QR code size
                 ),
-                 SizedBox(height: 10), // Space between logo and text
+                SizedBox(height: 10), // Space between logo and text
                 Text(
                   'Scan this QR code to get the password',
                   textAlign: TextAlign.center,
@@ -125,7 +169,6 @@ class SharePage extends StatelessWidget {
                   width: 55, // Logo size
                   height: 55, // Logo size
                 ),
-               
               ],
             ),
           ),

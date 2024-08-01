@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:app_pass/actions/biometric_stub.dart';
-
 import 'package:app_pass/authentication/login_or_signup.dart';
 import 'package:app_pass/actions/bottom_bar.dart';
 

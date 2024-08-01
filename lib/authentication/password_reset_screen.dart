@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_pass/services/auth.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:app_pass/authentication/profile.dart'; // Import the profile screen
 
 class PasswordResetScreen extends StatefulWidget {
@@ -31,8 +32,25 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Ionicons.mail_outline),
+                  labelText: "Email",
+                  prefixIcon: Icon(Ionicons.mail_outline,
+                      color: Color.fromRGBO(248, 105, 17, 1)),
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+                  ),
+                ),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -53,7 +71,30 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                     );
                   }
                 },
-                child: Text('Reset Password'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Color.fromRGBO(248, 105, 17, 1), // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.transparent
+                          : Color.fromRGBO(248, 105, 17, 1),
+                      width: 1.5,
+                    ),
+                  ),
+                  textStyle: TextStyle(
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+                child: Text(
+                  'Reset Password',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    fontSize: 17,
+                  ),
+                ),
               ),
             ],
           ),
