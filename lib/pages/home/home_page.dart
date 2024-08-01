@@ -65,6 +65,11 @@ class _HomePageState extends State<HomePage> {
     await _initializeCategoryCounts();
     await _fetchPasswords();
   }
+  
+  Future<void> _refreshDataFuture() async {
+    await _initializeCategoryCounts();
+    await _fetchPasswords();
+  }
 
   @override
   void dispose() {
@@ -281,39 +286,42 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              focusNode: _searchFocusNode,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Ionicons.search_outline,
-                    color: Color.fromARGB(255, 243, 134, 84)),
-                suffixIcon: _isSearching
-                    ? IconButton(
-                        icon: Icon(Ionicons.close_outline,
-                            color: Color.fromARGB(255, 243, 134, 84)),
-                        onPressed: _cancelSearch,
-                      )
-                    : null,
-                hintText: 'Search Passwords',
-                hintStyle: TextStyle(color: Color.fromARGB(255, 9, 3, 3)),
-                filled: true,
-                fillColor: Color.fromRGBO(246, 208, 183, 1),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
+      body: RefreshIndicator(
+        onRefresh: _refreshDataFuture,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _searchController,
+                focusNode: _searchFocusNode,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Ionicons.search_outline,
+                      color: Color.fromARGB(255, 243, 134, 84)),
+                  suffixIcon: _isSearching
+                      ? IconButton(
+                          icon: Icon(Ionicons.close_outline,
+                              color: Color.fromARGB(255, 243, 134, 84)),
+                          onPressed: _cancelSearch,
+                        )
+                      : null,
+                  hintText: 'Search Passwords',
+                  hintStyle: TextStyle(color: Color.fromARGB(255, 9, 3, 3)),
+                  filled: true,
+                  fillColor: Color.fromRGBO(246, 208, 183, 1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
+                style: TextStyle(color: Colors.black),
               ),
-              style: TextStyle(color: Colors.black),
             ),
-          ),
-          Expanded(
-            child: _isSearching ? _buildSearchResults() : _buildCategoryGrid(),
-          ),
-        ],
+            Expanded(
+              child: _isSearching ? _buildSearchResults() : _buildCategoryGrid(),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showPopupMenu(context),
