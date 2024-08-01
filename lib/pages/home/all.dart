@@ -167,7 +167,10 @@ class _AllState extends State<All> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                shape: ShapeBorder(),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      8.0), // Adjust this value for more boxy or rounded corners
+                                ),
                                 title: Text('Delete Password',
                                     style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w500)),
