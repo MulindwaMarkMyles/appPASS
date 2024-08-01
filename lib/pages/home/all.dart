@@ -40,8 +40,13 @@ class _AllState extends State<All> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar configuration
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           'All Passwords',
           style: GoogleFonts.poppins(

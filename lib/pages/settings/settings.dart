@@ -152,9 +152,7 @@ class SettingsPage extends StatelessWidget {
                       case 'sharePassword':
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => SharePage(
-                              password: 'YourPasswordHere',
-                            ),
+                            builder: (_) => SharePage(),
                           ),
                         );
                         break;

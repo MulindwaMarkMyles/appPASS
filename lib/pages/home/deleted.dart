@@ -65,8 +65,13 @@ class DeletedState extends State<Deleted> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       // AppBar configuration
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           'Deleted Passwords',
           style: GoogleFonts.poppins(

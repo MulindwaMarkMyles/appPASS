@@ -42,8 +42,13 @@ class CodesState extends State<Codes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar configuration
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           'Codes',
           style: GoogleFonts.poppins(
