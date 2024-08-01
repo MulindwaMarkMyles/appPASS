@@ -121,6 +121,7 @@ class _AllState extends State<All> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      // Icon button to view password details
                       IconButton(
                         icon: Icon(Ionicons.key_outline),
                         onPressed: () {
@@ -137,6 +138,7 @@ class _AllState extends State<All> {
                           );
                         },
                       ),
+                      // Icon button to delete the password
                       IconButton(
                         icon: Icon(Ionicons.trash_outline),
                         onPressed: () async {
@@ -163,6 +165,7 @@ class _AllState extends State<All> {
                               );
                             },
                           );
+                          // If confirmed, move the password to the deleted category and refresh the list
                           if (shouldDelete ?? false) {
                             // Move the password to the deleted category
                             await _db.movePasswordToDeleted(passwordId);
