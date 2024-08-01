@@ -88,11 +88,16 @@ class DeletedState extends State<Deleted> {
           // Show an error message if an error occurs
            else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          } 
+           // Show a message if no data is available
+           else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No deleted passwords found.'));
           }
 
+          // Retrieve passwords from snapshot
           final passwords = snapshot.data!;
+          
+          // Build a list of passwords
           return ListView.builder(
             itemCount: passwords.length,
             itemBuilder: (context, index) {
@@ -119,6 +124,7 @@ class DeletedState extends State<Deleted> {
                   ],
                 ),
                 child: ListTile(
+                  // Display URL
                   title: Text(
                     password['url'] ?? 'url',
                     style: GoogleFonts.poppins(
