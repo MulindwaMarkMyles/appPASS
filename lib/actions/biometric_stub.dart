@@ -6,7 +6,7 @@ Future<bool> isAuthenticated() async {
   if (supports_biometric) {
     authenticated = await authenticate();
   } else {
-    authen
+    authenticated = true;
   }
   return authenticated;
 }
