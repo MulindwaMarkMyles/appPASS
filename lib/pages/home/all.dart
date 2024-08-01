@@ -5,6 +5,7 @@ import 'PasswordDetailsPage.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// Define the All StatefulWidget
 class All extends StatefulWidget {
   const All({Key? key}) : super(key: key);
 
@@ -12,11 +13,15 @@ class All extends StatefulWidget {
   _AllState createState() => _AllState();
 }
 
+// Define the state for All widget
 class _AllState extends State<All> {
+  // Initialize a Future to fetch passwords
   late Future<List<Map<String, dynamic>>> _passwordsFuture;
+  // Initialize the DatabaseService with the current user's UID
   final DatabaseService _db =
       DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
   bool uploaded = false;
+
 
   @override
   void initState() {
