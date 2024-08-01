@@ -20,7 +20,12 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Row(
           children: [
             Image.asset(
@@ -30,10 +35,10 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
             ),
             SizedBox(width: 10),
             Text(
-              'Settings',
+              'Reset Password',
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
-                  color: iconColor,
+                  color: Color.fromARGB(255, 243, 134, 84),
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
@@ -42,6 +47,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
           ],
         ),
         backgroundColor: Color.fromRGBO(244, 203, 176, 1),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
