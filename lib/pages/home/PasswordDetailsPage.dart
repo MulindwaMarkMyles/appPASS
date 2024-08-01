@@ -104,6 +104,16 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
     }
   }
 
+  Color getPasswordStrengthColor(String password) {
+    if (password.length < 6) {
+      return Colors.red; // Weak password
+    } else if (password.length < 10) {
+      return Colors.orange; // Medium password
+    } else {
+      return Colors.green; // Strong password
+    }
+  }
+
   Future<void> _togglePasswordVisibility() async {
     try {
       if (_obscurePassword) {
@@ -207,7 +217,7 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
                 labelText: 'Password',
                 prefixIcon: Icon(Ionicons.lock_closed_outline,
                     color: Color.fromRGBO(248, 105, 17, 1)),
-                borderColor: 
+                borderColor: getPasswordStrengthColor(password)
               ),
               SizedBox(height: 20),
               buildTextFormField(
