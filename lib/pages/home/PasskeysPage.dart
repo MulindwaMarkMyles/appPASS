@@ -34,6 +34,12 @@ class PasskeysPageState extends State<PasskeysPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           'Passkeys Passwords',
           style: GoogleFonts.poppins(

@@ -540,6 +540,12 @@ class AddPasswordPageState extends State<AddPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text('Add Password'),
         backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
