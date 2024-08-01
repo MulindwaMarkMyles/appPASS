@@ -4,6 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import 'PasswordDetailsPage.dart';
 import 'package:app_pass/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Wifi extends StatefulWidget {
   const Wifi({Key? key}) : super(key: key);
@@ -65,7 +66,8 @@ class WifiState extends State<Wifi> {
         future: _passwordsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: LoadingAnimationWidget.threeRotatingDots(
+            return Center(
+                child: LoadingAnimationWidget.threeRotatingDots(
                     color: Color.fromARGB(255, 243, 134, 84), size: 50));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
