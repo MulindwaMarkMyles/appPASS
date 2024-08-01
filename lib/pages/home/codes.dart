@@ -138,7 +138,7 @@ class CodesState extends State<Codes> {
                           );
                         },
                       ),
-                      
+                      // Icon button to delete the password
                       IconButton(
                         icon: Icon(Ionicons.trash_outline),
                         onPressed: () async {
@@ -162,6 +162,7 @@ class CodesState extends State<Codes> {
                               );
                             },
                           );
+                          // If confirmed, move the password to the deleted category and refresh the list
                           if (shouldDelete ?? false) {
                             // Move the password to the deleted category
                             await _db.movePasswordToDeleted(passwordId);
