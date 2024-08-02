@@ -47,13 +47,13 @@ dependencies:
   flutter_email_sender: ^6.0.3
   firebase_core: ^3.2.0
   http: ^1.2.2
-  url_launcher: ^6.0.9
   google_sign_in: ^6.2.1
   shared_preferences: ^2.0.13
   encrypt: any
   liquid_pull_to_refresh: ^3.0.1
   loading_animation_widget: ^1.2.1
   password_strength: ^0.2.0
+  url_launcher: ^6.1.10
   
   
 dev_dependencies:

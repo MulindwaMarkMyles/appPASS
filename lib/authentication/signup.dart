@@ -188,9 +188,9 @@ class _SignUpPageState extends State<SignUpPage> {
           email = value;
         } else if (labelText == 'Password') {
           password = value;
-        } else if (labelText == 'Phone Number')
+        } else if (labelText == 'Phone Number') {
           phoneNumber = int.parse(value);
-        else if (labelText == 'Name') {
+        } else if (labelText == 'Name') {
           name = value;
         } else if (labelText == 'Recovery Email') {
           recoveryEmail = value;

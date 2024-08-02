@@ -152,6 +152,7 @@ class WifiState extends State<Wifi> {
                                   borderRadius: BorderRadius.circular(
                                       8.0), // Adjust this value for more boxy or rounded corners
                                 ),
+                                backgroundColor: Color.fromRGBO(244, 220, 205, 1),
                                 title: Text('Delete Password',
                                     style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w500)),
