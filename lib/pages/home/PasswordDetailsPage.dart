@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/services/database.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:app_pass/actions/biometric_stub.dart';
+// import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:app_pass/actions/biometric_stub.dart';
 import 'package:password_strength/password_strength.dart';
 
 class PasswordDetailsPage extends StatefulWidget {
@@ -126,22 +126,22 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   Future<void> _togglePasswordVisibility() async {
     try {
       if (_obscurePassword) {
-        if (kIsWeb) {
-          authenticated = true;
-        } else {
-          authenticated = await isAuthenticated();
-        }
-        if (authenticated) {
-          String decryptedPassword =
-              await _db.decryptPassword(_passwordController.text);
-          setState(() {
-            _passwordController.text = decryptedPassword;
-          });
-        } else {
-          _obscurePassword = !_obscurePassword;
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Authentication Failed.")));
-        }
+        // if (kIsWeb) {
+        //   authenticated = true;
+        // } else {
+        //   authenticated = await isAuthenticated();
+        // }
+        // if (authenticated) {
+        String decryptedPassword =
+            await _db.decryptPassword(_passwordController.text);
+        setState(() {
+          _passwordController.text = decryptedPassword;
+        });
+        // } else {
+        //   _obscurePassword = !_obscurePassword;
+        //   ScaffoldMessenger.of(context)
+        //       .showSnackBar(SnackBar(content: Text("Authentication Failed.")));
+        // }
       } else {
         String encryptedPassword =
             await _db.encryptPassword(_passwordController.text);

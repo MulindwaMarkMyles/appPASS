@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:app_pass/actions/biometric_stub.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:vibration/vibration.dart';
 import 'PasskeysPage.dart';
 import 'all.dart';
 import 'codes.dart';
@@ -36,6 +39,8 @@ class _HomePageState extends State<HomePage> {
   int _deletedCount = 0;
   String password = '';
   bool _isSearching = false;
+  Map<String, dynamic> password_Data = {};
+  String password_Id = '';
   List<List<dynamic>> _data = [];
   final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
@@ -178,11 +183,7 @@ class _HomePageState extends State<HomePage> {
         }
 
         // Log the content of csvTable for debugging
-        print("CSV Table Content: $csvTable");
-
-        // Log the number of rows to be uploaded
-        print("Number of rows to upload: ${csvTable.length}");
-
+       
         // Upload passwords to Firebase
         bool uploadSuccess = await _db.uploadToFirebase(_data);
         if (uploadSuccess) {
@@ -254,6 +255,186 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _triggerHapticFeedback() {
+    HapticFeedback.heavyImpact(); // Use heavy impact for significant feedback
+  }
+
+  void _triggerCustomVibration() async {
+    if (await Vibration.hasAmplitudeControl() ?? false) {
+      Vibration.vibrate(amplitude: 128);
+    } else if (await Vibration.hasCustomVibrationsSupport() ?? false) {
+      Vibration.vibrate(duration: 1000);
+    } else {
+      Vibration.vibrate();
+      await Future.delayed(Duration(milliseconds: 500));
+      Vibration.vibrate();
+    }
+  }
+
+  void _triggerFeedback() {
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      _triggerHapticFeedback(); // Use system haptic feedback on iOS
+    } else {
+      _triggerCustomVibration(); // Use custom vibration on Android
+    }
+  }
+
+  void _showInputDialog(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                8.0), // Adjust this value for more boxy or rounded corners
+          ),
+          title: Text('Master Password',
+              style: GoogleFonts.poppins(fontWeight: FontWeight.w500)),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    hintText: "Enter your master password",
+                    border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(248, 105, 17, 1))),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(248, 105, 17, 1))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(248, 105, 17, 1))),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.red, // Error border color
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.redAccent, // Focused error border color
+                      ),
+                    ),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    if (value.length < 3) {
+                      return 'Password must be at least 3 characters long';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Submit',
+                  style: GoogleFonts.poppins(
+                    color: Color.fromARGB(255, 243, 134, 84),
+                    fontSize: 16,
+                  )),
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  final inputText = controller.text;
+                  final DatabaseService _db = DatabaseService(
+                      uid: FirebaseAuth.instance.currentUser!.uid);
+                  bool authenticated = await _db.checkMasterPassword(inputText);
+                  if (authenticated) {
+                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PasswordDetailsPage(
+                          passwordData: password_Data,
+                          passwordId: password_Id,
+                        ),
+                      ),
+                    );
+                  } else {
+                    _triggerFeedback();
+                  }
+                }
+              },
+            ),
+            TextButton(
+              child: Text('Cancel',
+                  style: GoogleFonts.poppins(
+                    color: Color.fromARGB(255, 243, 134, 84),
+                    fontSize: 16,
+                  )),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                8.0), // Adjust this value for more boxy or rounded corners
+          ),
+          title: Text('Authentication',
+              style: GoogleFonts.poppins(fontWeight: FontWeight.w500)),
+          content: Text('Biometrics or Master Password',
+              style: GoogleFonts.poppins()),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Biometrics',
+                  style: GoogleFonts.poppins(
+                    color: Color.fromARGB(255, 243, 134, 84),
+                    fontSize: 16,
+                  )),
+              onPressed: () async {
+                bool is_Authenticated = await isAuthenticated();
+                if (is_Authenticated) {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PasswordDetailsPage(
+                        passwordData: password_Data,
+                        passwordId: password_Id,
+                      ),
+                    ),
+                  ); // Close the dialog
+                }
+              },
+            ),
+            TextButton(
+              child: Text('Master Password',
+                  style: GoogleFonts.poppins(
+                    color: Color.fromARGB(255, 243, 134, 84),
+                    fontSize: 16,
+                  )),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _showInputDialog(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -283,7 +464,7 @@ class _HomePageState extends State<HomePage> {
         showChildOpacityTransition: false,
         springAnimationDurationInMilliseconds: 350,
         backgroundColor: Color.fromARGB(255, 243, 134, 84),
-        color:Color.fromRGBO(246, 208, 183, 1) ,
+        color: Color.fromRGBO(246, 208, 183, 1),
         onRefresh: _refreshDataFuture,
         child: Column(
           children: [
@@ -315,7 +496,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Expanded(
-              child: _isSearching ? _buildSearchResults() : _buildCategoryGrid(),
+              child:
+                  _isSearching ? _buildSearchResults() : _buildCategoryGrid(),
             ),
           ],
         ),
@@ -369,15 +551,11 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PasswordDetailsPage(
-                    passwordData: password.toMap(),
-                    passwordId: password.id,
-                  ),
-                ),
-              );
+              _showDialog(context);
+              setState(() {
+                password_Data = password.toMap();
+                password_Id = password.id;
+              });
             },
           ),
         );
