@@ -72,6 +72,57 @@ class DatabaseService {
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
 
+  Future<bool> setMasterPassword(String password) async {
+    try {
+      final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
+      final b64key = Key.fromBase64(base64Encode(key.bytes));
+      final fernet = Fernet(b64key);
+      final encrypter = Encrypter(fernet);
+      await users.doc(uid).set({
+        'master-password': encrypter.encrypt(password).base64,
+      });
+      return true;
+    } catch (e) {
+      print("Error uploading to Firebase: $e");
+      return false;
+    }
+  }
+
+  Future<bool> checkMasterPassword(String password) async {
+    try {
+      // Retrieve the document containing the master password
+      final snapshot = await users.doc(uid).get();
+
+      // Check if the document exists and contains the 'master-password' field
+      if (snapshot.exists && snapshot.data() != null) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        if (data.containsKey('master-password')) {
+          final encryptedPassword = data['master-password'];
+
+          final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
+          final b64key = Key.fromBase64(base64Encode(key.bytes));
+          final fernet = Fernet(b64key);
+          final encrypter = Encrypter(fernet);
+
+          // Decrypt the stored password
+          final decryptedPassword = encrypter.decrypt64(encryptedPassword);
+
+          // Compare the decrypted password with the input password
+          return password == decryptedPassword;
+        } else {
+          print("Master password not found in the database.");
+          return false;
+        }
+      } else {
+        print("Document does not exist or data is null.");
+        return false;
+      }
+    } catch (e) {
+      print("Error checking password: $e");
+      return false;
+    }
+  }
+
   Future<void> updateUserData(String username, String name, int phoneNumber,
       String recoveryEmail) async {
     return await users.doc(uid).set({

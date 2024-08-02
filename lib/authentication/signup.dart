@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_pass/authentication/login.dart';
 import 'package:app_pass/services/auth.dart';
+import 'package:app_pass/authentication/masterPassword.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:auth_button_kit/auth_button_kit.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -36,17 +37,22 @@ class _SignUpPageState extends State<SignUpPage> {
     if (_formKey.currentState!.validate()) {
       dynamic result = await _auth.registerWithEmailAndPassword(
           email, password, name, username, phoneNumber, recoveryEmail);
+
+      await _auth.signIn(email, password);
       if (result != null) {
         setState(() {
           brandSelected = null;
         });
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Account created successfully')));
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => Login()));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => Masterpassword()));
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Error creating account')));
+        setState(() {
+          brandSelected = null;
+        });
       }
     } else {
       setState(() {
@@ -215,6 +221,12 @@ class _SignUpPageState extends State<SignUpPage> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$labelText is required';
+        }
+        if (labelText == "Email") {
+          bool isValid = EmailValidator.validate(_emailController.text);
+          if (!isValid) {
+            return 'Invalid email';
+          }
         }
         if (labelText == 'Confirm Password' &&
             value != _passwordController.text) {
