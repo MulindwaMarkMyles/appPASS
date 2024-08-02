@@ -78,7 +78,7 @@ class DatabaseService {
       final b64key = Key.fromBase64(base64Encode(key.bytes));
       final fernet = Fernet(b64key);
       final encrypter = Encrypter(fernet);
-      await users.doc(uid).set({
+      await users.doc(uid).update({
         'master-password': encrypter.encrypt(password).base64,
       });
       return true;
@@ -96,23 +96,20 @@ class DatabaseService {
       // Check if the document exists and contains the 'master-password' field
       if (snapshot.exists && snapshot.data() != null) {
         final data = snapshot.data() as Map<String, dynamic>;
-        if (data.containsKey('master-password')) {
-          final encryptedPassword = data['master-password'];
 
-          final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
-          final b64key = Key.fromBase64(base64Encode(key.bytes));
-          final fernet = Fernet(b64key);
-          final encrypter = Encrypter(fernet);
+        final encryptedPassword = data['master-password'];
+        print(encryptedPassword);
 
-          // Decrypt the stored password
-          final decryptedPassword = encrypter.decrypt64(encryptedPassword);
+        final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
+        final b64key = Key.fromBase64(base64Encode(key.bytes));
+        final fernet = Fernet(b64key);
+        final encrypter = Encrypter(fernet);
 
-          // Compare the decrypted password with the input password
-          return password == decryptedPassword;
-        } else {
-          print("Master password not found in the database.");
-          return false;
-        }
+        // Decrypt the stored password
+        final decryptedPassword = encrypter.decrypt64(encryptedPassword);
+
+        // Compare the decrypted password with the input password
+        return password == decryptedPassword;
       } else {
         print("Document does not exist or data is null.");
         return false;

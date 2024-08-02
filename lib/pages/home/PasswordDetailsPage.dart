@@ -308,6 +308,16 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
         ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red, // Error border color
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.redAccent, // Focused error border color
+          ),
+        ),
       ),
       style: TextStyle(
         color: Colors.black,
@@ -343,6 +353,16 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red, // Error border color
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.redAccent, // Focused error border color
+          ),
         ),
       ),
       style: TextStyle(

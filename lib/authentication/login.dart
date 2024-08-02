@@ -103,14 +103,17 @@ class _LoginState extends State<Login> {
                 style: TextStyle(color: Colors.red, fontSize: 14),
               ),
               SizedBox(height: 14),
-              IconButton(onPressed: () async {
-                  UserCredential? theUser =  await _auth.signInWithGoogle();
+              IconButton(
+                onPressed: () async {
+                  UserCredential? theUser = await _auth.signInWithGoogle();
                   if (theUser != null) {
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => BottomNavBar()));}
-                  },
+                        MaterialPageRoute(builder: (_) => BottomNavBar()));
+                  }
+                },
                 icon: Icon(Ionicons.logo_google,
-                          color: Color.fromRGBO(248, 105, 17, 1)),),
+                    color: Color.fromRGBO(248, 105, 17, 1)),
+              ),
               AuthButton(
                 onPressed: (b) => toggle(b),
                 brand: Method.custom,
@@ -168,6 +171,16 @@ class _LoginState extends State<Login> {
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red, // Error border color
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.redAccent, // Focused error border color
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),

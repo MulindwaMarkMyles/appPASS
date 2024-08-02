@@ -217,6 +217,16 @@ class _SignUpPageState extends State<SignUpPage> {
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
         ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red, // Error border color
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.redAccent, // Focused error border color
+          ),
+        ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

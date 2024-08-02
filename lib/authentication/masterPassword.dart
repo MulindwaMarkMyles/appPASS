@@ -91,9 +91,11 @@ class _MasterpasswordState extends State<Masterpassword> {
                       validator: (val) => val!.length < 10
                           ? 'Enter a password 10+ chars long'
                           : null,
-                      onChanged: (val)=> setState(() => master_password = val),
+                      onChanged: (val) => setState(() => master_password = val),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     buildTextFormField(
                       labelText: 'Confirm Master Password',
                       prefixIcon: Icon(Ionicons.lock_closed,
@@ -105,9 +107,8 @@ class _MasterpasswordState extends State<Masterpassword> {
                         }
                         if (value.length < 10) {
                           return "This must be 10 or more characters.";
-                          
                         }
-                        if (value != master_password ) {
+                        if (value != master_password) {
                           return 'Passwords do not match';
                         }
                         return null;
@@ -172,6 +173,16 @@ class _MasterpasswordState extends State<Masterpassword> {
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red, // Error border color
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.redAccent, // Focused error border color
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color.fromRGBO(248, 105, 17, 1)),
