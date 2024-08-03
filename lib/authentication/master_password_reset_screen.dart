@@ -95,8 +95,7 @@ class _MasterPasswordResetScreenState extends State<MasterPasswordResetScreen> {
                         otpType: otp,
                         emailTheme: EmailTheme.v4,
                       );
-                      if (await EmailOTP.sendOTP(
-                          email: user_email)) {
+                      if (await EmailOTP.sendOTP(email: user_email)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text("OTP has been sent")));
                         setState(() {
@@ -130,6 +129,7 @@ class _MasterPasswordResetScreenState extends State<MasterPasswordResetScreen> {
                             const SnackBar(
                                 content:
                                     Text("Password changed successfully.")));
+                        Navigator.of(context).pop();
                       }
                     }
                   }

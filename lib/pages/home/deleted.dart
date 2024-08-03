@@ -40,17 +40,31 @@ class DeletedState extends State<Deleted> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Permanently Delete Password'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                8.0), // Adjust this value for more boxy or rounded corners
+          ),
+          title: Text('Permanently Delete Password',
+              style: GoogleFonts.poppins(fontWeight: FontWeight.w500)),
           content: Text(
-              'Are you sure you want to permanently delete this password? This action cannot be undone.'),
+              'Are you sure you want to permanently delete this password? This action cannot be undone.',
+              style: GoogleFonts.poppins()),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('Cancel'),
+              child: Text('Cancel',
+                  style: GoogleFonts.poppins(
+                    color: Color.fromARGB(255, 243, 134, 84),
+                    fontSize: 16,
+                  )),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Delete'),
+              child: Text('Delete',
+                  style: GoogleFonts.poppins(
+                    color: Color.fromARGB(255, 243, 134, 84),
+                    fontSize: 16,
+                  )),
             ),
           ],
         );
@@ -108,10 +122,10 @@ class DeletedState extends State<Deleted> {
             else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(child: Text('No deleted passwords found.'));
             }
-        
+
             // Retrieve passwords from snapshot
             final passwords = snapshot.data!;
-        
+
             // Build a list of passwords
             return ListView.builder(
               itemCount: passwords.length,
@@ -120,7 +134,7 @@ class DeletedState extends State<Deleted> {
                 final passwordId = password['id'];
                 // final originalCategory =
                 //     password['originalCategory'] ?? 'unknown';
-        
+
                 return Container(
                   margin: EdgeInsets.all(8),
                   decoration: BoxDecoration(
