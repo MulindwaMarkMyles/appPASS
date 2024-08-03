@@ -74,15 +74,14 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
         });
       }
       final updatedData = {
-        'name': _nameController.text,
+        'name': _nameController.text ?? '',
         'username': _usernameController.text,
         'password': _passwordController.text,
-        'email': _emailController.text,
+        'email': _emailController.text ?? '',
         'url': _websiteController.text,
-        'notes': _notesController.text,
+        'notes': _notesController.text ?? '',
         'category': widget.passwordData['category'],
       };
-
       try {
         final CollectionReference users =
             FirebaseFirestore.instance.collection('users');
@@ -126,22 +125,11 @@ class PasswordDetailsPageState extends State<PasswordDetailsPage> {
   Future<void> _togglePasswordVisibility() async {
     try {
       if (_obscurePassword) {
-        // if (kIsWeb) {
-        //   authenticated = true;
-        // } else {
-        //   authenticated = await isAuthenticated();
-        // }
-        // if (authenticated) {
         String decryptedPassword =
             await _db.decryptPassword(_passwordController.text);
         setState(() {
           _passwordController.text = decryptedPassword;
         });
-        // } else {
-        //   _obscurePassword = !_obscurePassword;
-        //   ScaffoldMessenger.of(context)
-        //       .showSnackBar(SnackBar(content: Text("Authentication Failed.")));
-        // }
       } else {
         String encryptedPassword =
             await _db.encryptPassword(_passwordController.text);

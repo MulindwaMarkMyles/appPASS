@@ -45,7 +45,12 @@ class Password {
       'notes': notes,
       'category': category,
       'url': url,
+      'id': id,
     };
+  }
+
+  String getId() {
+    return id;
   }
 }
 
@@ -249,7 +254,14 @@ class DatabaseService {
       QuerySnapshot snapshot =
           await users.doc(uid).collection('passwords').get();
       return snapshot.docs.map((doc) {
-        return Password.fromMap(doc.data() as Map<String, dynamic>);
+        // Create a map from the document data
+        final data = doc.data() as Map<String, dynamic>;
+
+        // Add the document ID to the map
+        data['id'] = doc.id;
+
+        // Create and return a Password object from the updated map
+        return Password.fromMap(data);
       }).toList();
     } catch (e) {
       print("Failed to fetch passwords: $e");

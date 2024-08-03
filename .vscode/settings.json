@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/mulin/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core-3.1.1/windows"
+  "cmake.sourceDirectory": "C:/Users/mulin/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core-3.1.1/windows",
+  "cmake.configureOnOpen": false
 }

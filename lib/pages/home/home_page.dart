@@ -84,8 +84,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onSearchFocusChange() {
-    // _fetchPasswords();
-    // _initializeCategoryCounts();
     setState(() {
       _isSearching = _searchFocusNode.hasFocus;
     });
@@ -183,7 +181,7 @@ class _HomePageState extends State<HomePage> {
         }
 
         // Log the content of csvTable for debugging
-       
+
         // Upload passwords to Firebase
         bool uploadSuccess = await _db.uploadToFirebase(_data);
         if (uploadSuccess) {
@@ -552,9 +550,10 @@ class _HomePageState extends State<HomePage> {
             ),
             onTap: () {
               _showDialog(context);
+              print(password.toMap()['id']);
               setState(() {
                 password_Data = password.toMap();
-                password_Id = password.id;
+                password_Id = password.getId();
               });
             },
           ),
