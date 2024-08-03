@@ -1,3 +1,4 @@
+import 'package:app_pass/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -6,8 +7,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ionicons/ionicons.dart';
 
-class SharePage extends StatelessWidget {
+class SharePage extends StatefulWidget {
+  @override
+  State<SharePage> createState() => _SharePageState();
+}
+
+class _SharePageState extends State<SharePage> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
+
+  final DatabaseService _db =
+      DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
+  
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -108,12 +119,16 @@ class SharePage extends StatelessWidget {
                     ),
                   ),
                   trailing: PopupMenuButton<String>(
-                    onSelected: (value) {
+                    onSelected: (value) async {
                       //   if (value == 'email') {
                       //     _sharePasswordViaEmail(passwordData['password']);
                       // } else if
+                      String temp = await _db.decryptPassword(passwordData['password']);
+                        setState(() {
+                          password = temp; 
+                        });
                       if (value == 'qr') {
-                        _showQRCode(context, passwordData['password']);
+                        _showQRCode(context, password);
                       }
                     },
                     itemBuilder: (context) => [
@@ -137,20 +152,6 @@ class SharePage extends StatelessWidget {
   }
 
   // void _sharePasswordViaEmail(String password) async {
-  //   final Email email = Email(
-  //     body: 'Here is the password: $password',
-  //     subject: 'Shared Password',
-  //     recipients: ['recipient@example.com'],
-  //     isHTML: false,
-  //   );
-
-  //   try {
-  //     await FlutterEmailSender.send(email);
-  //   } catch (error) {
-  //     print('Failed to send email: $error');
-  //   }
-  // }
-
   void _showQRCode(BuildContext context, String password) {
     showDialog(
       context: context,
