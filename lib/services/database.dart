@@ -98,7 +98,6 @@ class DatabaseService {
         final data = snapshot.data() as Map<String, dynamic>;
 
         final encryptedPassword = data['master-password'];
-        print(encryptedPassword);
 
         final key = Key.fromUtf8('my32lengthsupersecretnooneknows1');
         final b64key = Key.fromBase64(base64Encode(key.bytes));

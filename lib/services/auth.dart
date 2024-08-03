@@ -7,6 +7,10 @@ class CustomUser {
   final String email;
   final String? displayName;
   CustomUser({required this.uid, required this.email, this.displayName});
+
+  String getEmail() {
+    return this.email;
+  }
 }
 
 class AuthService {
@@ -21,7 +25,7 @@ class AuthService {
     }
   }
 
-  CustomUser? _userFromFirebaseUser(User? user) {
+  CustomUser? userFromFirebaseUser(User? user) {
     if (user == null) return null;
     return CustomUser(
       uid: user.uid,
@@ -31,12 +35,12 @@ class AuthService {
   }
 
   Stream<CustomUser?> get user {
-    return _auth.authStateChanges().map(_userFromFirebaseUser);
+    return _auth.authStateChanges().map(userFromFirebaseUser);
   }
 
   Future<CustomUser?> getCurrentUser() async {
     User? user = _auth.currentUser;
-    return _userFromFirebaseUser(user);
+    return userFromFirebaseUser(user);
   }
 
   Future registerWithEmailAndPassword(
@@ -52,7 +56,7 @@ class AuthService {
       User? user = result.user;
       await DatabaseService(uid: user!.uid)
           .updateUserData(username, name, phoneNumber, recoveryEmail);
-      return _userFromFirebaseUser(user);
+      return userFromFirebaseUser(user);
     } catch (e) {
       print("Failed to sign in");
       return null;
@@ -64,14 +68,14 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      return _userFromFirebaseUser(user);
+      return userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       print("Failed to sign in");
       return null;
     }
   }
-  
+
   Future<UserCredential?> signInWithGoogle() async {
     try {
       // Initiate the Google Sign-In process
@@ -109,7 +113,7 @@ class AuthService {
         username,
         displayName,
         0, // Assuming phone number is not provided by Google
-       email,
+        email,
       );
 
       return userCredential;
@@ -124,7 +128,7 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User? user = result.user;
-      return _userFromFirebaseUser(user);
+      return userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       return null;

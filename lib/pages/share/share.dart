@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ionicons/ionicons.dart';
 
 class SharePage extends StatelessWidget {
-
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
@@ -50,7 +49,9 @@ class SharePage extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: LoadingAnimationWidget.threeRotatingDots(
+                    color: Color.fromARGB(255, 243, 134, 84), size: 50));
           }
 
           if (snapshot.hasError) {
@@ -108,17 +109,18 @@ class SharePage extends StatelessWidget {
                   ),
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) {
-                      if (value == 'email') {
-                        _sharePasswordViaEmail(passwordData['password']);
-                      } else if (value == 'qr') {
+                      //   if (value == 'email') {
+                      //     _sharePasswordViaEmail(passwordData['password']);
+                      // } else if
+                      if (value == 'qr') {
                         _showQRCode(context, passwordData['password']);
                       }
                     },
                     itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'email',
-                        child: Text('Share via Email'),
-                      ),
+                      // PopupMenuItem(
+                      //   value: 'email',
+                      //   child: Text('Share via Email'),
+                      // ),
                       PopupMenuItem(
                         value: 'qr',
                         child: Text('Generate QR Code'),
@@ -134,20 +136,20 @@ class SharePage extends StatelessWidget {
     );
   }
 
-  void _sharePasswordViaEmail(String password) async {
-    final Email email = Email(
-      body: 'Here is the password: $password',
-      subject: 'Shared Password',
-      recipients: ['recipient@example.com'],
-      isHTML: false,
-    );
+  // void _sharePasswordViaEmail(String password) async {
+  //   final Email email = Email(
+  //     body: 'Here is the password: $password',
+  //     subject: 'Shared Password',
+  //     recipients: ['recipient@example.com'],
+  //     isHTML: false,
+  //   );
 
-    try {
-      await FlutterEmailSender.send(email);
-    } catch (error) {
-      print('Failed to send email: $error');
-    }
-  }
+  //   try {
+  //     await FlutterEmailSender.send(email);
+  //   } catch (error) {
+  //     print('Failed to send email: $error');
+  //   }
+  // }
 
   void _showQRCode(BuildContext context, String password) {
     showDialog(

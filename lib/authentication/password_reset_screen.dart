@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:app_pass/services/auth.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_pass/authentication/profile.dart'; // Import the profile screen
 
 class PasswordResetScreen extends StatefulWidget {
   const PasswordResetScreen({Key? key}) : super(key: key);
@@ -99,11 +98,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     await _auth.resetPassword(_emailController.text);
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => ProfileScreen(),
-                      ),
-                    );
+                    Navigator.of(context).pop();
                   }
                 },
                 style: ElevatedButton.styleFrom(

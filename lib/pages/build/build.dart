@@ -74,7 +74,7 @@ class BuildPageState extends State<BuildPage> {
             ),
             SizedBox(width: 10), // Adjust spacing between logo and title
             Text(
-              'Passcode Generator',
+              'Password Generator',
               style: TextStyle(
                 fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
                 color: Color.fromARGB(255, 243, 134, 84),

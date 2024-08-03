@@ -5,6 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:app_pass/authentication/login_or_signup.dart';
 import 'package:app_pass/services/auth.dart';
 import 'package:app_pass/authentication/password_reset_screen.dart';
+import 'package:app_pass/authentication/master_password_reset_screen.dart';
 import 'package:app_pass/authentication/profile.dart';
 import 'package:app_pass/pages/share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,6 +28,12 @@ class SettingsPage extends StatelessWidget {
           key: 'changePassword',
           label: 'Change Password',
           helpText: 'Update your password',
+          icon: Ionicons.lock_closed_outline,
+        ),
+        SettingsOption(
+          key: 'changeMasterPassword',
+          label: 'Change Master Password',
+          helpText: 'Update your Master password',
           icon: Ionicons.lock_closed_outline,
         ),
         SettingsOption(
@@ -164,6 +171,13 @@ class SettingsPage extends StatelessWidget {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => PasswordResetScreen(),
+                          ),
+                        );
+                        break;
+                      case 'changeMasterPassword':
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => MasterPasswordResetScreen(),
                           ),
                         );
                         break;
@@ -429,13 +443,32 @@ class AboutDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          // Center align the title
-          child: Text(
-            title,
-            selectionColor: Color.fromRGBO(244, 220, 205, 1),
-          ),
+        leading: IconButton(
+          icon: Icon(Ionicons.arrow_back_circle),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/Image1.png',
+              width: 40, // Adjust size as needed
+              height: 40, // Adjust size as needed
+            ),
+            SizedBox(width: 10), // Adjust spacing between logo and title
+            Text(
+              title,
+              style: TextStyle(
+                fontFamily: GoogleFonts.getFont('Poppins').fontFamily,
+                color: Color.fromARGB(255, 243, 134, 84),
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Color.fromRGBO(246, 208, 183, 1),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

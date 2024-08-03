@@ -1,3 +1,4 @@
+import 'package:app_pass/authentication/password_reset_screen.dart';
 import 'package:app_pass/authentication/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -75,11 +76,26 @@ class LoginOrSignup extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 200),
-              Text(
-                'Forgot Password?',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Color.fromRGBO(248, 105, 17, 1),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => PasswordResetScreen(),
+                    ),
+                  );
+                },
+                child: Text(
+                  'Forgot Password?',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Color.fromRGBO(248, 105, 17, 1),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  backgroundColor: Color.fromRGBO(250, 249, 248, 1),
                 ),
               ),
             ],
